@@ -56,6 +56,10 @@
     cursor: pointer;
 }
 
+.side-nav-menu a.active {
+    color: rgb(151, 195, 60);
+}
+
 .side-nav-menu .side-nav-header {
     color: black;
     font-family: 'Montserrat', sans-serif;
