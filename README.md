@@ -3,7 +3,7 @@
 
 ### Members:
 Emma Keeley  
-Erik Johns  
+Erik Johns - erikjohns  
 Sam Jacobsen  
 Seth Barrett  
 Xander Burger  
