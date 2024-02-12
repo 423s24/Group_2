@@ -3,6 +3,7 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./register.css"
 
+//regular expressions for string validation
 const USER_REGEX = /^[^\d\s]+$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -38,6 +39,7 @@ export default function Registration() {
   const [errMsg, setErrMsg] = useState('');
   const [success, setSuccess] = useState(false);
 
+  //Checking if input string is valid compared to regular expression
   useEffect(() => {
       firstNameRef.current.focus();
   },[])
@@ -62,15 +64,23 @@ export default function Registration() {
   useEffect(() => {
       setErrMsg('');
   }, [firstName, pwd, matchPwd])
- 
+  
+  
   const handleSubmit = async (e) => {
+
+   //making sure that you cant just enable the button in the browser
     e.preventDefault();
     const v1 = USER_REGEX.test(firstName);
-    const v2 = PWD_REGEX.test(pwd);
-    if (!v1 || !v2) {
+    const v2 = USER_REGEX.test(lastName);
+    const v3 = EMAIL_REGEX.test(email);
+    const v4 = PWD_REGEX.test(pwd);
+    if (!v1 || !v2 || !v3 || !v4) {
         setErrMsg("Invalid Entry");
         return;
     }
+
+    //this is where were we would send this information to the database/api
+    //printing to console for now
     console.log(firstName, lastName, email ,pwd)
   }
 
