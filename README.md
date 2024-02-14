@@ -1,6 +1,5 @@
 # HRDC Maintenance Ticket Management System
-### Group 2
-
+## Group 2
 ### Members:
 Emma Keeley - ekeeley09  
 Erik Johns - erikjohns  
