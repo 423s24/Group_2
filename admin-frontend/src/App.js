@@ -1,12 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from './Pages/login';
 
 function App() {
   return (
-    <div className="App">
-      <LoginPage />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route index element={<LoginPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
