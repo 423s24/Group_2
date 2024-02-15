@@ -17,13 +17,18 @@ function LoginPage() {
     const loginWithUsernameAndPassword = async (e) => {
         e.preventDefault();
 
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            navigate("../");
-        } catch {
-            setNotice("Email or password incorrect");
-            setLoginStatus(false);
-        }
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // User is signed in 
+                const user = userCredential.user;
+                navigate("../");
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                setNotice("Invalid Email or Password");
+                setLoginStatus(false);
+            });
     }
 
     return (
