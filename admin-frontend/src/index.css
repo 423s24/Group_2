@@ -12,6 +12,20 @@ code {
     monospace;
 }
 
+/* Global & Body Styling */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Work Sans', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Work Sans', sans-serif;
 }
