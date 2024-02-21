@@ -1,10 +1,10 @@
-import "./login.css";
-import HRDCLogo from "../Assets/hrdc-logo-1.png";
+import "../Styling/login.css";
+import HRDCLogo from "../../Assets/hrdc-logo-1.png";
 import { Helmet } from 'react-helmet';
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../Backend/Firebase";
+import { auth } from "../../Backend/Firebase";
 
 function LoginPage( {user} ) {
 

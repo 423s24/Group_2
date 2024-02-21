@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LoginPage from './Pages/login';
-import HomePage from './Pages/home';
+import LoginPage from './Pages/Javascript/login';
+import HomePage from './Pages/Javascript/home';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './Backend/Firebase';
 import { useEffect, useState } from 'react';
