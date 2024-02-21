@@ -47,6 +47,7 @@ function LoginPage( {user} ) {
                 <div className="login-container">
                     <h1 className="login-header">Welcome to the HRDC Maintenance Ticket Manager Portal</h1>
                     <h4 className="login-subheader">Login to your Account</h4>
+                    <p className="forgot-password-text">Don't have an account? <a href="../register">Click Here</a> to register.</p>
                     <form className="login-form">
 
                         { "" !== notice &&
@@ -64,7 +65,7 @@ function LoginPage( {user} ) {
                             <label for="">Password</label>
                         </div>
                         <button className="login-button" onClick={ (e) => loginWithUsernameAndPassword(e) }>Sign In</button>
-                        <p className="forgot-password-text">Forgot your password? <a href="#">Click Here</a> to reset it.</p>
+                        <p className="forgot-password-text">Forgot your password? <a href="../register">Click Here</a> to reset it.</p>
                     </form>
                 </div>
             </div>
