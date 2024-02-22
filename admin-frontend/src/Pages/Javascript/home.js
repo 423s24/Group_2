@@ -39,6 +39,41 @@ function HomePage() {
             })
     }
 
+    const handleStatusFilterChange = (event) => {
+        const selectedStatus = event.target.value;
+        setFilterStatus(selectedStatus);
+    };
+
+    const handleServiceFilterChange = (event) => {
+        const selectedService = event.target.value;
+        setFilterService(selectedService);
+    };
+
+    const handleSearchChange = (event) => {
+        const query = event.target.value;
+        setSearchQuery(query);
+    };
+
+    const handleAddressFilterChange = (event) => {
+        const selectedAddress = event.target.value;
+        setFilterAddress(selectedAddress);
+    };
+
+    const handleAssigneeFilterChange = (event) => {
+        const selectedAssignee = event.target.value;
+        setFilterAssignee(selectedAssignee);
+    };
+
+    const handleCreationDateFilterChange = (event) => {
+        const selectedCreationDate = event.target.value;
+        setFilterCreationDate(selectedCreationDate);
+    };
+
+    const handlePriorityFilterChange = (event) => {
+        const selectedPriority = event.target.value;
+        setFilterPriority(selectedPriority);
+    };
+
     return (
         <div>
             <h2>User Profile</h2>
