@@ -5,7 +5,7 @@ import { auth, db } from "../../Backend/Firebase";
 import HRDCLogo from "../../Assets/hrdc-logo-1.png";
 import { Helmet } from 'react-helmet';
 import "../Styling/register.css";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 function RegisterPage () {
     
@@ -26,6 +26,17 @@ function RegisterPage () {
             // Properly signed in
             const newUser = userCredential.user;
             setUser(newUser);
+    
+            try {
+                const docRef = await setDoc(doc(db, "users", newUser.uid), {
+                    name: name,
+                    phone: phoneNumber,
+                    email: newUser.email
+                });
+                console.log("Document written with ID: ", newUser.uid);
+            } catch (error) {
+                console.error("Error adding document: ", error);
+            }
     
             navigate("../");
         } catch (error) {
@@ -59,7 +70,7 @@ function RegisterPage () {
                             <label for="">Name</label>
                         </div>
                         <div className={`input-group ${registerStatus ? '' : 'input-group-error'}`}>
-                            <input type="phone" value={ phoneNumber } onChange={ (e) => setPhoneNumber(e.target.value) } required/>
+                            <input type="tel" value={ phoneNumber } onChange={ (e) => setPhoneNumber(e.target.value) } required/>
                             <label for="">Phone Number</label>
                         </div>
 
