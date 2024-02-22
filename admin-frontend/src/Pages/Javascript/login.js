@@ -65,7 +65,7 @@ function LoginPage( {user} ) {
                             <label for="">Password</label>
                         </div>
                         <button className="login-button" onClick={ (e) => loginWithUsernameAndPassword(e) }>Sign In</button>
-                        <p className="forgot-password-text">Forgot your password? <a href="../register">Click Here</a> to reset it.</p>
+                        <p className="forgot-password-text">Forgot your password? <a href="../forgot-password">Click Here</a> to reset it.</p>
                     </form>
                 </div>
             </div>

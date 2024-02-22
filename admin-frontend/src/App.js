@@ -6,6 +6,7 @@ import { auth } from './Backend/Firebase';
 import { useEffect, useState } from 'react';
 import { ProtectedRoute } from './Backend/ProtectedRoute';
 import RegisterPage from './Pages/Javascript/register';
+import ForgotPassword from './Pages/Javascript/forgotPassword';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -36,6 +37,7 @@ function App() {
         <Route index element={<ProtectedRoute user={user}><HomePage user={user} /></ProtectedRoute>} />
         <Route path="/login" element={<LoginPage user={user}/>} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </BrowserRouter>
   );
