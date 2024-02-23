@@ -79,21 +79,17 @@ export default function Registration() {
         return;
     }
 
-    //this is where were we would send this information to the database/api
+    //this is where we would send this information to the database/api
     //printing to console for now
     console.log(firstName, lastName, email ,pwd)
   }
 
   return (
-    <section>
+    <section className='form-section'>
           <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
           <h1>Register</h1>
           <form onSubmit={handleSubmit}>
-            <label htmlFor="firstname">
-                First Name:
-                <FontAwesomeIcon icon={faCheck} className={validFirstName ? "valid" : "hide"} />
-                <FontAwesomeIcon icon={faTimes} className={validFirstName || !firstName ? "hide" : "invalid"} />
-            </label>
+            <div className='input-group'>
             <input
                 type="text"
                 id="firstname"
@@ -107,15 +103,18 @@ export default function Registration() {
                 onFocus={() => setFirstNameFocus(true)}
                 onBlur={() => setFirstNameFocus(false)}
               />
+              <label htmlFor="firstname">
+                First Name:
+                <FontAwesomeIcon icon={faCheck} className={validFirstName ? "valid" : "hide"} />
+                <FontAwesomeIcon icon={faTimes} className={validFirstName || !firstName ? "hide" : "invalid"} />
+              </label>
                <p id="uidnote" className={firstNameFocus && firstName && !validFirstName ? "instructions" : "offscreen"}>
                   <FontAwesomeIcon icon={faInfoCircle} />
                   Cannot contain numbers or spaces.
               </p>
-            <label htmlFor="lastname">
-                Last Name:
-                <FontAwesomeIcon icon={faCheck} className={validLastName ? "valid" : "hide"} />
-                <FontAwesomeIcon icon={faTimes} className={validLastName || !lastName ? "hide" : "invalid"} />
-            </label>
+              </div>
+              <div className='input-group'>
+            
             <input
                 type="text"
                 id="lastname"
@@ -129,16 +128,17 @@ export default function Registration() {
                 onFocus={() => setLastNameFocus(true)}
                 onBlur={() => setLastNameFocus(false)}
               />
+              <label htmlFor="lastname">
+                Last Name:
+                <FontAwesomeIcon icon={faCheck} className={validLastName ? "valid" : "hide"} />
+                <FontAwesomeIcon icon={faTimes} className={validLastName || !lastName ? "hide" : "invalid"} />
+              </label>
                <p id="uidnote" className={lastNameFocus && lastName && !validLastName ? "instructions" : "offscreen"}>
                   <FontAwesomeIcon icon={faInfoCircle} />
                   Cannot contain numbers or spaces.
               </p>
-
-            <label htmlFor="lastname">
-                Email:
-                <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
-                <FontAwesomeIcon icon={faTimes} className={validEmail || !email ? "hide" : "invalid"} />
-            </label>
+              </div>
+              <div className='input-group'>
             <input
                 type="text"
                 id="email"
@@ -152,16 +152,17 @@ export default function Registration() {
                 onFocus={() => setEmailFocus(true)}
                 onBlur={() => setEmailFocus(false)}
               />
+              <label htmlFor="lastname">
+                Email:
+                <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
+                <FontAwesomeIcon icon={faTimes} className={validEmail || !email ? "hide" : "invalid"} />
+              </label>
                <p id="uidnote" className={emailFocus && email && !validEmail ? "instructions" : "offscreen"}>
                   <FontAwesomeIcon icon={faInfoCircle} />
                   Please enter a valid email: johnSmith@example.com
               </p>
-
-              <label htmlFor="password">
-                  Password:
-                  <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} />
-                  <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
-              </label>
+              </div>
+              <div className='input-group'>
               <input
                   type="password"
                   id="password"
@@ -173,18 +174,20 @@ export default function Registration() {
                   onFocus={() => setPwdFocus(true)}
                   onBlur={() => setPwdFocus(false)}
               />
+              <label htmlFor="password">
+                  Password:
+                  <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} />
+                  <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
+              </label>
               <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
                   <FontAwesomeIcon icon={faInfoCircle} />
                   8 to 24 characters.<br />
                   Must include uppercase and lowercase letters, a number and a special character.<br />
                   Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
               </p>
-
-              <label htmlFor="confirm_pwd">
-                  Confirm Password:
-                  <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
-                  <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
-              </label>
+              </div>
+              <div className='input-group'>
+             
               <input
                   type="password"
                   id="confirm_pwd"
@@ -196,11 +199,17 @@ export default function Registration() {
                   onFocus={() => setMatchFocus(true)}
                   onBlur={() => setMatchFocus(false)}
               />
+               <label htmlFor="confirm_pwd">
+                  Confirm Password:
+                  <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
+                  <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
+              </label>
               <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
                   <FontAwesomeIcon icon={faInfoCircle} />
                   Must match the first password input field.
               </p>
-              <button disabled={!validFirstName || !validPwd || !validMatch ? true : false}>Register</button>
+              </div>
+              <button className='login-button' disabled={!validFirstName || !validPwd || !validMatch ? true : false}>Register</button>
           </form>
     </section>
   )
