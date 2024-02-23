@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import "../Styling/home.css";
 import logo from "../../Assets/hrdc-logo-1.png";
+import { Helmet } from "react-helmet";
 
 function HomePage() {
     const navigate = useNavigate();
@@ -86,11 +87,14 @@ function HomePage() {
 
     return (
         <div>
+            <Helmet>
+                <title>Dashboard</title>
+            </Helmet>
             <div className="home-container">
                 <div className="header">
                     <img src={logo} alt="HRDC Logo" className="logo" />
                     <div>
-                        <h1>Welcome, {userData.name}</h1>
+                        { userData && <h1>Welcome, {userData.name}</h1>}
                         <button onClick={signUserOut}>Sign Out</button>
                     </div>
                 </div>
