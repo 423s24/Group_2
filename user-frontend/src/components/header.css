@@ -1,0 +1,24 @@
+.header{
+    background: #107178;
+    height: 90px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.header .logo{
+    padding: 10px;
+    padding-left: 20px;
+    height: 70px;
+}
+
+.navContainer{
+    display: flex;
+    width: 80%;
+    justify-content: end;
+    margin-right: 20px;
+}
+
+.navContainer .navLink{
+    padding-left: 10px;
+}
