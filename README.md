@@ -1,4 +1,5 @@
 # HRDC Maintenance Ticket Management System
+A custom Web-App software solution to manage maintenance projects. This web app allows for tenants to submit maintenance request tickets and for administrators to manage these tickets.  
 ## Group 2
 ### Members:
 Emma Keeley - ekeeley09 (https://github.com/ekeeley9)  
