@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { ProtectedRoute } from './Backend/ProtectedRoute';
 import RegisterPage from './Pages/Javascript/register';
 import ForgotPassword from './Pages/Javascript/forgotPassword';
+import MessageApp from "./Pages/Javascript/MessageApp";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -38,6 +39,7 @@ function App() {
         <Route path="/login" element={<LoginPage user={user}/>} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/MessageApp" element={<MessageApp />} />
       </Routes>
     </BrowserRouter>
   );
