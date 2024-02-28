@@ -8,6 +8,7 @@ import "../Styling/home.css";
 import logo from "../../Assets/hrdc-logo-1.png";
 import { Helmet } from "react-helmet";
 
+
 function HomePage() {
     const navigate = useNavigate();
     const user = auth.currentUser;
@@ -49,6 +50,10 @@ function HomePage() {
                 // TODO: Add error handling
             })
     }
+
+    const handleRedirctToMessage = () => {
+        navigate('/MessageApp')
+    };
 
     const handleStatusFilterChange = (event) => {
         const selectedStatus = event.target.value;
@@ -103,6 +108,7 @@ function HomePage() {
                         <h2>Messaging</h2>
                         {/* Placeholder for messaging component */}
                         {/* TODO: Integrate messaging component here */}
+                        <button onClick={handleRedirctToMessage}>Go to Messaging</button>
                     </div>
                     <div className="ticketing-section">
                         <h2>Ticket Management</h2>
