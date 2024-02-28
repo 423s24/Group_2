@@ -1,7 +1,7 @@
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../Backend/Firebase";
-import { getDoc, doc } from "firebase/firestore"; 
+import { getDoc, doc, collection, addDoc } from "firebase/firestore"; 
 import { useEffect } from "react";
 import { useState } from "react";
 import "../Styling/home.css";
@@ -83,6 +83,35 @@ function HomePage() {
     const handlePriorityFilterChange = (event) => {
         const selectedPriority = event.target.value;
         setFilterPriority(selectedPriority);
+    };
+
+    const [newTicketData, setNewTicketData] = useState({
+        title: "",
+        description: "",
+        priority: "",
+        serviceType: ""
+    });
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setNewTicketData({ ...newTicketData, [name]: value });
+    };
+
+    const handleTicketSubmission = async (event) => {
+        event.preventDefault();
+        try {
+            const docRef = await addDoc(collection(db, "tickets"), newTicketData);
+            console.log("Ticket added with ID: ", docRef.id);
+
+            setNewTicketData({
+                title: "",
+                description: "",
+                priority: "",
+                serviceType: ""
+            });
+        } catch (error) {
+            console.log("Error adding ticket: ", error);
+        }
     };
 
     return (
@@ -176,8 +205,10 @@ function HomePage() {
                                 </select>
                             </div>
                         </div>
+                        <div className="ticketing-section">
                         {/* Placeholder for displaying ticket list */}
                         {/* TODO: Display ticket list here */}
+                        </div>
                     </div>
                 </div>
                 <div className="footer">
