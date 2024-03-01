@@ -12,5 +12,5 @@ Xander Burger - XanderBurger (https://github.com/XanderBurger)
 
 
 ### Scrum Artifacts
-[Product Backlog](https://docs.google.com/spreadsheets/d/15P5juWXKPNjBKfMYR1LwJkH7rHR9RlE_6tq9P8ABjII/edit?usp=sharing)  
+[Product Backlog](https://docs.google.com/spreadsheets/d/1bBys0tjTZRdqN-f4_4jia9_EKEtvnoNp2AAOoDBgAuE/edit?usp=sharing)  
 [Burndown Chart](https://docs.google.com/spreadsheets/d/15P5juWXKPNjBKfMYR1LwJkH7rHR9RlE_6tq9P8ABjII/edit?usp=sharing)
