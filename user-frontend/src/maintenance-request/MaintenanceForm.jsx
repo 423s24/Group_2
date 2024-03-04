@@ -139,7 +139,7 @@ export default function MaintenanceForm() {
      const ticketRef = collection(firestore, "ticket");
      const addressKey = getAddressKey(address);
 
-     await setDoc(doc(ticketRef, addressKey), {
+     await addDoc(ticketRef, {
       description, 
       area,
       related, 
