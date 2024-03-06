@@ -31,7 +31,8 @@ function RegisterPage () {
                 const docRef = await setDoc(doc(db, "users", newUser.uid), {
                     name: name,
                     phone: phoneNumber,
-                    email: newUser.email
+                    email: newUser.email,
+                    role: "admin"
                 });
                 console.log("Document written with ID: ", newUser.uid);
             } catch (error) {

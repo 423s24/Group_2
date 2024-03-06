@@ -13,9 +13,10 @@ export default function Header({user}) {
   const navigate = useNavigate()
 
   const userSignOut = () => {
+    console.log(user)
     signOut(auth)
     .then(() => {
-        navigate("../login");
+        navigate("/login");
     })
     .catch((error) => {
         // An error happened
