@@ -34,10 +34,15 @@ export default function MaintenanceForm() {
   const urgencyRef = useRef();
   const addressRef = useRef(); 
   const phoneRef = useRef();
+  const titleRef = useRef();
 
   const [description, setDescription] = useState('');
   const [validDescription, setValidDescription] = useState(false);
   const [descriptionFocus, setDescriptionFocus] = useState(false);
+
+  const [title, setTitle] = useState('');
+  const [validTitle, setValidTitle] = useState(false);
+  const [titleFocus, setTitleFocus] = useState(false);
 
   const [area, setArea] = useState('');
   const [validArea, setValidArea] = useState(false);
@@ -126,6 +131,10 @@ export default function MaintenanceForm() {
     setAddress(e.target.value);
   }
 
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+  }
+
 
 
   const handleSubmit = async (e) => {
@@ -139,7 +148,7 @@ export default function MaintenanceForm() {
      const ticketRef = collection(firestore, "ticket");
      const addressKey = getAddressKey(address);
 
-     await setDoc(doc(ticketRef, addressKey), {
+     await addDoc(ticketRef,  {
       description, 
       area,
       related, 
@@ -150,7 +159,8 @@ export default function MaintenanceForm() {
       relation, 
       urgency,
       address,
-      phone
+      phone, 
+      title,
      });
 
      console.log("Data submitted: ", {
@@ -165,6 +175,7 @@ export default function MaintenanceForm() {
       urgency,
       address,
       phone,
+      title,
      })
 
      setDescription('');
@@ -178,6 +189,7 @@ export default function MaintenanceForm() {
      setUrgency(1);
      setAddress('');
      setPhone('');
+     setTitle('');
     } catch(error){
       console.error("Error submitting data: ", error);
     }
@@ -231,6 +243,25 @@ export default function MaintenanceForm() {
           <div className='input-group wide-input'>
             <input
                 type="text"
+                id="title"
+                ref={titleRef}
+                autoComplete="off"
+                onChange={(e) => handleTitleChange(e)}
+                value={title}
+                required
+                aria-invalid={validTitle ? "false" : "true"}
+                aria-describedby="uidnote"
+                onFocus={() => setTitleFocus(true)}
+                onBlur={() => setTitleFocus(false)}
+              />
+              <label htmlFor="title">
+                Title:
+              </label>
+            </div>
+
+          <div className='input-group wide-input'>
+            <input
+                type="text"
                 id="details"
                 ref={detailsRef}
                 autoComplete="off"
@@ -248,7 +279,7 @@ export default function MaintenanceForm() {
             </div>
 
             <div className='input-group wide-input'>
-            <input
+              <input
                 type="text"
                 id="area"
                 ref={areaRef}
@@ -264,9 +295,9 @@ export default function MaintenanceForm() {
               <label htmlFor="area">
                 Area of the House:
               </label>
-              </div>
-            <div className='input-group wide-input tall-input'>
-                
+            </div>
+
+            <div className='input-group wide-input tall-input'> 
               <textarea 
               name="description" 
               id="" 
@@ -279,6 +310,8 @@ export default function MaintenanceForm() {
               </textarea>
               <label htmlFor="description">Details:</label>
             </div>
+
+
             <div className='input-group-radio'>
               <p>Is this Related to another Request?</p>
               <div className='radio-pair'>
