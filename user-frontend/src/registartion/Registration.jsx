@@ -2,6 +2,10 @@ import {React, useEffect, useRef, useState} from 'react'
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./register.css"
+import { auth, db } from "../backend/Firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 //regular expressions for string validation
 const USER_REGEX = /^[^\d\s]+$/;
@@ -38,6 +42,36 @@ export default function Registration() {
 
   const [errMsg, setErrMsg] = useState('');
   const [success, setSuccess] = useState(false);
+
+  const navigate = useNavigate();
+    const [name, setName] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [notice, setNotice] = useState("");
+    const [registerStatus, setRegisterStatus] = useState(true);
+
+  const createWithUsernameAndPassword = async (e) => {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, pwd);
+        // Properly signed in
+        const newUser = userCredential.user;
+
+        try {
+            const docRef = await setDoc(doc(db, "users", newUser.uid), {
+                name: firstName,
+                phone: phoneNumber,
+                email: newUser.email,
+                role: "tenant"
+            });
+            console.log("Document written with ID: ", newUser.uid);
+        } catch (error) {
+            console.error("Error adding document: ", error);
+        }
+        navigate("/maintenance");
+    } catch (error) {
+        setRegisterStatus(false);
+        setNotice(`${error.code} : ${error.message}`);
+    }
+}
 
   //Checking if input string is valid compared to regular expression
   useEffect(() => {
@@ -82,6 +116,7 @@ export default function Registration() {
     //this is where we would send this information to the database/api
     //printing to console for now
     console.log(firstName, lastName, email ,pwd)
+    createWithUsernameAndPassword()
   }
 
   return (

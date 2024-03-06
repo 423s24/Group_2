@@ -4,24 +4,24 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, doc, setDoc } from 'firebase/firestore';
+import {app, db} from "../backend/Firebase"
 
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyD0SfGl4KETc_rGBuiSCDbx9FZk5PzNsnQ",
-  authDomain: "hrdc-maintanance-ticket-mngr.firebaseapp.com",
-  projectId: "hrdc-maintanance-ticket-mngr",
-  storageBucket: "hrdc-maintanance-ticket-mngr.appspot.com",
-  messagingSenderId: "1044310518528",
-  appId: "1:1044310518528:web:5e1f1c3c7bdb8ac7e421e5",
-  measurementId: "G-HK4X8HVEH4"
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyD0SfGl4KETc_rGBuiSCDbx9FZk5PzNsnQ",
+//   authDomain: "hrdc-maintanance-ticket-mngr.firebaseapp.com",
+//   projectId: "hrdc-maintanance-ticket-mngr",
+//   storageBucket: "hrdc-maintanance-ticket-mngr.appspot.com",
+//   messagingSenderId: "1044310518528",
+//   appId: "1:1044310518528:web:5e1f1c3c7bfirestore8ac7e421e5",
+//   measurementId: "G-HK4X8HVEH4"
+// };
 
 
-const app = initializeApp(firebaseConfig);
-const firestore = getFirestore(app)
-
+//const app = initializeApp(firebaseConfig);
+//const firestore = getFirestore(app)
 
 export default function MaintenanceForm() {
   const descriptionRef = useRef();  
@@ -136,7 +136,7 @@ export default function MaintenanceForm() {
      //this is where we would send this information to the database/api
      //printing to console for now
   try {
-     const ticketRef = collection(firestore, "ticket");
+     const ticketRef = collection(db, "ticket");
      const addressKey = getAddressKey(address);
 
      await setDoc(doc(ticketRef, addressKey), {
@@ -451,9 +451,6 @@ export default function MaintenanceForm() {
                   </label>
                 </div>
               </div>  
-
-
-
 
               <button className='login-button'>Submit</button>
     </form>
