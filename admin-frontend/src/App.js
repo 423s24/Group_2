@@ -8,6 +8,7 @@ import { ProtectedRoute } from './Backend/ProtectedRoute';
 import RegisterPage from './Pages/Javascript/register';
 import ForgotPassword from './Pages/Javascript/forgotPassword';
 import MessageApp from "./Pages/Javascript/MessageApp";
+import TicketLoader from './Pages/Javascript/ticketLoader';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -40,6 +41,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/MessageApp" element={<MessageApp />} />
+        <Route path="/ticket/:id" element={<TicketLoader />} />
       </Routes>
     </BrowserRouter>
   );
