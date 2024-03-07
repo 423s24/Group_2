@@ -3,8 +3,9 @@ import HRDCLogo from "../../Assets/hrdc-logo-1.png";
 import { Helmet } from 'react-helmet';
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../Backend/Firebase";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { auth, db } from "../../Backend/Firebase";
+import {doc, getDoc} from "firebase/firestore";
 
 function LoginPage( {user} ) {
 
@@ -16,19 +17,32 @@ function LoginPage( {user} ) {
 
     const loginWithUsernameAndPassword = async (e) => {
         e.preventDefault();
-
+    
         signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // User is signed in 
-                const user = userCredential.user;
-                navigate("../");
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                setNotice("Invalid Email or Password");
-                setLoginStatus(false);
-            });
+        .then((userCredential) => {
+            //User is signed in 
+            const user = userCredential.user;
+            console.log(user.uid)
+            return user;
+        })
+        .then(async (user) => {
+            //this is insecure
+            //We need to do this with cloud functions so it runs on server
+            //to use cloud function we need to update our plan
+            const info = await getDoc(doc(db, "users", user.uid));
+            if(info.data().role === "admin"){
+               navigate("../");
+            }else{
+              signOut(auth)
+              console.log("user does not have credential")
+            }
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            setNotice("Invalid Email or Password");
+            setLoginStatus(false);
+        });
     }
 
     if (user) {
