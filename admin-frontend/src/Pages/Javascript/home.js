@@ -214,6 +214,7 @@ function HomePage() {
                         <div className="ticketing-section">
                         {/* Placeholder for displaying ticket list */}
                         {/* TODO: Display ticket list here */}
+
                         </div>
                     </div>
                 </div>
