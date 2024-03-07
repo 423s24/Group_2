@@ -1,8 +1,8 @@
 import {React, useState, useRef} from 'react'
 import { Navigate, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../backend/Firebase";
-
+import { signInWithEmailAndPassword, signOut} from "firebase/auth";
+import { auth, db } from "../backend/Firebase";
+import {doc, getDoc} from "firebase/firestore";
 
 export default function Login() {
   const userNameRef = useRef();
@@ -22,12 +22,24 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     signInWithEmailAndPassword(auth, userName, password)
     .then((userCredential) => {
-        // User is signed in 
+        //User is signed in 
         const user = userCredential.user;
-        navigate("/maintenance");
+        console.log(user.uid)
+        return user;
+        
+        // navigate("/maintenance");
+    })
+    .then(async (user) => {
+        const info = await getDoc(doc(db, "users", user.uid));
+        if(info.data().role === "tenant"){
+           navigate("/maintenance");
+        }else{
+          signOut(auth)
+          console.log("user does not have credential")
+        }
     })
     .catch((error) => {
         const errorCode = error.code;

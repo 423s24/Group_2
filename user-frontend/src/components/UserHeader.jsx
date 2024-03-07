@@ -5,15 +5,14 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import hrdcLogo from '../assets/images/hrdc-logo-1.png'
 import { Link } from "react-router-dom";
 import "./header.css"
-
-
+import { useEffect } from 'react';
 
 
 export default function Header({user}) {
   const navigate = useNavigate()
 
   const userSignOut = () => {
-    console.log(user)
+
     signOut(auth)
     .then(() => {
         navigate("/login");
