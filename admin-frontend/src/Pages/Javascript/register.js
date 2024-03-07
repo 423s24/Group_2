@@ -7,7 +7,9 @@ import { Helmet } from 'react-helmet';
 import "../Styling/register.css";
 import { doc, setDoc } from "firebase/firestore";
 
+
 function RegisterPage () {
+
     
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -17,6 +19,7 @@ function RegisterPage () {
     const [notice, setNotice] = useState("");
     const [registerStatus, setRegisterStatus] = useState(true);
     const [user, setUser] = useState(null);
+
 
     const createWithUsernameAndPassword = async (e) => {
         e.preventDefault();
@@ -31,7 +34,7 @@ function RegisterPage () {
                 const docRef = await setDoc(doc(db, "users", newUser.uid), {
                     name: name,
                     phone: phoneNumber,
-                    email: newUser.email
+                    email: newUser.email,
                 });
                 console.log("Document written with ID: ", newUser.uid);
             } catch (error) {

@@ -1,9 +1,16 @@
 import {React, useState, useRef} from 'react'
-
+import { Navigate, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword, signOut} from "firebase/auth";
+import { auth, db } from "../backend/Firebase";
+import {doc, getDoc} from "firebase/firestore";
 
 export default function Login() {
   const userNameRef = useRef();
   const passwordRef = useRef();
+
+  const navigate = useNavigate();
+  const [notice, setNotice] = useState("");
+  const [loginStatus, setLoginStatus] = useState(true);
 
   const [userName, setUserName] = useState('');
   const [validUserName, setValidUserName] = useState(false);
@@ -14,7 +21,32 @@ export default function Login() {
   const [passwordFocus, setPasswordFocus] = useState(false);
 
   const handleSubmit = async (e) => {
-     console.log(userName, password)
+    e.preventDefault();
+
+    signInWithEmailAndPassword(auth, userName, password)
+    .then((userCredential) => {
+        //User is signed in 
+        const user = userCredential.user;
+        console.log(user.uid)
+        return user;
+        
+        // navigate("/maintenance");
+    })
+    .then(async (user) => {
+        const info = await getDoc(doc(db, "users", user.uid));
+        if(info.data().role === "tenant"){
+           navigate("/maintenance");
+        }else{
+          signOut(auth)
+          console.log("user does not have credential")
+        }
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setNotice("Invalid Email or Password");
+        setLoginStatus(false);
+    });
 }
 
   return (
