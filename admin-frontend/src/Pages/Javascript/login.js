@@ -22,7 +22,6 @@ function LoginPage( {user} ) {
         .then((userCredential) => {
             //User is signed in 
             const user = userCredential.user;
-            console.log(user.uid)
             return user;
         })
         .then(async (user) => {
@@ -31,7 +30,7 @@ function LoginPage( {user} ) {
             //to use cloud function we need to update our plan
             const info = await getDoc(doc(db, "users", user.uid));
             if(info.data().role === "admin"){
-               navigate("../");
+                navigate("/");
             }else{
               signOut(auth)
               console.log("user does not have credential")
@@ -45,9 +44,6 @@ function LoginPage( {user} ) {
         });
     }
 
-    if (user) {
-        return <Navigate to='/' />
-    }
 
     return (
         <div className="login-page">

@@ -35,6 +35,7 @@ function RegisterPage () {
                     name: name,
                     phone: phoneNumber,
                     email: newUser.email,
+                    role: "admin"
                 });
                 console.log("Document written with ID: ", newUser.uid);
             } catch (error) {

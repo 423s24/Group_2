@@ -54,12 +54,14 @@ export default function Registration() {
         const userCredential = await createUserWithEmailAndPassword(auth, email, pwd);
         // Properly signed in
         const newUser = userCredential.user;
+
       
         try {
             const docRef = await setDoc(doc(db, "users", newUser.uid), {
                 name: firstName,
                 phone: phoneNumber,
-                email: newUser.email
+                email: newUser.email,
+                role: "tenant"
             });
             console.log("Document written with ID: ", newUser.uid);
         } catch (error) {
