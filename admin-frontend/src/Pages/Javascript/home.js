@@ -7,6 +7,7 @@ import { useState } from "react"; // Importing useState hook for managing state
 import "../Styling/home.css"; // Importing the CSS file for styling
 import logo from "../../Assets/hrdc-logo-1.png"; // Importing the logo image
 import { Helmet } from "react-helmet"; // Importing the Helmet component for setting the title of the page
+import { Link } from "react-router-dom";
 
 function HomePage() {
     const navigate = useNavigate(); // Hook for navigation
@@ -272,7 +273,7 @@ function HomePage() {
                         <div className="ticket-form">
                             <h3>Add New Ticket</h3>
                             <form onSubmit={handleTicketSubmission}>
-                            <div>
+                                <div>
                                     <label>Title:</label>
                                     <input type="text" name="title" value={newTicketData.title} onChange={handleInputChange} />
                                 </div>
@@ -324,21 +325,23 @@ function HomePage() {
                         {/* Display filtered tickets */}
                         <div className="ticket-list">
                             {filteredTickets.map(ticket => (
-                                <div key={ticket.id} className="ticket-container">
-                                    <div className="ticket">
-                                        <h3>{ticket.title}</h3>
-                                        <p>Address: {ticket.address}</p>
-                                        <p>Phone: {ticket.phone}</p>
-                                        <p>Urgency: {ticket.urgency}</p>
-                                        <p>Availability: {ticket.availability}</p>
-                                        <p>Area: {ticket.area}</p>
-                                        <p>Related: {ticket.related}</p>
-                                        <p>Description: {ticket.description}</p>
-                                        <p>Service Type: {ticket.serviceType}</p>
-                                        <p>Building Type: {ticket.buildingType}</p>
-                                        <p>Details: {ticket.details}</p>
+                                <Link className="ticket-link" to={`ticket/${ticket.id}`} >
+                                    <div key={ticket.id} className="ticket-container">
+                                        <div className="ticket">
+                                            <h3>{ticket.title}</h3>
+                                            <p>Address: {ticket.address}</p>
+                                            <p>Phone: {ticket.phone}</p>
+                                            <p>Urgency: {ticket.urgency}</p>
+                                            <p>Availability: {ticket.availability}</p>
+                                            <p>Area: {ticket.area}</p>
+                                            <p>Related: {ticket.related}</p>
+                                            <p>Description: {ticket.description}</p>
+                                            <p>Service Type: {ticket.serviceType}</p>
+                                            <p>Building Type: {ticket.buildingType}</p>
+                                            <p>Details: {ticket.details}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </div>
