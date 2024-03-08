@@ -197,19 +197,24 @@ function HomePage() {
                         <button onClick={handleRedirctToMessage}>Go to Messaging</button>
                     </div>
                     <div className="ticketing-section">
-                        <h2>Ticket Management</h2>
+                        <div className="ticketing-section-top-bar">
+                            <h2>Ticket Management</h2>
+                            <button onClick={handleToggleNewTicketForm}>Add new Ticket</button>
+                        </div>
+                
+                        <div className="search-filter">
+                            <h3>Search</h3>
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                placeholder="Search by ticket description"
+                            />
+                        </div>
                         <div className="filters">
                             {/* Filters section */}
                             {/* Search filter */}
-                            <div className="filter">
-                                <h3>Search</h3>
-                                <input
-                                    type="text"
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
-                                    placeholder="Search by ticket description"
-                                />
-                            </div>
+                            
                             {/* Status filter */}
                             <div className="filter">
                                 <h3>Status</h3>
@@ -268,7 +273,7 @@ function HomePage() {
                             </div>
                         </div>
                         <div className="toggle-new-ticket-form">
-                    <button onClick={handleToggleNewTicketForm}>Add new Ticket</button>
+                    
                     {showNewTicketForm && (
                         <div className="ticket-form">
                             <h3>Add New Ticket</h3>
@@ -330,15 +335,9 @@ function HomePage() {
                                         <div className="ticket">
                                             <h3>{ticket.title}</h3>
                                             <p>Address: {ticket.address}</p>
-                                            <p>Phone: {ticket.phone}</p>
                                             <p>Urgency: {ticket.urgency}</p>
-                                            <p>Availability: {ticket.availability}</p>
-                                            <p>Area: {ticket.area}</p>
-                                            <p>Related: {ticket.related}</p>
-                                            <p>Description: {ticket.description}</p>
                                             <p>Service Type: {ticket.serviceType}</p>
                                             <p>Building Type: {ticket.buildingType}</p>
-                                            <p>Details: {ticket.details}</p>
                                         </div>
                                     </div>
                                 </Link>
