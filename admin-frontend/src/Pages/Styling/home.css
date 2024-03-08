@@ -181,3 +181,7 @@
 .ticket-form button:hover {
     background-color: #0a5650;
 }
+
+.ticket-link {
+    text-decoration: none;
+}
