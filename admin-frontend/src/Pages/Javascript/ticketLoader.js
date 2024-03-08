@@ -38,8 +38,7 @@ function TicketLoader() {
 
                   const userRelatedTicketDoc = await getDoc(doc(db, 'ticket', ticketId));
                   if (userRelatedTicketDoc.exists()) {
-                    const userRelatedTicketData = userRelatedTicketDoc.data();
-                    userRelatedTickets.push(userRelatedTicketData);
+                    userRelatedTickets.push(userRelatedTicketDoc);
                   }
                 }
                 console.log("Related tickets: ", userRelatedTickets);
@@ -67,9 +66,9 @@ function TicketLoader() {
           </Helmet>
           <Header />
 
-          {ticket ? 
+          {ticket && userRelatedTickets ? 
             (
-              <TicketInfo ticket={ticket} userRelatedTickets={userRelatedTickets}/>
+              <TicketInfo ticket={ticket} userRelatedTicketDocs={userRelatedTickets}/>
             ) : 
             (
               <p>Loading...</p>
