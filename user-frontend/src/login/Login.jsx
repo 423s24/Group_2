@@ -29,8 +29,6 @@ export default function Login() {
         const user = userCredential.user;
         console.log(user.uid)
         return user;
-        
-        // navigate("/maintenance");
     })
     .then(async (user) => {
         const info = await getDoc(doc(db, "users", user.uid));
