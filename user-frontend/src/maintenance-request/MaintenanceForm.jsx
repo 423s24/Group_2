@@ -1,29 +1,10 @@
 import { React, useState, useRef } from 'react';
-import "./maintenanceFrom.css";
-import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, doc, setDoc } from 'firebase/firestore';
-import {app, db} from "../backend/Firebase"
-
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const firebaseConfig = {
-//   apiKey: "AIzaSyD0SfGl4KETc_rGBuiSCDbx9FZk5PzNsnQ",
-//   authDomain: "hrdc-maintanance-ticket-mngr.firebaseapp.com",
-//   projectId: "hrdc-maintanance-ticket-mngr",
-//   storageBucket: "hrdc-maintanance-ticket-mngr.appspot.com",
-//   messagingSenderId: "1044310518528",
-//   appId: "1:1044310518528:web:5e1f1c3c7bfirestore8ac7e421e5",
-//   measurementId: "G-HK4X8HVEH4"
-// };
-
-
-//const app = initializeApp(firebaseConfig);
-//const firestore = getFirestore(app)
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from "../backend/Firebase"
+import "./maintenanceForm.css";
 
 export default function MaintenanceForm() {
+
   const descriptionRef = useRef();  
   const detailsRef = useRef();
   const areaRef = useRef();   
@@ -90,8 +71,6 @@ export default function MaintenanceForm() {
   return address.replace(/\s+/g, '_').toLowerCase();
  }
 
-
-
   const handleBuildingTypeChange = (e) => {
     setBuildingType(e.target.value);
   };
@@ -135,8 +114,6 @@ export default function MaintenanceForm() {
     setTitle(e.target.value);
   }
 
-
-
   const handleSubmit = async (e) => {
 
     //making sure that you cant just enable the button in the browser
@@ -145,56 +122,71 @@ export default function MaintenanceForm() {
      //this is where we would send this information to the database/api
      //printing to console for now
   try {
-     const ticketRef = collection(db, "ticket");
-     const addressKey = getAddressKey(address);
+    const ticketRef = collection(db, "ticket");
 
-     await addDoc(ticketRef, {
-      description, 
-      area,
-      related, 
-      details, 
-      buildingType, 
-      phone, 
-      availability, 
-      relation, 
-      urgency,
-      address,
-      phone, 
-      title,
+    const formData = {
+      title: title,
+      description: description,
+      area: area,
+      related: related,
+      details: details,
+      buildingType: buildingType,
+      phone: phone,
+      availability: availability,
+      relation: relation,
+      urgency: urgency,
+      address: address,
+    }
+
+    const docRef = await addDoc(ticketRef, {
+    description, 
+    area,
+    related, 
+    details, 
+    buildingType, 
+    phone, 
+    availability, 
+    relation, 
+    urgency,
+    address,
+    phone, 
+    title,
+    });
+
+     
+
+     const response = await fetch('http://localhost:9000/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        formData: formData,
+        documentId: docRef.id,
+      }),
      });
 
-     console.log("Data submitted: ", {
-      description, 
-      area,
-      related, 
-      details, 
-      buildingType, 
-      phone, 
-      availability, 
-      relation, 
-      urgency,
-      address,
-      phone,
-      title,
-     })
+     if (response.ok) {
+      console.log('Email sent successfully');
+      setDescription('');
+      setArea('');
+      setRelated('');
+      setDetails('');
+      setBuildingType('');
+      setPhone('');
+      setAvailability('');
+      setRelated('');
+      setUrgency(1);
+      setAddress('');
+      setPhone('');
+      setTitle('');
+     } else {
+      console.error('Failed to send email');
+     }
 
-     setDescription('');
-     setArea('');
-     setRelated('');
-     setDetails('');
-     setBuildingType('');
-     setPhone('');
-     setAvailability('');
-     setRelated('');
-     setUrgency(1);
-     setAddress('');
-     setPhone('');
-     setTitle('');
     } catch(error){
       console.error("Error submitting data: ", error);
     }
-
-
    };
 
   return (
