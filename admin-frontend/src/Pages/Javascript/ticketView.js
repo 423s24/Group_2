@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const TicketInfo = ({ ticket }) => {
+const TicketInfo = ({ ticket, userRelatedTickets }) => {
 
     return (
         <div className="ticket-view-content">
