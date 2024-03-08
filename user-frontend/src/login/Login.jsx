@@ -27,17 +27,10 @@ export default function Login() {
     .then((userCredential) => {
         //User is signed in 
         const user = userCredential.user;
-        console.log(user.uid)
         return user;
     })
-    .then(async (user) => {
-        const info = await getDoc(doc(db, "users", user.uid));
-        if(info.data().role === "tenant"){
-           navigate("/maintenance");
-        }else{
-          signOut(auth)
-          console.log("user does not have credential")
-        }
+    .then((user) => {
+        navigate("/maintenance");    
     })
     .catch((error) => {
         const errorCode = error.code;
