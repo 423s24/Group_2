@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./user-frontend
 
     strategy:
       matrix:
@@ -23,5 +26,4 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run Jest
-        working-directory: user-frontend
         run: npm test
