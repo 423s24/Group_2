@@ -1,4 +1,5 @@
-import {React, useState, useRef} from 'react'
+import React from 'react';
+import {useState, useRef} from 'react'
 import { Navigate, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, signOut} from "firebase/auth";
 import { auth, db } from "../backend/Firebase";
@@ -46,6 +47,7 @@ export default function Login() {
     <form onSubmit={handleSubmit}>
       <div className='input-group'>
       <input
+          data-testid="email-input"
           type="text"
           id="username"
           ref={userNameRef}
@@ -64,6 +66,7 @@ export default function Login() {
         <div className='input-group'>
       
       <input
+          data-testid = "password-input"
           type="text"
           id="password"
           ref={passwordRef}
@@ -76,11 +79,14 @@ export default function Login() {
           onBlur={() => setPasswordFocus(false)}
         />
         <label htmlFor="password">
-          Password
+          Password:
         </label>
         </div>
-        <button className='login-button'>Login</button>
+        <button className='login-button' data-testid="login-button">Login</button>
         </form>
+        <p className='login-error' data-testid="login-notice" >
+         {notice}
+        </p>
        </section>
   )
 }
