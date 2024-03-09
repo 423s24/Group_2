@@ -3,7 +3,7 @@ import { collection, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from "../backend/Firebase"
 import "./maintenanceForm.css";
 
-export default function NewMaintenanceForm() {
+export default function MaintenanceForm() {
     const initialFormData = {
         title: '',
         description: '',
