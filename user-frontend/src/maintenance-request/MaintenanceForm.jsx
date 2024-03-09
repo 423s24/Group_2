@@ -7,22 +7,6 @@ import { getFirestore, collection, addDoc, doc, setDoc } from 'firebase/firestor
 import {app, db} from "../backend/Firebase"
 
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const firebaseConfig = {
-//   apiKey: "AIzaSyD0SfGl4KETc_rGBuiSCDbx9FZk5PzNsnQ",
-//   authDomain: "hrdc-maintanance-ticket-mngr.firebaseapp.com",
-//   projectId: "hrdc-maintanance-ticket-mngr",
-//   storageBucket: "hrdc-maintanance-ticket-mngr.appspot.com",
-//   messagingSenderId: "1044310518528",
-//   appId: "1:1044310518528:web:5e1f1c3c7bfirestore8ac7e421e5",
-//   measurementId: "G-HK4X8HVEH4"
-// };
-
-
-//const app = initializeApp(firebaseConfig);
-//const firestore = getFirestore(app)
-
 export default function MaintenanceForm() {
   const descriptionRef = useRef();  
   const detailsRef = useRef();
