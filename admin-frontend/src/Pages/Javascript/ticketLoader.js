@@ -13,6 +13,7 @@ function TicketLoader() {
     console.log("Ticket ID:", id);
 
     const [ticket, setTicket] = useState(null);
+    const [userRelatedTickets, setUserRelatedTickets] = useState(null);
 
     useEffect(() => {
         const fetchTicket = async () => {
@@ -22,6 +23,31 @@ function TicketLoader() {
               const ticketData = ticketDoc.data();
               console.log("Ticket Data:", ticketData);
               setTicket(ticketData);
+
+              const userId = ticketData.userId;
+              const userDoc = await getDoc(doc(db, 'users', userId));
+              if (userDoc.exists()) {
+                const userData = userDoc.data();
+                const ticketIds = userData.tickets;
+
+                const userRelatedTickets = [];
+                for (const ticketId of ticketIds) {
+                  if (ticketId === id) {
+                    continue;
+                  }
+
+                  const userRelatedTicketDoc = await getDoc(doc(db, 'ticket', ticketId));
+                  if (userRelatedTicketDoc.exists()) {
+                    userRelatedTickets.push(userRelatedTicketDoc);
+                  }
+                }
+                console.log("Related tickets: ", userRelatedTickets);
+                setUserRelatedTickets(userRelatedTickets);
+
+              } else {
+                console.log("User document does not exist.");
+              }
+
             } else {
               console.log("Ticket not found");
             }
@@ -40,9 +66,9 @@ function TicketLoader() {
           </Helmet>
           <Header />
 
-          {ticket ? 
+          {ticket && userRelatedTickets ? 
             (
-              <TicketInfo ticket={ticket}/>
+              <TicketInfo ticket={ticket} userRelatedTicketDocs={userRelatedTickets}/>
             ) : 
             (
               <p>Loading...</p>

@@ -1,6 +1,6 @@
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const TicketInfo = ({ ticket }) => {
+const TicketInfo = ({ ticket, userRelatedTicketDocs }) => {
 
     return (
         <div className="ticket-view-content">
@@ -12,9 +12,53 @@ const TicketInfo = ({ ticket }) => {
                 <button className="edit-button">Edit</button>
             </div>
 
-            <h2>Ticket Information</h2>
-            <p>Address: {ticket.address}</p>
-            <p></p>
+            <div className="ticket-view-info">
+                <div className="ticket-view-info-inner-section">
+                    <h2>Basic Ticket Information</h2>
+                    <p><strong>Status:</strong> {ticket.status}</p>
+                    <p><strong>Description:</strong> {ticket.description}</p>
+                    <p><strong>Urgency:</strong> {ticket.urgency}</p>
+                    <p><strong>Service Type:</strong> {ticket.serviceType}</p>
+                </div>
+                
+                <div className="ticket-view-info-inner-section">
+                    <h2>Building Information</h2>
+                    <p><strong>Address:</strong> {ticket.address}</p>
+                    <p><strong>Building Type:</strong> {ticket.buildingType}</p>
+                    <p><strong>Area of Building</strong> {ticket.area}</p>
+                    <p><strong>Enter without Tennant Present:</strong> {ticket.enterPerms}</p>
+                </div>
+
+                <div className="ticket-view-info-inner-section">
+                    <h2>Contact Information</h2>
+                    <p><strong>Submitted By:</strong> {ticket.submittedBy}</p>
+                    <p><strong>Phone:</strong> {ticket.phone}</p>
+                    <p><strong>Email:</strong> {ticket.email}</p>
+                </div>
+
+                <div className="ticket-view-info-inner-section">
+                    <h2>Other Tickets Opened by This Person</h2>
+                    {userRelatedTicketDocs.map((userRelatedTicketDoc, index) => {
+                        const userRelatedTicket = userRelatedTicketDoc.data()
+                        return (
+                        <Link className="ticket-link" key={userRelatedTicketDoc.id} to={`/ticket/${userRelatedTicketDoc.id}`}>
+                            <div className="ticket-container">
+                                <h3>{userRelatedTicket.title}</h3>
+                                <p>Address: {userRelatedTicket.address}</p>
+                                <p>Urgency: {userRelatedTicket.urgency}</p>
+                                <p>Service Type: {userRelatedTicket.serviceType}</p>
+                                <p>Building Type: {userRelatedTicket.buildingType}</p>
+                            </div>
+                        </Link>
+                        )
+                })}
+                </div>
+
+                <div className="ticket-view-info-inner-section">
+                    <h2>Other Tickets Opened at this Address</h2>
+                    <p><strong>Coming Soon...</strong></p>
+                </div>
+            </div>
         </div>
     )
 }
