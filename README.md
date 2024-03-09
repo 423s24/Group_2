@@ -10,7 +10,7 @@ Xander Burger - XanderBurger (https://github.com/XanderBurger)
 
 ### Links
 
-[User Side](https://hrdcmaintenance.com)  
+[User Side](https://hrdcmaintenance.com/login)  
 [Admin Side](https://hrdc-maintanance-ticket-mngr.web.app/login)
 
 ### Documentation
