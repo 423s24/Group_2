@@ -1,7 +1,7 @@
 import {React, useEffect, useRef, useState} from 'react'
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./register.css"
+import "./register.css";
 import { auth, db } from "../backend/Firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -54,8 +54,7 @@ export default function Registration() {
         const userCredential = await createUserWithEmailAndPassword(auth, email, pwd);
         // Properly signed in
         const newUser = userCredential.user;
-
-      
+  
         try {
             const docRef = await setDoc(doc(db, "users", newUser.uid), {
                 name: firstName,

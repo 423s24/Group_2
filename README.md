@@ -8,6 +8,11 @@ Sam Jacobsen - samjacobsen13 (https://github.com/samjacobsen13)
 Seth Barrett - SethBarrett34 (https://github.com/SethBarrett34)  
 Xander Burger - XanderBurger (https://github.com/XanderBurger)  
 
+### Links
+
+[User Side](https://hrdcmaintenance.com)  
+[Admin Side](https://hrdc-maintanance-ticket-mngr.web.app/login)
+
 ### Documentation
 
 

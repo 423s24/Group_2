@@ -1,7 +1,17 @@
 import { React, useState, useRef } from 'react';
+<<<<<<< HEAD
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from "../backend/Firebase"
 import "./maintenanceForm.css";
+=======
+import "./maintenanceFrom.css";
+import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, addDoc, doc, setDoc } from 'firebase/firestore';
+import {app, db} from "../backend/Firebase"
+
+>>>>>>> 0c2555808ffed68307880387e5e3dcf33b014356
 
 export default function MaintenanceForm() {
 
