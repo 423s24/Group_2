@@ -15,7 +15,7 @@ Xander Burger - XanderBurger (https://github.com/XanderBurger)
 
 ### Documentation
 
-[User Documentation](https://docs.google.com/document/d/1ZNa1JYDF9yGBCjv9diUbRZcYCAwWT3DBj5O41jmMkN4/edit?usp=sharing)
+[User Documentation](https://docs.google.com/document/d/1ZNa1JYDF9yGBCjv9diUbRZcYCAwWT3DBj5O41jmMkN4/edit?usp=sharing)  
 [Developer Documentation](https://docs.google.com/document/d/1fjZI9lbzJCT5pokPgX2N50EY8nNeBpQ9MEQ1Opc2g5c/edit?usp=sharing)
 
 ### Scrum Artifacts
