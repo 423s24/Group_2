@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>HRDC - Maintenance Ticket Management</title>
+        <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="./documentation.css">
+    </head>
+    <body>
+        <div class="header">
+            <img src="./Assets/hrdc-logo-icon.png" alt="hrdc-logo" />
+            <h1>HRDC - Maintenance Ticket Management User Documentation</h1>
+        </div>
+
+        <div class="container">
+            <div class="side-nav-menu">
+                <a class="side-nav-header" href="#getting-started">Getting Started</a>
+                <a href="#installation">Installation</a>
+                <a class="side-nav-header" href="#features">Features</a>
+                <a href="#authentication">Authentication</a>
+                <a href="#ticketSubmission">Ticket Submission</a>
+                <a href="#ticketManagement">Ticket Management</a>
+                <a href="#ticketDetails">Ticket Details</a>
+                <a href="#notifications">Notifications</a>
+                <a class="side-nav-header" href="#bugReporting">Bug Reporting</a>
+            </div>
+
+            <div class="page-content">
+                <div id="getting-started" class="section">
+                    <h1 class="page-title">Getting Started</h1>
+                    <p>
+                        Our project is a web application designed to streamline and enhance the communication between tenants and property managers through an efficient maintenance request system. 
+                        Unlike traditional methods, our platform offers tenants a user-friendly interface to submit maintenance requests seamlessly. What sets our project apart is its intuitive 
+                        design, which prioritizes simplicity and convenience, making it accessible to users of all technical backgrounds. The uniqueness lies in its ability to facilitate prompt 
+                        and organized communication, ensuring that property managers promptly receive, assess, and address maintenance requests. Users are drawn to our application not only for 
+                        its ease of use but also for its potential to foster a responsive and proactive property management approach. With features tailored to enhance transparency and communication, 
+                        tenants can trust that their concerns are heard and addressed promptly, while property managers can efficiently manage and prioritize maintenance tasks. In essence, our 
+                        project aims to redefine the tenant-property manager dynamic, creating a seamless and efficient experience for both parties involved.
+                    </p>
+                    <img src="./Assets/gettingStarted.png" alt="Getting Started"/>
+                </div>
+                
+                <div id="installation" class="section">
+                    <h4 class="page-sub-title">Installation</h4>
+                    <p>No installation is necessary. This is a React.js web-app that can be found <a href="https://hrdcmaintenance.com">here</a>.</p>
+                </div>
+
+
+                <div id="features" class="section">
+                    <h1 class="page-title">Features</h1>
+                    <p>The HRDC Maintenance Ticketing System offers several key features to streamline maintenance ticket submission, management, and communication.</p>
+                </div>
+
+                <div id="authentication" class="section">
+                    <h4 class="page-sub-title">User Authentication and Authorization</h4>
+                    <ul>
+                        <li>Admin Login/Logout: Administrators can securely log in and out of the system using Firebase authentication.</li>
+                        <li>Tenant Login/Logout: Tenants can log in and out of the system using Firebase authentication.</li>
+                        <li>Forgot Password: Send a reset email if the password is forgotten.</li>
+                        <li>Role-Based Access Control: Access control is implemented based on user roles, distinguishing between administrators and tenants.</li>
+                    </ul>
+                    <img src="./Assets/authentication.png" alt="Authentication" />
+                </div>
+
+                <div id="ticketSubmission" class="section">
+                    <h4 class="page-sub-title">Ticket Submission</h4>
+                    <ul>
+                        <li>Form for Tenants: Tenants can submit maintenance tickets through a user-friendly form.</li>
+                        <li>Attachment Support: Users can attach relevant documents or images to their maintenance tickets. (Coming Soon)</li>
+                        <li>Validation: Validation ensures that required fields are filled before submission.</li>
+                    </ul>
+                    <img src="./Assets/ticketSubmission.png" alt="Ticket Submission" />
+                </div>
+
+                <div id="ticketManagement" class="section">
+                    <h4 class="page-sub-title">Ticket Management</h4>
+                    <ul>
+                        <li>Admin Dashboard: Administrators have access to a dashboard where they can view all open tickets.</li>
+                        <li>Filtering and Search: Administrators can filter and search for tickets based on various criteria.</li>
+                        <li>Assignment: Tickets can be assigned to specific maintenance staff for resolution. (Coming Soon)</li>
+                        <li>Status Tracking: The system tracks the status of tickets, such as open, in progress, or resolved.</li>
+                    </ul>
+                    <img src="./Assets/ticketManagement.png" alt="Ticket Management" />
+                </div>
+
+                <div id="ticketDetails" class="section">
+                    <h4 class="page-sub-title">Ticket Details</h4>
+                    <ul>
+                        <li>Detailed View: Users can view detailed information about each ticket, including description, priority, and status.</li>
+                        <li>Comments and Updates: Users can add comments or updates to tickets, facilitating communication throughout the resolution process. (Coming Soon)</li>
+                        <li>Timestamps: Timestamps are provided for ticket creation and updates to track the timeline of each ticket. (Coming Soon)</li>
+                    </ul>
+                    <img src="./Assets/ticketDetails.png" alt="Ticket Details" />
+                </div>
+
+                <div id="notifications" class="section">
+                    <h4 class="page-sub-title">Notifications</h4>
+                    <ul>
+                        <li>Email Notifications: Automated email notifications are sent for ticket submission, assignment, and status updates.</li>
+                        <li>Email Notification is sent to both user and the admin.</li>
+                    </ul>
+                    <img src="./Assets/notification.png" alt="Notification" />
+                </div>
+
+                <div id="bugReporting" class="section">
+                    <h4 class="page-sub-title">Bug Reporting</h4>
+                    <p>
+                        If you encounter a bug or error with the system and wish to report it, you may do so <a href="">HERE</a>. Just follow the on-screen instructions
+                        and we will handle the errors as quickly as we can.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const sections = document.querySelectorAll('.section');
+                const navLinks = document.querySelectorAll('.side-nav-menu a');
+
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const targetId = entry.target.getAttribute('id');
+                            const correspondingNavLink = document.querySelector(`.side-nav-menu a[href="#${targetId}"]`);
+
+                            if (correspondingNavLink) {
+                                navLinks.forEach(link => link.classList.remove('active'));
+                                correspondingNavLink.classList.add('active');
+                            }
+                        }
+                    });
+                }, { threshold: 0.51 });
+
+                sections.forEach(section => {
+                    observer.observe(section);
+                });
+            });
+        </script>
+        
+    </body>
+</html>

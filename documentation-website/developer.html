@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>HRDC - Maintenance Ticket Management</title>
+        <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="./documentation.css">
+    </head>
+    <body>
+        <div class="header">
+            <img src="./Assets/hrdc-logo-icon.png" alt="hrdc-logo" />
+            <h1>HRDC - Maintenance Ticket Management Developer Documentation</h1>
+        </div>
+
+        <div class="container">
+            <div class="side-nav-menu">
+                <a class="side-nav-header" href="#getting-started">Getting Started</a>
+                <a href="#installation">Installation</a>
+                <a href="#project-structure">Project Structure</a>
+                <a class="side-nav-header" href="#features">Features</a>
+                <a href="#authentication">Authentication</a>
+                <a href="#ticketSubmission">Ticket Submission</a>
+                <a href="#ticketManagement">Ticket Management</a>
+                <a href="#ticketDetails">Ticket Details</a>
+                <a href="#notifications">Notifications</a>
+                <a class="side-nav-header" href="#classDiagram">Class Diagram</a>
+            </div>
+
+            <div class="page-content">
+                <div id="getting-started" class="section">
+                    <h1 class="page-title">Getting Started</h1>
+                    <p>
+                        Welcome to the developer documentation for the HRDC Maintenance Ticketing System. This system is designed to facilitate the submission, 
+                        management, and resolution of maintenance tickets for tenants and administrative staff.
+                    </p>
+                    <img src="./Assets/gettingStarted.png" alt="Getting Started"/>
+                </div>
+                
+                <div id="installation" class="section">
+                    <h4 class="page-sub-title">Installation</h4>
+                    <p>No installation is necessary. This is a React.js web-app that can be found <a href="https://hrdcmaintenance.com">here</a>.</p>
+                    <p><br/>If you would like to run the web-apps on your local machines, you can follow these instructions:<br /><br /></p>
+                    <ol>
+                        <li>
+                            <Strong>Clone the Repository</Strong>
+                            <p>To clone the repository, open a command prompt / terminal and run the following command: </p>
+                            <code>git clone https://github.com/423s24/Group_2.git *DESIRED FOLDER NAME*</code>
+                        </li>
+                        <li>
+                            <Strong>Choose a Web-App</Strong>
+                            <p>Decide which web-app you would like to run (admin-frontend or user-frontend), and change your directory to that folder.</p>
+                            <p><code>cd admin-frontend</code> or <code>cd user-frontend</code></p>
+                        </li>
+                        <li>
+                            <Strong>Install Dependencies</Strong>
+                            <p>Install the web-apps dependencies by running this command:</p>
+                            <code>npm install</code>
+                        </li>
+                        <li>
+                            <strong>Start the Web-App</strong>
+                            <p>Begin running the web-app locally by running this command:</p>
+                            <code>npm start</code>
+                        </li>
+                    </ol>
+                    <p>You now have one, or both of the web-apps running on your local machine.</p>
+                </div>
+                <div id="project-structure" class="section">
+                    <h4 class="page-sub-title">Directory Structure</h4>
+                    <p>
+                        Our repository is broken down into three main folders right now. The admin-frontend folder hosts all of the code and files 
+                        for the administrator side of the web-app. The user-frontend folder hosts all of the code for the interface the user sees in 
+                        order to submit a maintenance request. The user-backend is a folder that hosts the email server. This folder is an express app, and 
+                        the admin-frontend and user-frontend are both React.js web-apps. <br /><br />
+                    </p>
+                    <code>
+                        .<br/>
+                        ├── LICENSE<br/>
+                        ├── README.md<br/>
+                        ├── admin-frontend<br/>
+                        │   ├── README.md<br/>
+                        │   ├── build<br/>
+                        │   ├── firebase.json<br/>
+                        │   ├── node_modules<br/>
+                        │   ├── package-lock.json<br/>
+                        │   ├── package.json<br/>
+                        │   ├── public<br/>
+                        │   └── src<br/>
+                        ├── directory_structure.txt<br/>
+                        ├── documentation-website<br/>
+                        │   ├── Assets<br/>
+                        │   ├── index.css<br/>
+                        │   └── index.html<br/>
+                        ├── user-backend<br/>
+                        │   ├── adminEmailTemplate.hbs<br/>
+                        │   ├── package-lock.json<br/>
+                        │   ├── package.json<br/>
+                        │   ├── sendEmail.js<br/>
+                        │   └── userEmailTemplate.hbs<br/>
+                        └── user-frontend<br/>
+                        │   ├── README.md<br/>
+                        │   ├── babel.config.js<br/>
+                        │   ├── build<br/>
+                        │   ├── firebase.json<br/>
+                        │   ├── jest.config.js<br/>
+                        │   ├── jest.setup.js<br/>
+                        │   ├── node_modules<br/>
+                        │   ├── package-lock.json<br/>
+                        │   ├── package.json<br/>
+                        │   ├── public<br/>
+                        │   └── src<br/>
+                    </code>
+                </div>
+
+
+                <div id="features" class="section">
+                    <h1 class="page-title">Features</h1>
+                    <p>The HRDC Maintenance Ticketing System offers several key features to streamline maintenance ticket submission, management, and communication.</p>
+                </div>
+
+                <div id="authentication" class="section">
+                    <h4 class="page-sub-title">User Authentication and Authorization</h4>
+                    <ul>
+                        <li>Admin Login/Logout: Administrators can securely log in and out of the system using Firebase authentication.</li>
+                        <li>Tenant Login/Logout: Tenants can log in and out of the system using Firebase authentication.</li>
+                        <li>Forgot Password: Send a reset email if the password is forgotten.</li>
+                        <li>Role-Based Access Control: Access control is implemented based on user roles, distinguishing between administrators and tenants.</li>
+                    </ul>
+                    <img src="./Assets/authentication.png" alt="Authentication" />
+                </div>
+
+                <div id="ticketSubmission" class="section">
+                    <h4 class="page-sub-title">Ticket Submission</h4>
+                    <ul>
+                        <li>Form for Tenants: Tenants can submit maintenance tickets through a user-friendly form.</li>
+                        <li>Attachment Support: Users can attach relevant documents or images to their maintenance tickets. (Coming Soon)</li>
+                        <li>Validation: Validation ensures that required fields are filled before submission.</li>
+                    </ul>
+                    <img src="./Assets/ticketSubmission.png" alt="Ticket Submission" />
+                </div>
+
+                <div id="ticketManagement" class="section">
+                    <h4 class="page-sub-title">Ticket Management</h4>
+                    <ul>
+                        <li>Admin Dashboard: Administrators have access to a dashboard where they can view all open tickets.</li>
+                        <li>Filtering and Search: Administrators can filter and search for tickets based on various criteria.</li>
+                        <li>Assignment: Tickets can be assigned to specific maintenance staff for resolution. (Coming Soon)</li>
+                        <li>Status Tracking: The system tracks the status of tickets, such as open, in progress, or resolved.</li>
+                    </ul>
+                    <img src="./Assets/ticketManagement.png" alt="Ticket Management" />
+                </div>
+
+                <div id="ticketDetails" class="section">
+                    <h4 class="page-sub-title">Ticket Details</h4>
+                    <ul>
+                        <li>Detailed View: Users can view detailed information about each ticket, including description, priority, and status.</li>
+                        <li>Comments and Updates: Users can add comments or updates to tickets, facilitating communication throughout the resolution process. (Coming Soon)</li>
+                        <li>Timestamps: Timestamps are provided for ticket creation and updates to track the timeline of each ticket. (Coming Soon)</li>
+                    </ul>
+                    <img src="./Assets/ticketDetails.png" alt="Ticket Details" />
+                </div>
+
+                <div id="notifications" class="section">
+                    <h4 class="page-sub-title">Notifications</h4>
+                    <ul>
+                        <li>Email Notifications: Automated email notifications are sent for ticket submission, assignment, and status updates.</li>
+                        <li>Email Notification is sent to both user and the admin.</li>
+                    </ul>
+                    <img src="./Assets/notification.png" alt="Notification" />
+                </div>
+
+
+
+
+
+                <div id="classDiagram" class="section">
+                    <h1 class="page-title">Class Diagram</h1>
+                    <p>The class diagram below depicts the structure of the system.</p>
+                    <img src="./Assets/classDiagram.png" alt="Class Diagram" />
+                </div>
+
+                <div id="bugReporting" class="section">
+                </div>
+            </div>
+
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const sections = document.querySelectorAll('.section');
+                const navLinks = document.querySelectorAll('.side-nav-menu a');
+
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const targetId = entry.target.getAttribute('id');
+                            const correspondingNavLink = document.querySelector(`.side-nav-menu a[href="#${targetId}"]`);
+
+                            if (correspondingNavLink) {
+                                navLinks.forEach(link => link.classList.remove('active'));
+                                correspondingNavLink.classList.add('active');
+                            }
+                        }
+                    });
+                }, { threshold: 0.51 });
+
+                sections.forEach(section => {
+                    observer.observe(section);
+                });
+            });
+        </script>
+        
+    </body>
+</html>
