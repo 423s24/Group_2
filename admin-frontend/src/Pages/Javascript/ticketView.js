@@ -41,18 +41,18 @@ const TicketInfo = ({ ticket, userRelatedTicketDocs, addressRelatedTicketDocs })
                     {userRelatedTicketDocs.map((userRelatedTicketDoc) => {
                         const userRelatedTicket = userRelatedTicketDoc.data()
                         return (
-                        <Link className="ticket-link" key={userRelatedTicketDoc.id} to={`/ticket/${userRelatedTicketDoc.id}`}>
-                            <div className="ticket-container">
-                                <h3>{userRelatedTicket.title}</h3>
-                                <p>Status: {userRelatedTicket.status}</p>
-                                <p>Address: {userRelatedTicket.address}</p>
-                                <p>Urgency: {userRelatedTicket.urgency}</p>
-                                <p>Service Type: {userRelatedTicket.serviceType}</p>
-                                <p>Building Type: {userRelatedTicket.buildingType}</p>
-                            </div>
-                        </Link>
+                            <Link className="ticket-link" key={userRelatedTicketDoc.id} to={`/ticket/${userRelatedTicketDoc.id}`}>
+                                <div className="ticket-container">
+                                    <h3>{userRelatedTicket.title}</h3>
+                                    <p>Status: {userRelatedTicket.status}</p>
+                                    <p>Address: {userRelatedTicket.address}</p>
+                                    <p>Urgency: {userRelatedTicket.urgency}</p>
+                                    <p>Service Type: {userRelatedTicket.serviceType}</p>
+                                    <p>Building Type: {userRelatedTicket.buildingType}</p>
+                                </div>
+                            </Link>
                         )
-                })}
+                    })}
                 </div>
 
                 <div className="ticket-view-info-inner-section">
