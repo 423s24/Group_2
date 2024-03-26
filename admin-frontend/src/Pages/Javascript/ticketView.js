@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 
-const TicketInfo = ({ ticket, userRelatedTicketDocs, addressRelatedTicketDocs }) => {
+const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTicketDocs }) => {
 
     const navigate = useNavigate();
     console.log(ticket.id);
 
     const editTicket = () => {
-        navigate(`/ticket/edit/${ticket.id}`);
+        navigate(`/ticket/edit/${ticketId}`);
     }
 
     return (

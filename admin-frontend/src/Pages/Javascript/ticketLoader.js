@@ -80,7 +80,7 @@ function TicketLoader() {
 
           {ticket && userRelatedTickets ? 
             (
-              <TicketInfo ticket={ticket} userRelatedTicketDocs={userRelatedTickets} addressRelatedTicketDocs={ticketsAtSameAddress}/>
+              <TicketInfo ticketId={id} ticket={ticket} userRelatedTicketDocs={userRelatedTickets} addressRelatedTicketDocs={ticketsAtSameAddress}/>
             ) : 
             (
               <LoadingScreen />
