@@ -3,9 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 const TicketInfo = ({ ticket, userRelatedTicketDocs, addressRelatedTicketDocs }) => {
 
     const navigate = useNavigate();
+    console.log(ticket.id);
 
     const editTicket = () => {
-        navigate("./edit");
+        navigate(`/ticket/edit/${ticket.id}`);
     }
 
     return (
