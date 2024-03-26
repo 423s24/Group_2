@@ -54,12 +54,37 @@ const EditTicketLoader = () => {
             <h2>Edit Ticket</h2>
             <form onSubmit={handleSubmit}>
                 {ticket && (
-                    <label>
-                        Title:
-                        <input type="text" name="title" value={editedTicket.title} onChange={handleInputChange} />
-                    </label>
+                    <div>
+                        <label>
+                            Status:
+                            <input type="text" name="status" value={editedTicket.status} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Description:
+                            <input type="text" name="description" value={editedTicket.description} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Urgency:
+                            <input type="text" name="urgency" value={editedTicket.urgency} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Service Type:
+                            <input type="text" name="serviceType" value={editedTicket.serviceType} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Address:
+                            <input type="text" name="address" value={editedTicket.address} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Building Type:
+                            <input type="text" name="buildingType" value={editedTicket.buildingType} onChange={handleInputChange} />
+                        </label>
+                        <label>
+                            Area of Building:
+                            <input type="text" name="area" value={editedTicket.area} onChange={handleInputChange} />
+                        </label>
+                    </div>
                 )}
-                {/* Other input fields */}
                 <button type="submit">Save</button>
                 <Link to={`/ticket/${id}`}>Cancel</Link>
             </form>
