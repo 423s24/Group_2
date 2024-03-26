@@ -10,7 +10,6 @@ import TicketInfo from "./ticketView";
 
 function TicketLoader() {
     const { id } = useParams();
-    console.log("Ticket ID:", id);
 
     const [ticket, setTicket] = useState(null);
     const [userRelatedTickets, setUserRelatedTickets] = useState(null);

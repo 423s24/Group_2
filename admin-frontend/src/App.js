@@ -9,6 +9,7 @@ import RegisterPage from './Pages/Javascript/register';
 import ForgotPassword from './Pages/Javascript/forgotPassword';
 import MessageApp from "./Pages/Javascript/MessageApp";
 import TicketLoader from './Pages/Javascript/ticketLoader';
+import EditTicketLoader from './Pages/Javascript/editTicketLoader';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -42,6 +43,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/MessageApp" element={<MessageApp />} />
         <Route path="/ticket/:id" element={<TicketLoader />} />
+        <Route path="/ticket/:id/edit" element={<EditTicketLoader />} />
       </Routes>
     </BrowserRouter>
   );
