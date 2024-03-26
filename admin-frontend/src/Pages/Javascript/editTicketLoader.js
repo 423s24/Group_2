@@ -1,11 +1,13 @@
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { db } from "../../Backend/Firebase";
 
 const EditTicketLoader = () => {
     const { id } = useParams();
     const [ticket, setTicket] = useState(null);
+    const [editedTicket, setEditedTicket] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTicket = async() => {
@@ -14,6 +16,7 @@ const EditTicketLoader = () => {
                 if (ticketDoc.exists()) {
                     const ticketData = ticketDoc.data();
                     setTicket(ticketData);
+                    setEditedTicket(ticketData);
                 } else {
                     console.log("Ticket not found");
                 }
@@ -25,9 +28,6 @@ const EditTicketLoader = () => {
         fetchTicket();
     }, [id]);
 
-    const [editedTicket, setEditedTicket] = useState({ ...ticket });
-
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setEditedTicket(prevState => ({
@@ -38,19 +38,27 @@ const EditTicketLoader = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Update ticket information in the database
-        console.log("Updated Ticket:", editedTicket);
-        // Redirect back to the ticket view page
+        
+        try {
+            const ticketRef = doc(db, "ticket", id);
+            await updateDoc(ticketRef, editedTicket);
+            console.log("Updated Ticket");
+            navigate(`/ticket/${id}`);
+        } catch (error) {
+            console.error("Error updating ticket:", error);
+        }
     };
 
     return (
         <div className="edit-ticket-container">
             <h2>Edit Ticket</h2>
             <form onSubmit={handleSubmit}>
-                <label>
-                    Title:
-                    <input type="text" name="title" value={editedTicket.title} onChange={handleInputChange} />
-                </label>
+                {ticket && (
+                    <label>
+                        Title:
+                        <input type="text" name="title" value={editedTicket.title} onChange={handleInputChange} />
+                    </label>
+                )}
                 {/* Other input fields */}
                 <button type="submit">Save</button>
                 <Link to={`/ticket/${id}`}>Cancel</Link>
