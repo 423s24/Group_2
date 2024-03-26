@@ -8,6 +8,7 @@ import {useState, useEffect} from 'react'
 import { auth } from './backend/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { ProtectedRoute } from './backend/ProtectedRoute';
+import LoaderScreen from './components/loadingScreen';
 import Home from './home/home';
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
   }, []);
 
   if (isFetching) {
-    return <h2>Loading...</h2>
+    return <LoaderScreen />
   }
 
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="register" element={<Registration/>} />
           <Route path="home" element={<ProtectedRoute user={user}><Home user={user}/></ProtectedRoute>} />
           <Route path="maintenance" element={<ProtectedRoute user={user}><MaintenanceForm /></ProtectedRoute>} />
+          <Route path="loading" element={<LoaderScreen />} />
         </Routes>
       </div>
     </Router>

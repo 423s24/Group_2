@@ -111,6 +111,7 @@ function HomePage() {
         setShowNewTicketForm(!showNewTicketForm);
     };
 
+    const newTicketButtonText = showNewTicketForm ? 'Cancel' : 'Add New Ticket';
     // Filtering tickets based on user input
     const filteredTickets = tickets.filter(ticket => {
         let passesFilters = true;
@@ -199,7 +200,7 @@ function HomePage() {
                     <div className="ticketing-section">
                         <div className="ticketing-section-top-bar">
                             <h2>Ticket Management</h2>
-                            <button onClick={handleToggleNewTicketForm}>Add new Ticket</button>
+                            <button onClick={handleToggleNewTicketForm}>{newTicketButtonText}</button>
                         </div>
                 
                         <div className="search-filter">
