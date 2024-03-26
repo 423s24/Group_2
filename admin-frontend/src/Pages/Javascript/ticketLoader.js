@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import "../Styling/ticket.css";
 import TicketInfo from "./ticketView";
+import LoadingScreen from "../../components/LoadingScreen";
 
 function TicketLoader() {
     const { id } = useParams();
@@ -73,7 +74,7 @@ function TicketLoader() {
     return (
         <div className="ticket-view-container">
           <Helmet>
-            <title>{id}</title>
+            <title>Ticket View</title>
           </Helmet>
           <Header />
 
@@ -82,7 +83,7 @@ function TicketLoader() {
               <TicketInfo ticket={ticket} userRelatedTicketDocs={userRelatedTickets} addressRelatedTicketDocs={ticketsAtSameAddress}/>
             ) : 
             (
-              <p>Loading...</p>
+              <LoadingScreen />
             )
           }
           

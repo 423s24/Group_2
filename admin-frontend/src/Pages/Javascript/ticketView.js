@@ -1,6 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const TicketInfo = ({ ticket, userRelatedTicketDocs, addressRelatedTicketDocs }) => {
+
+    const navigate = useNavigate();
+
+    const editTicket = () => {
+        navigate("./edit");
+    }
 
     return (
         <div className="ticket-view-content">
@@ -9,7 +15,7 @@ const TicketInfo = ({ ticket, userRelatedTicketDocs, addressRelatedTicketDocs })
                     <button className="back-button">&lt;</button>
                 </Link>
                 <h3 className="ticket-title">{ticket.title}</h3>
-                <button className="edit-button">Edit</button>
+                <button onClick={editTicket} className="edit-button">Edit</button>
             </div>
 
             <div className="ticket-view-info">
