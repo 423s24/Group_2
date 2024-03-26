@@ -1,14 +1,15 @@
 import React from 'react';
-import {useState, useRef} from 'react'
+import {useState, useRef, useEffect} from 'react'
 import { Navigate, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, signOut} from "firebase/auth";
 import { auth, db } from "../backend/Firebase";
 import {doc, getDoc} from "firebase/firestore";
 
-export default function Login() {
+export default function Login({user}) {
   const userNameRef = useRef();
   const passwordRef = useRef();
 
+ 
   const navigate = useNavigate();
   const [notice, setNotice] = useState("");
   const [loginStatus, setLoginStatus] = useState(true);
@@ -21,6 +22,11 @@ export default function Login() {
   const [validPassword, setValidPassword] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
 
+  useEffect(()=>{
+    if(user) {navigate("/home")}
+  },[])
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -31,7 +37,7 @@ export default function Login() {
         return user;
     })
     .then((user) => {
-        navigate("/maintenance");    
+        navigate("/home");    
     })
     .catch((error) => {
         const errorCode = error.code;

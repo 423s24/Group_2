@@ -11,8 +11,11 @@ import { useEffect } from 'react';
 export default function Header({user}) {
   const navigate = useNavigate()
 
-  const userSignOut = () => {
+  useEffect(()=>{
+    user ? navigate("/home") : navigate("/login")
+  },[])
 
+  const userSignOut = () => {
     signOut(auth)
     .then(() => {
         navigate("/login");
