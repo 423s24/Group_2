@@ -1,4 +1,4 @@
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { db } from "../../Backend/Firebase";
@@ -14,6 +14,7 @@ function TicketLoader() {
 
     const [ticket, setTicket] = useState(null);
     const [userRelatedTickets, setUserRelatedTickets] = useState(null);
+    const [ticketsAtSameAddress, setTicketsAtSameAddress] = useState(null);
 
     useEffect(() => {
         const fetchTicket = async () => {
@@ -41,8 +42,19 @@ function TicketLoader() {
                     userRelatedTickets.push(userRelatedTicketDoc);
                   }
                 }
-                console.log("Related tickets: ", userRelatedTickets);
                 setUserRelatedTickets(userRelatedTickets);
+
+                const address = ticketData.address;
+                const ticketsQuery = query(collection(db, 'ticket'), where('address', '==', address));
+                const snapshot = await getDocs(ticketsQuery);
+                const tickets = [];
+                snapshot.forEach(doc => {
+                    if (doc.id !== id) {
+                        tickets.push({ id: doc.id, ...doc.data() });
+                    }
+                });
+                console.log("Tickets at the same address: ", tickets);
+                setTicketsAtSameAddress(tickets);
 
               } else {
                 console.log("User document does not exist.");
@@ -68,7 +80,7 @@ function TicketLoader() {
 
           {ticket && userRelatedTickets ? 
             (
-              <TicketInfo ticket={ticket} userRelatedTicketDocs={userRelatedTickets}/>
+              <TicketInfo ticket={ticket} userRelatedTicketDocs={userRelatedTickets} addressRelatedTicketDocs={ticketsAtSameAddress}/>
             ) : 
             (
               <p>Loading...</p>
