@@ -27,7 +27,7 @@ const Header = () => {
         };
 
         fetchUserData();
-    }, []);
+    }, [user.uid]);
 
     const signUserOut = () => {
         signOut(auth)
