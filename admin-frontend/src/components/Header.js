@@ -1,6 +1,6 @@
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../Backend/Firebase";
 import { signOut } from "firebase/auth";
 import logo from "../Assets/hrdc-logo-1.png";
@@ -42,7 +42,9 @@ const Header = () => {
 
     return (
         <div className="header">
-            <img src={logo} alt="HRDC Logo" className="logo" />
+            <Link to="/">
+                <img src={logo} alt="HRDC Logo" className="logo" />
+            </Link>
             <div>
                 { userData && <h1>Welcome, {userData.name}</h1>}
                 <button onClick={signUserOut}>Sign Out</button>
