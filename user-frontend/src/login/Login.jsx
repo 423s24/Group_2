@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState, useRef} from 'react'
-import { Navigate, useNavigate } from "react-router-dom";
+import {Link, Navigate, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, signOut} from "firebase/auth";
 import { auth, db } from "../backend/Firebase";
 import {doc, getDoc} from "firebase/firestore";
@@ -84,9 +84,8 @@ export default function Login() {
         </div>
         <button className='login-button' data-testid="login-button">Login</button>
         </form>
-        <p className='login-error' data-testid="login-notice" >
-         {notice}
-        </p>
+        <p className='login-error' data-testid="login-notice">{notice}</p>
+        <p>Forgot your password? <Link to="../forgot-password" style={{ color: '#000' }}>Reset it</Link></p>
        </section>
   )
 }

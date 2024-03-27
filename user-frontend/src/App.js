@@ -9,6 +9,7 @@ import { auth } from './backend/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { ProtectedRoute } from './backend/ProtectedRoute';
 import LoaderScreen from './components/loadingScreen';
+import ForgotPassword from './passwordReset/forgotPassword';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -42,6 +43,7 @@ function App() {
           <Route path="register" element={<Registration/>} />
           <Route path="maintenance" element={<ProtectedRoute user={user}><MaintenanceForm /></ProtectedRoute>} />
           <Route path="loading" element={<LoaderScreen />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
       </div>
     </Router>
