@@ -9,7 +9,7 @@
 .header .logo{
     padding: 10px;
     padding-left: 20px;
-    height: 70px;
+    height: 65px;
 }
 
 .navContainer{
@@ -22,6 +22,17 @@
 .navContainer .navLink{
     padding-left: 10px;
     color: white;
-    text-decoration: underline;
     cursor: pointer;
 }
+
+@media (max-width: 700px) {
+    
+    .siteTitle{
+        display: none;
+    }
+    
+    .header .logo{
+        height: 50px;
+    }
+
+  }

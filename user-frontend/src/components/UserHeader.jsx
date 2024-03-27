@@ -1,19 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { signOut } from "firebase/auth";
-import { auth } from '../backend/Firebase';
+import { auth, db } from '../backend/Firebase';
 import { Navigate, useNavigate } from 'react-router-dom';
 import hrdcLogo from '../assets/images/hrdc-logo-1.png'
 import { Link } from "react-router-dom";
+import {doc, getDoc} from 'firebase/firestore';
 import "./header.css"
 import { useEffect } from 'react';
 
 
 export default function Header({user}) {
   const navigate = useNavigate()
+  const [userName, setUserName] = useState(null)
 
   useEffect(()=>{
-    user ? navigate("/home") : navigate("/login")
-  },[])
+    const getUserName = async() => {
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      setUserName(docSnap.data().name)
+    }
+    if(user) getUserName()
+    
+  },[user])
 
   const userSignOut = () => {
     signOut(auth)
@@ -28,12 +36,15 @@ export default function Header({user}) {
 
   return (
     <div className='header'>
-        <img className="logo" src={hrdcLogo} alt="hrdc Logo"/>
+        <div style={{display: 'flex', alignItems: "center", color: "white"}}><img className="logo" src={hrdcLogo} alt="hrdc Logo"/>
+        <p className='siteTitle' style={{padding: "1rem", fontWeight: "Bold"}}>Maintenance Portal</p>
+        </div>
         <div className='navContainer'>
-          {!user && <Link className='navLink' to="/login">Login</Link>}       
-          {!user && <Link className='navLink' to="/register">Register</Link>}
-          {user && <Link className='navLink' to="/maintenance">Maintenance</Link>}
-          {user && <p className='navLink' onClick={userSignOut}>Sign Out</p>}
+          {user ? "" : <Link className='navLink' to="/login">Login</Link>}       
+          {user ? "" : <Link className='navLink' to="/register">Register</Link>}
+          {user ? <p style={{color:"white", fontWeight: "Bold", alignSelf: "center", paddingRight: "1rem"}}>Welcome, {userName}</p> : ""}
+          {/* {user ? <Link className='navLink' to="/maintenance">Maintenance</Link> : ""} */}
+          {user ? <p className='navLink' style={{background:"#97c33c", padding:".5rem", borderRadius: "10px"}} onClick={userSignOut}>Sign Out</p> :""}
         </div>
     </div>
   )

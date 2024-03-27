@@ -50,8 +50,8 @@ export default function Login({user}) {
   return (
     <section className='form-section'>
     <h1>Login</h1>
-    <form onSubmit={handleSubmit}>
-      <div className='input-group'>
+    <form className='input-form' onSubmit={handleSubmit}>
+      <div className='input-group wide-input'>
       <input
           data-testid="email-input"
           type="text"
@@ -69,11 +69,11 @@ export default function Login({user}) {
           Email:
         </label>
         </div>
-        <div className='input-group'>
+        <div className='input-group wide-input'>
       
       <input
           data-testid = "password-input"
-          type="text"
+          type="password"
           id="password"
           ref={passwordRef}
           autoComplete="off"
@@ -94,5 +94,6 @@ export default function Login({user}) {
          {notice}
         </p>
        </section>
+
   )
 }

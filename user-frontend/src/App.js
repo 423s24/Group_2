@@ -11,6 +11,7 @@ import { ProtectedRoute } from './backend/ProtectedRoute';
 import LoaderScreen from './components/loadingScreen';
 import Home from './home/home';
 
+
 function App() {
   const [user, setUser] = useState(null);
   const [isFetching, setIsFetching] = useState(true);
