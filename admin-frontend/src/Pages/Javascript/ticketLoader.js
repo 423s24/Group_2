@@ -1,4 +1,4 @@
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { db } from "../../Backend/Firebase";
@@ -7,13 +7,14 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import "../Styling/ticket.css";
 import TicketInfo from "./ticketView";
+import LoadingScreen from "../../components/LoadingScreen";
 
 function TicketLoader() {
     const { id } = useParams();
-    console.log("Ticket ID:", id);
 
     const [ticket, setTicket] = useState(null);
     const [userRelatedTickets, setUserRelatedTickets] = useState(null);
+    const [ticketsAtSameAddress, setTicketsAtSameAddress] = useState(null);
 
     useEffect(() => {
         const fetchTicket = async () => {
@@ -41,8 +42,19 @@ function TicketLoader() {
                     userRelatedTickets.push(userRelatedTicketDoc);
                   }
                 }
-                console.log("Related tickets: ", userRelatedTickets);
                 setUserRelatedTickets(userRelatedTickets);
+
+                const address = ticketData.address;
+                const ticketsQuery = query(collection(db, 'ticket'), where('address', '==', address));
+                const snapshot = await getDocs(ticketsQuery);
+                const tickets = [];
+                snapshot.forEach(doc => {
+                    if (doc.id !== id) {
+                        tickets.push({ id: doc.id, ...doc.data() });
+                    }
+                });
+                console.log("Tickets at the same address: ", tickets);
+                setTicketsAtSameAddress(tickets);
 
               } else {
                 console.log("User document does not exist.");
@@ -62,16 +74,16 @@ function TicketLoader() {
     return (
         <div className="ticket-view-container">
           <Helmet>
-            <title>{id}</title>
+            <title>Ticket View</title>
           </Helmet>
           <Header />
 
           {ticket && userRelatedTickets ? 
             (
-              <TicketInfo ticket={ticket} userRelatedTicketDocs={userRelatedTickets}/>
+              <TicketInfo ticketId={id} ticket={ticket} userRelatedTicketDocs={userRelatedTickets} addressRelatedTicketDocs={ticketsAtSameAddress}/>
             ) : 
             (
-              <p>Loading...</p>
+              <LoadingScreen />
             )
           }
           

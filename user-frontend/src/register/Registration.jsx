@@ -44,11 +44,12 @@ export default function Registration() {
   const [success, setSuccess] = useState(false);
 
   const navigate = useNavigate();
-    const [name, setName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [notice, setNotice] = useState("");
-    const [registerStatus, setRegisterStatus] = useState(true);
+  const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [notice, setNotice] = useState("");
+  const [registerStatus, setRegisterStatus] = useState(true);
 
+  const [emailNotification, setEmailNotification] = useState(true); 
   const createWithUsernameAndPassword = async (e) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, pwd);
@@ -241,6 +242,27 @@ export default function Registration() {
                   <FontAwesomeIcon icon={faInfoCircle} />
                   Must match the first password input field.
               </p>
+              </div>
+              <div className='input-group-checkbox'>
+              <label htmlFor="emailNotification">Receive Email Notifications:</label>
+              <div>
+              <input
+                    type="checkbox"
+                    id="emailNotificationYes"
+                    checked={emailNotification}
+                    onChange={() => setEmailNotification(true)}
+              />
+              <label htmlFor="emailNotificationYes">Yes</label>
+              </div>
+              <div>
+              <input
+                  type="checkbox"
+                  id="emailNotificationNo"
+                  checked={!emailNotification}
+                  onChange={() => setEmailNotification(false)}
+              />
+              <label htmlFor="emailNotificationNo">No</label>
+              </div>
               </div>
               <button className='login-button' disabled={!validFirstName || !validPwd || !validMatch ? true : false}>Register</button>
           </form>

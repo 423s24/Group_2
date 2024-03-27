@@ -1,14 +1,18 @@
 import { React, useState } from 'react';
-import { collection, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
-import { auth, db } from "../backend/Firebase"
+import { collection, addDoc, doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { auth, db, storage } from "../backend/Firebase"
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import "./maintenanceForm.css";
+import { useNavigate } from 'react-router-dom';
 
 export default function MaintenanceForm() {
+    const navigate =useNavigate();
     const initialFormData = {
         title: '',
         description: '',
         area: '',
         buildingType: '',
+        dateCreated: serverTimestamp(),
         urgency: '',
         address: '',
         submittedBy: '',
@@ -18,16 +22,21 @@ export default function MaintenanceForm() {
         enterPerms: '',
         status: 'open',
         serviceType: '',
+        attachmentUrl: '',
     }
 
     const [formData, setFormData] = useState(initialFormData);
-
+    const [attachment, setAttachment] = useState(null);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
           ...prevState,
           [name]: value
         }));
+    };
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setAttachment(file);
     };
 
     const formatPhoneNumber = (numericValue) => {
@@ -65,7 +74,22 @@ export default function MaintenanceForm() {
                     formData.phone = userData.phone;
                 }
             }
+            let attachmentUrl = '';
 
+            if (attachment) {
+                const storageRef = ref(storage, `attachments/${attachment.name}`);
+                const uploadTask = uploadBytesResumable(storageRef, attachment);
+
+                await uploadTask.then((snapshot) => {
+                    console.log('Uploaded file successfully');
+                    getDownloadURL(snapshot.ref).then((downloadURL) => {
+                        console.log('File available at', downloadURL);
+                        attachmentUrl = downloadURL;
+                    });
+                });
+            }
+
+            formData.attachmentUrl = attachmentUrl;
             const docRef = await addDoc(ticketRef, formData);
 
             if (userDocSnap) {
@@ -102,9 +126,11 @@ export default function MaintenanceForm() {
     };
 
     return (
+        <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+        <button style={{color: "#107178", padding:"5px 10px 5px 10px", marginTop: "40px", fontSize: "18px", width:"fit-content"}} onClick={() => {navigate("/home")}}>Back</button>
         <section className="form-section">
             <h1>Request Maintenance</h1>
-            <form onSubmit={handleSubmit}>
+            <form className="form-section" onSubmit={handleSubmit}>
                 <div className='input-group wide-input'>
                     <input
                         type="text"
@@ -230,10 +256,21 @@ export default function MaintenanceForm() {
                     />
                     <label htmlFor="urgency">Urgency (Scale from 1-10)</label>
                 </div>
+                <div className='input-group wide-input'>
+                    <input
+                        type="file"
+                        id="attachment"
+                        name="attachment"
+                        onChange={handleFileChange}
+                        accept="image/*, application/pdf" 
+                    />
+                    <label htmlFor="attachment">Attach Document or Image</label>
+                </div>
 
                 <button className='login-button'>Submit</button>
             </form>
         </section>
+        </div>
     )
 
 }

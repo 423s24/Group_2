@@ -1,3 +1,4 @@
+
 import { signOut } from "firebase/auth"; // Importing signOut function from Firebase authentication
 import { useNavigate } from "react-router-dom"; // Importing useNavigate hook for navigation
 import { auth, db } from "../../Backend/Firebase"; // Importing Firebase authentication and Firestore database
@@ -24,10 +25,12 @@ function HomePage() {
 
     // State variables for managing tickets and filters
     const [tickets, setTickets] = useState([]);
+    const [filterUrgency, setFilterUrgency] = useState('all');
     const [filterStatus, setFilterStatus] = useState('all');
     const [filterRelated, setFilterRelated] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('dateCreated');
+    const [sortByUrgency, setSortByUrgency] = useState('all');
     const [filterAssignedTo, setFilterAssignedTo] = useState('all');
     const [showNewTicketForm, setShowNewTicketForm] = useState(false);
     const [newTicketData, setNewTicketData] = useState({
@@ -141,10 +144,16 @@ function HomePage() {
     // Event handlers for filter changes
     const handleStatusFilterChange = (event) => {
         setFilterStatus(event.target.value);
+        console.log(event.target.value);
+    };
+    const handleUrgencyFilterChange = (event) => {
+        setFilterUrgency(event.target.value);
+        console.log(event.target.value);
     };
 
     const handleRelatedFilterChange = (event) => { 
         setFilterRelated(event.target.value);
+        console.log(event.target.value);
     };
 
     const handleSearchChange = (event) => {
@@ -153,10 +162,11 @@ function HomePage() {
     
     const handleSortChange = (event) => {
         setSortBy(event.target.value);
+        console.log(event.target.value);
     };
-    
-    const handleAssignedToFilterChange = (event) => {
-        setFilterAssignedTo(event.target.value);
+    const handleSortChangeByUrgency = (event) => {
+        setSortByUrgency(event.target.value);
+        console.log(event.target.value);
     };
 
     // Function to toggle the new ticket form
@@ -164,21 +174,23 @@ function HomePage() {
         setShowNewTicketForm(!showNewTicketForm);
     };
 
+    const newTicketButtonText = showNewTicketForm ? 'Cancel' : 'Add New Ticket';
     // Filtering tickets based on user input
     const filteredTickets = tickets.filter(ticket => {
         let passesFilters = true;
         // Filter by status
-        if (filterStatus !== 'all' && ticket.urgency.toString() !== filterStatus) {
+        if (filterStatus !== 'all' && ticket.status.toString() !== filterStatus) {
             passesFilters = false;
         }
+        if (filterUrgency !== 'all' && ticket.urgency.toString() !== filterUrgency) {
+            passesFilters = false;
+        }
+    
         // Filter by related service
-        if (filterRelated !== 'all' && ticket.related !== filterRelated) {
+        if (filterRelated !== 'all' && ticket.serviceType !== filterRelated) {
             passesFilters = false;
         }
-        // Filter by assigned to
-        if (filterAssignedTo !== 'all' && ticket.assignedTo !== filterAssignedTo) {
-            passesFilters = false;
-        }
+        
         // Filter by search query
         if (searchQuery) {
             passesFilters = Object.values(ticket).some(value => 
@@ -188,16 +200,23 @@ function HomePage() {
     
         return passesFilters;
     });
-        //const sortedTickets.sort((a, b) => {
-    //    if (sortBy === 'newest') {
-    //        return b.dateCreated - a.dateCreated; 
-    //    } else if (sortBy === 'oldest') {
-    //        return a.dateCreated - b.dateCreated; 
-    //    } else if (sortBy === 'dateCreated') {
-     //       
-     //   }
-    //    return 0;
-    //});
+// Sorting tickets based on creation date
+const sortedTickets = filteredTickets.slice().sort((a, b) => {
+    if (sortBy === 'newest') {
+        return new Date(b.dateCreated) - new Date(a.dateCreated);
+    } else if (sortBy === 'oldest') {
+        return new Date(a.dateCreated) - new Date(b.dateCreated);
+    }
+    // Default case, no sorting
+    return 0 ;
+});
+// Sorting tickets based on urgency
+const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
+    if (sortByUrgency === '1') {
+        return a.urgency - b.urgency; // Sort by urgency from lowest to highest
+    }
+   
+});
     
     // Function to handle input changes in the new ticket form
     const handleInputChange = (event) => {
@@ -384,7 +403,7 @@ function HomePage() {
                     <div className="ticketing-section">
                         <div className="ticketing-section-top-bar">
                             <h2>Ticket Management</h2>
-                            <button onClick={handleToggleNewTicketForm}>Add new Ticket</button>
+                            <button onClick={handleToggleNewTicketForm}>{newTicketButtonText}</button>
                         </div>
                 
                         <div className="search-filter">
@@ -424,7 +443,7 @@ function HomePage() {
                             {/* Service filter */}
                             <div className="filter">
                                 <h3>Urgency</h3>
-                                <select value={filterStatus} onChange={handleStatusFilterChange}>
+                                <select value={filterUrgency} onChange={handleUrgencyFilterChange}>
                                     <option value="all">All</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -438,24 +457,24 @@ function HomePage() {
                                     <option value="10">10</option>
                                 </select>
                             </div>
+    
                             <div className="filter">
-                                <h3>Assigned To</h3>
-                                <select value={filterAssignedTo} onChange={handleAssignedToFilterChange}>
-                                    <option value="all">All</option>
-                                    <option value="user1">User 1</option>
-                                    <option value="user2">User 2</option>
-                                    <option value="user3">User 3</option>
-                                    {/* Add more options as needed */}
-                                </select>
-                            </div>
-                            <div className="filter">
-                                <h3>Sort By Date</h3>
+                                <h4>Sort By Date </h4>
                                 <select value={sortBy} onChange={handleSortChange}>
                                     <option value="dateCreated">Date Created</option>
                                     <option value="newest">Newest to Oldest Ticket</option> 
                                     <option value="oldest">Oldest to Newest Ticket</option> 
                                     </select>
                             </div>
+                            <div className="filter">
+                                <h4> Sort By Urgency</h4>
+                                <select value={sortByUrgency} onChange={handleSortChangeByUrgency}>
+                                    <option value="all">All</option>
+                                    <option value="10">Most Urgent to Least Urgent</option>
+                                    <option value="1">Least Urgent to Most Urgent</option>
+                                    </select>
+                            </div>
+
                         </div>
                         <div className="toggle-new-ticket-form">
                     
@@ -489,7 +508,7 @@ function HomePage() {
                                 </div>
                                 <div>
                                     <label>Related:</label>
-                                    <input type="text" name="related" value={newTicketData.related} onChange={handleInputChange} />
+                                    <input type="text" name="related" value={newTicketData.serviceType} onChange={handleInputChange} />
                                 </div>
                                 <div>
                                     <label>Description:</label>
@@ -512,11 +531,27 @@ function HomePage() {
                         </div>
                         )}
                     </div>
-                        {/* Display filtered tickets */}
+                        {/* Display sorted tickets */}
                         <div className="ticket-list">
-                            {filteredTickets.map(ticket => (
-                                <Link className="ticket-link" to={`ticket/${ticket.id}`} >
-                                    <div key={ticket.id} className="ticket-container">
+                        {sortedTickets.map(ticket => (
+                            <Link className="ticket-link" to={`ticket/${ticket.id}`} key={ticket.id}>
+                                <div className="ticket-container">
+                                    <div className="ticket">
+                                        <h3>{ticket.title}</h3>
+                                        <p>Address: {ticket.address}</p>
+                                        <p>Urgency: {ticket.urgency}</p>
+                                        <p>Service Type: {ticket.serviceType}</p>
+                                        <p>Building Type: {ticket.buildingType}</p>
+                                    </div>
+                                </div>
+                            </Link>
+                        ))}
+ </div>
+                        {/* Display sorted tickets by urgency */}
+                        <div className="ticket-list">
+                            {sortedByUrgency.map(ticket => (
+                                <Link className="ticket-link" to={`ticket/${ticket.id}`} key={ticket.id}>
+                                    <div className="ticket-container">
                                         <div className="ticket">
                                             <h3>{ticket.title}</h3>
                                             <p>Address: {ticket.address}</p>
@@ -539,3 +574,5 @@ function HomePage() {
 }
 
 export default HomePage; 
+
+                                   

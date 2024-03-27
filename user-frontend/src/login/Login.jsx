@@ -1,14 +1,15 @@
 import React from 'react';
-import {useState, useRef} from 'react'
-import { Navigate, useNavigate } from "react-router-dom";
+import {useState, useRef, useEffect} from 'react'
+import {Link, Navigate, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, signOut} from "firebase/auth";
 import { auth, db } from "../backend/Firebase";
 import {doc, getDoc} from "firebase/firestore";
 
-export default function Login() {
+export default function Login({user}) {
   const userNameRef = useRef();
   const passwordRef = useRef();
 
+ 
   const navigate = useNavigate();
   const [notice, setNotice] = useState("");
   const [loginStatus, setLoginStatus] = useState(true);
@@ -21,6 +22,11 @@ export default function Login() {
   const [validPassword, setValidPassword] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
 
+  useEffect(()=>{
+    if(user) {navigate("/home")}
+  },[])
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -31,7 +37,7 @@ export default function Login() {
         return user;
     })
     .then((user) => {
-        navigate("/maintenance");    
+        navigate("/home");    
     })
     .catch((error) => {
         const errorCode = error.code;
@@ -44,8 +50,8 @@ export default function Login() {
   return (
     <section className='form-section'>
     <h1>Login</h1>
-    <form onSubmit={handleSubmit}>
-      <div className='input-group'>
+    <form className='input-form' onSubmit={handleSubmit}>
+      <div className='input-group wide-input'>
       <input
           data-testid="email-input"
           type="text"
@@ -63,11 +69,11 @@ export default function Login() {
           Email:
         </label>
         </div>
-        <div className='input-group'>
+        <div className='input-group wide-input'>
       
       <input
           data-testid = "password-input"
-          type="text"
+          type="password"
           id="password"
           ref={passwordRef}
           autoComplete="off"
@@ -84,9 +90,9 @@ export default function Login() {
         </div>
         <button className='login-button' data-testid="login-button">Login</button>
         </form>
-        <p className='login-error' data-testid="login-notice" >
-         {notice}
-        </p>
+        <p className='login-error' data-testid="login-notice">{notice}</p>
+        <p>Forgot your password? <Link to="../forgot-password" style={{ color: '#000' }}>Reset it</Link></p>
        </section>
+
   )
 }
