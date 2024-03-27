@@ -1,7 +1,7 @@
 import "../Styling/login.css";
 import HRDCLogo from "../../Assets/hrdc-logo-1.png";
 import { Helmet } from 'react-helmet';
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth, db } from "../../Backend/Firebase";
@@ -37,8 +37,6 @@ function LoginPage( {user} ) {
             }
         })
         .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
             setNotice("Invalid Email or Password");
             setLoginStatus(false);
         });
@@ -80,7 +78,7 @@ function LoginPage( {user} ) {
                 </div>
             </div>
             <div className="image-container">
-                <img src="https://thehrdc.org/wp-content/uploads/2020/11/RPM-Contact-scaled.jpg" />
+                <img src="https://thehrdc.org/wp-content/uploads/2020/11/RPM-Contact-scaled.jpg" alt="homes"/>
             </div>
         </div>
         

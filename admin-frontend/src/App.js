@@ -9,6 +9,8 @@ import RegisterPage from './Pages/Javascript/register';
 import ForgotPassword from './Pages/Javascript/forgotPassword';
 import MessageApp from "./Pages/Javascript/MessageApp";
 import TicketLoader from './Pages/Javascript/ticketLoader';
+import EditTicket from './Pages/Javascript/EditTicket';
+import LoadingScreen from './components/LoadingScreen';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -30,7 +32,7 @@ function App() {
   }, []);
 
   if (isFetching) {
-    return <h2>Loading...</h2>
+    return <LoadingScreen />;
   }
 
   return (
@@ -42,6 +44,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/MessageApp" element={<MessageApp />} />
         <Route path="/ticket/:id" element={<TicketLoader />} />
+        <Route path="/ticket/edit/:id" element={<EditTicket />} />
       </Routes>
     </BrowserRouter>
   );

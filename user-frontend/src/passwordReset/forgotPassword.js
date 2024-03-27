@@ -23,17 +23,17 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="form-section"> {/* Adjusted class name */}
+    <div className="form-section">
       <Helmet>
         <title>HRDC Maintenance | Forgot Password</title>
       </Helmet>
-      <div className="container"> {/* Adjusted class name */}
-        <div className="login-container"> {/* Adjusted class name */}
-          <h1 className="login-header">Forgot Your Password?</h1> {/* Adjusted class name */}
-          <h4 className="login-subheader">Enter your email below to reset your password.</h4> {/* Adjusted class name */}
-          <form className="form"> {/* Adjusted class name */}
-            {notice && <div className="login-error">{notice}</div>} {/* Adjusted class name */}
-            <div className="input-group"> {/* Adjusted class name */}
+      <div className="container"> 
+        <div className="login-container"> 
+          <h1 className="login-header">Forgot Your Password?</h1> 
+          <h4 className="login-subheader">Enter your email below to reset your password.</h4> 
+          <form className="form"> 
+            {notice && <div className="login-error">{notice}</div>} 
+            <div className="input-group"> 
               <input
                 type="email"
                 value={email}

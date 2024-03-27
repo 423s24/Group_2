@@ -1,8 +1,8 @@
 import { React, useState } from 'react';
 import { collection, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
-import { auth, db, storage } from "../backend/Firebase"
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { auth, db } from "../backend/Firebase"
 import "./maintenanceForm.css";
+import { useNavigate } from 'react-router-dom';
 
 export default function MaintenanceForm() {
     const initialFormData = {
@@ -10,6 +10,7 @@ export default function MaintenanceForm() {
         description: '',
         area: '',
         buildingType: '',
+        dateCreated: serverTimestamp(),
         urgency: '',
         address: '',
         submittedBy: '',
@@ -23,7 +24,6 @@ export default function MaintenanceForm() {
     }
 
     const [formData, setFormData] = useState(initialFormData);
-    const [attachment, setAttachment] = useState(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -124,9 +124,11 @@ export default function MaintenanceForm() {
     };
 
     return (
+        <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+        <button style={{color: "#107178", padding:"5px 10px 5px 10px", marginTop: "40px", fontSize: "18px", width:"fit-content"}} onClick={() => {navigate("/home")}}>Back</button>
         <section className="form-section">
             <h1>Request Maintenance</h1>
-            <form onSubmit={handleSubmit}>
+            <form className="form-section" onSubmit={handleSubmit}>
                 <div className='input-group wide-input'>
                     <input
                         type="text"
@@ -258,7 +260,7 @@ export default function MaintenanceForm() {
                         id="attachment"
                         name="attachment"
                         onChange={handleFileChange}
-                        accept="image/*, application/pdf" // Allow images and PDF files
+                        accept="image/*, application/pdf" 
                     />
                     <label htmlFor="attachment">Attach Document or Image</label>
                 </div>
@@ -266,6 +268,7 @@ export default function MaintenanceForm() {
                 <button className='login-button'>Submit</button>
             </form>
         </section>
+        </div>
     )
 
 }

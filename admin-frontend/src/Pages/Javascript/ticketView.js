@@ -1,6 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const TicketInfo = ({ ticket, userRelatedTicketDocs }) => {
+const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTicketDocs }) => {
+
+    const navigate = useNavigate();
+    console.log(ticket.id);
+
+    const editTicket = () => {
+        navigate(`/ticket/edit/${ticketId}`);
+    }
 
     return (
         <div className="ticket-view-content">
@@ -9,7 +16,7 @@ const TicketInfo = ({ ticket, userRelatedTicketDocs }) => {
                     <button className="back-button">&lt;</button>
                 </Link>
                 <h3 className="ticket-title">{ticket.title}</h3>
-                <button className="edit-button">Edit</button>
+                <button onClick={editTicket} className="edit-button">Edit</button>
             </div>
 
             <div className="ticket-view-info">
@@ -38,25 +45,39 @@ const TicketInfo = ({ ticket, userRelatedTicketDocs }) => {
 
                 <div className="ticket-view-info-inner-section">
                     <h2>Other Tickets Opened by This Person</h2>
-                    {userRelatedTicketDocs.map((userRelatedTicketDoc, index) => {
+                    {userRelatedTicketDocs.map((userRelatedTicketDoc) => {
                         const userRelatedTicket = userRelatedTicketDoc.data()
                         return (
-                        <Link className="ticket-link" key={userRelatedTicketDoc.id} to={`/ticket/${userRelatedTicketDoc.id}`}>
-                            <div className="ticket-container">
-                                <h3>{userRelatedTicket.title}</h3>
-                                <p>Address: {userRelatedTicket.address}</p>
-                                <p>Urgency: {userRelatedTicket.urgency}</p>
-                                <p>Service Type: {userRelatedTicket.serviceType}</p>
-                                <p>Building Type: {userRelatedTicket.buildingType}</p>
-                            </div>
-                        </Link>
+                            <Link className="ticket-link" key={userRelatedTicketDoc.id} to={`/ticket/${userRelatedTicketDoc.id}`}>
+                                <div className="ticket-container">
+                                    <h3>{userRelatedTicket.title}</h3>
+                                    <p>Status: {userRelatedTicket.status}</p>
+                                    <p>Address: {userRelatedTicket.address}</p>
+                                    <p>Urgency: {userRelatedTicket.urgency}</p>
+                                    <p>Service Type: {userRelatedTicket.serviceType}</p>
+                                    <p>Building Type: {userRelatedTicket.buildingType}</p>
+                                </div>
+                            </Link>
                         )
-                })}
+                    })}
                 </div>
 
                 <div className="ticket-view-info-inner-section">
                     <h2>Other Tickets Opened at this Address</h2>
-                    <p><strong>Coming Soon...</strong></p>
+                    {addressRelatedTicketDocs && addressRelatedTicketDocs.map((addressRelatedTicketDoc) => {
+                        return (
+                            <Link className="ticket-link" key={addressRelatedTicketDoc.id} to={`/ticket/${addressRelatedTicketDoc.id}`}>
+                                <div className="ticket-container">
+                                    <h3>{addressRelatedTicketDoc.title}</h3>
+                                    <p>Status: {addressRelatedTicketDoc.status}</p>
+                                    <p>Address: {addressRelatedTicketDoc.address}</p>
+                                    <p>Urgency: {addressRelatedTicketDoc.urgency}</p>
+                                    <p>Service Type: {addressRelatedTicketDoc.serviceType}</p>
+                                    <p>Building Type: {addressRelatedTicketDoc.buildingType}</p>
+                                </div>
+                            </Link>
+                        )
+                    })}
                 </div>
             </div>
         </div>

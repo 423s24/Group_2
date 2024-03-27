@@ -1,0 +1,53 @@
+.previousContainer{
+    margin: 40px;
+    padding: 40px;
+}
+
+.ticketTitle{
+    font-size: 24px;
+}
+
+.newRequestButton:hover{
+    cursor: pointer;
+    background-color: #97c33c;
+}
+
+.newRequestButton .plusButton{
+    background-color: #97c33c;
+    color: #fff;
+}
+
+
+.newRequestButton:hover .plusButton{
+    background-color: #fff;
+    color: #97c33c;
+}
+
+
+
+
+
+@media (max-width: 700px) {
+    .previousContainer{
+        margin: 10px;
+        padding: 5px;
+        padding-top: 20px;
+    }
+
+    .ticketTitle{
+        font-size: 18px;
+    }
+
+    .ticketHeader{
+        flex-direction: column;
+        justify-items:"center";
+    }
+
+    .statusIcon{
+        margin-top: 5px;
+    }
+
+    .sectionHeader{
+        font-size: 24px;
+    }
+}
