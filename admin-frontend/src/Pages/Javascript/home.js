@@ -347,7 +347,7 @@ function HomePage() {
                     </div>
                 </div>
                 <div className="footer">
-                    <p>&copy; Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                    <p>&copy; 2024 Human Resources Development Council. All Rights Reserved. </p>
                 </div>
             </div>
         </div>
