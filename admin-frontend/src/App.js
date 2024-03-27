@@ -9,7 +9,7 @@ import RegisterPage from './Pages/Javascript/register';
 import ForgotPassword from './Pages/Javascript/forgotPassword';
 import MessageApp from "./Pages/Javascript/MessageApp";
 import TicketLoader from './Pages/Javascript/ticketLoader';
-import EditTicketLoader from './Pages/Javascript/editTicketLoader';
+import EditTicket from './Pages/Javascript/EditTicket';
 import LoadingScreen from './components/LoadingScreen';
 
 function App() {
@@ -44,7 +44,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/MessageApp" element={<MessageApp />} />
         <Route path="/ticket/:id" element={<TicketLoader />} />
-        <Route path="/ticket/edit/:id" element={<EditTicketLoader />} />
+        <Route path="/ticket/edit/:id" element={<EditTicket />} />
       </Routes>
     </BrowserRouter>
   );

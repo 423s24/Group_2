@@ -59,3 +59,65 @@
 .ticket-view-info-inner-section p {
     margin-bottom: 5px;
 }
+
+
+
+
+
+
+.edit-ticket-view-content {
+    height: 100%;
+}
+
+.edit-ticket-view-content h1 {
+    margin: 10px;
+}
+
+.edit-ticket-view-content form {
+    height: 90%;
+}
+
+.edit-ticket-view-content form div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex-grow: 1;
+    padding-bottom: 1rem;
+    height: 100%;
+    width: 100%;
+}
+
+.edit-ticket-view-content label {
+    margin: 10px;
+}
+
+.edit-ticket-view-content label p {
+    font-weight: 600;
+}
+
+.edit-ticket-view-content input {
+    height: 40px;
+    font-size: 16px;
+    padding-left: 5px;
+    background: none;
+    border: 2px solid #107178;
+    border-radius: 8px;
+    width: 50%;
+}
+
+.edit-ticket-view-content button {
+    height: 50px;
+    width: 80px;
+    font-size: 16px;
+    color: white;
+    background: #107178;
+    border: none;
+    border-radius: 8px;
+    margin: 10px;
+}
+
+.edit-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
