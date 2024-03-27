@@ -1,10 +1,12 @@
 import { React, useState } from 'react';
-import { collection, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
-import { auth, db } from "../backend/Firebase"
+import { collection, addDoc, doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { auth, db, storage } from "../backend/Firebase"
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import "./maintenanceForm.css";
 import { useNavigate } from 'react-router-dom';
 
 export default function MaintenanceForm() {
+    const navigate =useNavigate();
     const initialFormData = {
         title: '',
         description: '',
@@ -24,7 +26,7 @@ export default function MaintenanceForm() {
     }
 
     const [formData, setFormData] = useState(initialFormData);
-
+    const [attachment, setAttachment] = useState(null);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
