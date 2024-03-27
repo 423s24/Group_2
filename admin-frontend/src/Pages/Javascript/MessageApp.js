@@ -1,78 +1,91 @@
-import React from 'react';
-import { ChatEngine} from 'react-chat-engine';
-import "../Styling/MessagingApp.css"
-import "../Styling/home.css"
+import React, { useEffect, useState, useRef } from 'react';
+import { Helmet } from 'react-helmet';
+import { signOut } from 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useNavigate, Link } from 'react-router-dom';
+import { auth, db } from '../../Backend/Firebase';
+import { getDocs, collection } from 'firebase/firestore';
+import ChatBox from '../../components/ChatBox'; 
+import SendMessage from '../../components/SendMessage';
+import Message from '../../components/Message';
+import "../Styling/MessagingApp.css";
 import logo from "../../Assets/hrdc-logo-1.png";
-import { Helmet } from "react-helmet";
-import { signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import { auth, db } from "../../Backend/Firebase";
-import { getDoc, doc } from "firebase/firestore"; 
-import { useEffect } from "react";
-import { useState } from "react";
-
-import ChatFeed from '../../components/ChatFeed';
 
 const MessageApp = () => {
-
     const navigate = useNavigate();
-    const user = auth.currentUser;
+    const [user, loading, error] = useAuthState(auth);
     const [userData, setUserData] = useState(null);
+    const [messageThreads, setMessageThreads] = useState([]);
+    const [selectedThreadId, setSelectedThreadId] = useState(null); 
+    const scrollRef = useRef(); // Renamed 'scroll' to 'scrollRef'
 
-        useEffect(() => {
+    useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const docRef = doc(db, "users", user.uid);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    setUserData(docSnap.data());
-                } else {
-                    console.log("No such document");
-                }
+                const docRef = collection(db, 'users');
+                const querySnapshot = await getDocs(docRef);
+                const users = querySnapshot.docs.map(doc => doc.data());
+                const currentUserData = users.find(u => u.uid === user.uid);
+                setUserData(currentUserData);
             } catch (error) {
-                console.error("Error getting document: ", error);
+                console.error('Error fetching user data: ', error);
             }
         };
 
-        fetchUserData();
-    }, []);
+        const fetchMessageThreads = async () => {
+            try {
+                const messageThreadsCollectionRef = collection(db, 'messageThreads');
+                const querySnapshot = await getDocs(messageThreadsCollectionRef);
+                const threadsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setMessageThreads(threadsData);
+            } catch (error) {
+                console.error('Error fetching message threads: ', error);
+            }
+        };
+
+        if (user) {
+            fetchUserData();
+            fetchMessageThreads();
+        }
+    }, [user]);
 
     const signUserOut = () => {
         signOut(auth)
             .then(() => {
-                navigate("../login");
+                navigate('../login');
             })
             .catch((error) => {
-                // An error happened
-                // TODO: Add error handling
-            })
-    }
-
-
+                console.error('Error signing out: ', error);
+            });
+    };
 
     return (
         <div>
             <Helmet>
-                <title>Dashboard</title>
+                <title>Message App</title>
             </Helmet>
             <div className="home-container">
                 <div className="header">
-                    <img src={logo} alt="HRDC Logo" className="logo" />
-                    <div>
-                        { userData && <h1>Welcome, {userData.name}</h1>}
-                        <button onClick={signUserOut}>Sign Out</button>
-                    </div>
+                    <Link to="/" className="home-button">
+                        <img src={logo} alt="HRDC Logo" className="logo" />
+                    </Link>
+                    {userData && <h1>Welcome, {userData.name}</h1>}
+                    <button onClick={signUserOut}>Sign Out</button>
                 </div>
-        <ChatEngine 
-            height = "100vh"
-            projectID = "ae105cf2-656d-46a9-8213-5907695293af" 
-            userName = "admin"
-            userSecret = "admin123"
-            renderChatFeed = {(chatAppProps) => <ChatFeed {... chatAppProps} />}
-        />
+                <div className="message-threads">
+                    <ul>
+                        {messageThreads.map(thread => (
+                            <li key={thread.id}>
+                                <Link to={`/messageApp/${thread.id}`}>{thread.name}</Link>
+                            </li>
+                        ))}
+                    </ul>
+                    <ChatBox messageId={selectedThreadId} />
+                    <SendMessage scroll={scrollRef} messageThreadId={selectedThreadId} /> {/* Pass the ref */}
+                </div>
+            </div>
         </div>
-    </div>
-    )
-}
+    );
+};
 
 export default MessageApp;

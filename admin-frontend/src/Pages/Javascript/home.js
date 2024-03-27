@@ -1,18 +1,26 @@
 import { signOut } from "firebase/auth"; // Importing signOut function from Firebase authentication
 import { useNavigate } from "react-router-dom"; // Importing useNavigate hook for navigation
 import { auth, db } from "../../Backend/Firebase"; // Importing Firebase authentication and Firestore database
-import { getDoc, doc, collection, addDoc, getDocs } from "firebase/firestore"; // Importing Firestore functions
+import { getDoc, doc, collection, addDoc, getDocs, serverTimestamp } from "firebase/firestore"; // Importing Firestore functions
+import { query, where } from "firebase/firestore"; // Importing Firestore query functions
 import { useEffect } from "react"; // Importing useEffect hook for side effects
 import { useState } from "react"; // Importing useState hook for managing state
 import "../Styling/home.css"; // Importing the CSS file for styling
 import logo from "../../Assets/hrdc-logo-1.png"; // Importing the logo image
 import { Helmet } from "react-helmet"; // Importing the Helmet component for setting the title of the page
 import { Link } from "react-router-dom";
+import { orderBy, limit } from "firebase/firestore";
+import SendMessage from "../../components/SendMessage";
 
 function HomePage() {
     const navigate = useNavigate(); // Hook for navigation
     const user = auth.currentUser; // Get the current user from Firebase authentication
     const [userData, setUserData] = useState(null); // State for storing user data
+
+    // State variable for managin messaging
+    const [messageThreads, setMessageThreads] = useState([]);
+    const [recipientList, setRecipientList]  = useState([]);
+    const [selectedUsers, setSelectedUsers] = useState([]);
 
     // State variables for managing tickets and filters
     const [tickets, setTickets] = useState([]);
@@ -64,9 +72,53 @@ function HomePage() {
             }
         };
 
+        const fetchMessageThreads = async () => {
+            try {
+                const user = auth.currentUser;
+                const q = query(
+                    collection(db, 'messageThreads'),
+                    where('participants', 'array-contains', user.uid)
+                );
+                const querySnapshot = await getDocs(q);
+                const threads = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+        
+                // Populate the messageThreads state with threads and participants
+                const threadsWithData = await Promise.all(threads.map(async thread => ({
+                    ...thread,
+                    participantsNames: await getParticipantsNames(thread)
+                })));
+                setMessageThreads(threadsWithData);
+            } catch (error) {
+                console.error('Error fetching message threads:', error);
+            }
+        };
+        
+        
+        const fetchUsers = async () => {
+            try {
+                const usersCollectionRef = collection(db, 'users');
+                const querySnapshot = await getDocs(usersCollectionRef);
+                const users = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                setRecipientList(users);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        };
+    
+        
+        
+
         // Call the fetch functions
+        fetchUsers();
         fetchTickets();
         fetchUserData();
+        fetchMessageThreads();
     }, []);
 
     // Function to sign out the user
@@ -80,10 +132,11 @@ function HomePage() {
             })
     }
 
-    // Function to handle redirection to the messaging app
-    const handleRedirctToMessage = () => {
+    // Event handler for navigating to message room
+    const handleNavigateToMessageRoom = (threadId) => {
         navigate('/MessageApp'); // Navigate to the MessageApp page
     };
+
 
     // Event handlers for filter changes
     const handleStatusFilterChange = (event) => {
@@ -177,6 +230,104 @@ function HomePage() {
         }
     };
 
+
+// Function to get participants' names in a chat room
+    const getParticipantsNames = async (thread) => {
+        const user = auth.currentUser;
+        const participantIds = thread.participants.filter(id => id !== user.uid);
+        const participantNames = await Promise.all(participantIds.map(async (id) => {
+            return await getUserDisplayName(id);
+        }));
+        return participantNames;
+    };
+
+
+    const getUserDisplayName = async (userId) => {
+        try {
+          const docRef = collection(db, 'users');
+          const userDoc = await getDocs(docRef);
+          const user = userDoc.docs.find(doc => doc.id === userId)?.data();
+          return user?.name || 'Unknown';
+        } catch (error) {
+          console.error('Error getting user display name:', error);
+          return 'Unknown';
+        }
+      };
+      
+        // Function to get the last message in a chat room
+        const getLastMessage = async (thread) => {
+            try {
+                const messagesRef = collection(db, 'messages');
+                const q = query(
+                    messagesRef,
+                    where('messageThreads', '==', thread.id),
+                    orderBy('createdAt', 'desc'),
+                    limit(1)
+                );
+                const querySnapshot = await getDocs(q);
+                const lastMessage = querySnapshot.docs[0]?.data();
+                return lastMessage?.text || 'No messages';
+            } catch (error) {
+                console.error('Error getting last message:', error);
+                return 'Error fetching message';
+            }
+        };
+
+        // Function to create a new message thread
+        const createMessageThread = async (participants) => {
+            try {
+                const docRef = await addDoc(collection(db, "messageThreads"), {
+                    participants: participants
+                });
+                console.log("Message thread created with ID: ", docRef.id);
+                
+                // Update messageThreads state to include the newly created thread
+                setMessageThreads(prevThreads => [
+                    ...prevThreads,
+                    { id: docRef.id, participants: participants }
+                ]);
+            } catch (error) {
+                console.error("Error creating message thread: ", error);
+            }
+        };
+        // Function to filter users based on the search query
+        const filteredUsers = recipientList.filter(user =>
+            user.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        // Function to handle search query change
+        const handleSearchQueryChange = (event) => {
+            setSearchQuery(event.target.value);
+        };
+
+        // Function to handle user selection/deselection
+        const handleUserSelection = (userId) => {
+            if (selectedUsers.includes(userId)) {
+                setSelectedUsers(selectedUsers.filter(id => id !== userId)); // Deselect user
+            } else {
+                setSelectedUsers([...selectedUsers, userId]); // Select user
+            }
+        };
+
+        // Event handler for creating a new message thread
+        const handleCreateMessageThread = async () => {
+            const activeUser = auth.currentUser;
+            const selectedParticipants = [activeUser.uid, ...selectedUsers];
+        
+            try {
+              const docRef = await addDoc(collection(db, "messageThreads"), {
+                participants: selectedParticipants,
+                createdAt: serverTimestamp(),
+              });
+              console.log("Message thread created with ID: ", docRef.id);
+        
+              navigate(`/MessageApp/${docRef.id}`);
+            } catch (error) {
+              console.error("Error creating message thread: ", error);
+            }
+          };
+
+
     return (
         <div>
             <Helmet>
@@ -191,11 +342,45 @@ function HomePage() {
                     </div>
                 </div>
                 <div className="content">
-                    <div className="messaging-section">
-                        <h2>Messaging</h2>
-                        {/* Messaging section */}
-                        <button onClick={handleRedirctToMessage}>Go to Messaging</button>
+                <div className="messaging-section">
+                    <h2>Start New Message Thread</h2>
+                    {/* Render search bar and list of users */}
+                    <div>
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={handleSearchQueryChange}
+                            placeholder="Search users..."
+                        />
+                        <ul>
+                            {filteredUsers.map(user => (
+                                <li key={user.id}>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedUsers.includes(user.id)}
+                                        onChange={() => handleUserSelection(user.id)}
+                                    />
+                                    <label>{user.name}</label>
+                                </li>
+                            ))}
+                        </ul>
+                        {/* Button to create a new message thread */}
+                        <button onClick={handleCreateMessageThread}>Start Message Thread</button>
                     </div>
+                    <h2>Message Threads</h2>
+                            <ul>
+                            {messageThreads && messageThreads.map(thread => (
+                                <li key={thread.id}>
+                                    {/* Render message thread information with participants' names */}
+                                    <button onClick={() => handleNavigateToMessageRoom(thread.id)}>
+                                        {Array.isArray(thread.participantsNames) ? thread.participantsNames.join(', ') : ''}
+                                    </button>
+                                </li>
+                            ))}
+                            </ul>
+                            
+                </div>
+
                     <div className="ticketing-section">
                         <div className="ticketing-section-top-bar">
                             <h2>Ticket Management</h2>
