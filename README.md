@@ -10,7 +10,7 @@ Xander Burger - XanderBurger (https://github.com/XanderBurger)
 
 ### Links to Project
 
-[User Side](https://hrdcmaintenance.com/)  
+[User Side](https://hrdcmaintenance.com/login)  
 [Admin Side](https://admin.hrdcmaintenance.com/)
 
 ### Documentation
