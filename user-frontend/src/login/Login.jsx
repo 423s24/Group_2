@@ -8,7 +8,6 @@ import {doc, getDoc} from "firebase/firestore";
 export default function Login({user}) {
   const userNameRef = useRef();
   const passwordRef = useRef();
-
  
   const navigate = useNavigate();
   const [notice, setNotice] = useState("");
@@ -23,9 +22,8 @@ export default function Login({user}) {
   const [passwordFocus, setPasswordFocus] = useState(false);
 
   useEffect(()=>{
-    if(user) {navigate("/home")}
+    if(user) {navigate("/")}
   },[])
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +35,7 @@ export default function Login({user}) {
         return user;
     })
     .then((user) => {
-        navigate("/home");    
+        navigate("/");    
     })
     .catch((error) => {
         const errorCode = error.code;

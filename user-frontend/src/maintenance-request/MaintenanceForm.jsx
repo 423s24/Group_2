@@ -6,7 +6,7 @@ import "./maintenanceForm.css";
 import { useNavigate } from 'react-router-dom';
 
 export default function MaintenanceForm() {
-    const navigate =useNavigate();
+    const navigate = useNavigate();
     const initialFormData = {
         title: '',
         description: '',
@@ -127,10 +127,10 @@ export default function MaintenanceForm() {
 
     return (
         <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-        <button style={{color: "#107178", padding:"5px 10px 5px 10px", marginTop: "40px", fontSize: "18px", width:"fit-content"}} onClick={() => {navigate("/home")}}>Back</button>
+        <button style={{color: "#107178", padding:"5px 10px 5px 10px", marginTop: "40px", fontSize: "18px", width:"fit-content"}} onClick={() => {navigate("/")}}>Back</button>
         <section className="form-section">
             <h1>Request Maintenance</h1>
-            <form className="form-section" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <div className='input-group wide-input'>
                     <input
                         type="text"
