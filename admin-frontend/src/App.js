@@ -42,7 +42,7 @@ function App() {
         <Route path="/login" element={<LoginPage user={user}/>} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/MessageApp" element={<MessageApp />} />
+        <Route path="/MessageApp/:threadId" element={<MessageApp />} />
         <Route path="/ticket/:id" element={<TicketLoader />} />
         <Route path="/ticket/edit/:id" element={<EditTicket />} />
       </Routes>

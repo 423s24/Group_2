@@ -24,9 +24,8 @@ const ChatBox = ({ messageId }) => {
     if (!messageId) return;
 
     // Creating a query to fetch messages that belong to the specified messageId
-    const q = query(
-      collection(db, "messages"),
-      where("messageThreadId", "==", messageId),
+    const  q = query(
+      collection(db, "messageThreads/${messageId}/messages"),
       orderBy("createdAt", "desc"), // Ordering messages by creation time
       limit(50) // Limiting the number of messages fetched to 50
     );
@@ -37,7 +36,7 @@ const ChatBox = ({ messageId }) => {
       // Iterating over each document in the snapshot
       querySnapshot.forEach((doc) => {
         // Pushing the message data along with its document ID into fetchedMessages array
-        fetchedMessages.push({ ...doc.data(), id: doc.id });
+        fetchedMessages.push({id: doc.id, ...doc.data(), id: doc.id });
       });
       // Sorting messages by creation time
       const sortedMessages = fetchedMessages.sort(

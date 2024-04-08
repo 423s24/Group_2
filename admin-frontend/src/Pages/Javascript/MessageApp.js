@@ -3,9 +3,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { auth, db } from '../../Backend/Firebase';
-import { getDocs, collection } from 'firebase/firestore';
+import { getDocs, collection, doc, getDoc, query, where } from 'firebase/firestore';
 import ChatBox from '../../components/ChatBox'; 
 import SendMessage from '../../components/SendMessage';
 import "../Styling/MessagingApp.css";
@@ -13,6 +13,7 @@ import logo from "../../Assets/hrdc-logo-1.png";
 
 // The main MessageApp component definition
 const MessageApp = () => {
+    let { threadId } = useParams();
     const navigate = useNavigate(); // Hook to programmatically navigate
     const [user, loading, error] = useAuthState(auth); // Current user state, loading status, and error
     const [userData, setUserData] = useState(null); // State for storing user data
@@ -24,25 +25,44 @@ const MessageApp = () => {
     useEffect(() => {
         if (user) {
             const fetchUserData = async () => {
-                const docRef = collection(db, 'users');
-                const querySnapshot = await getDocs(docRef);
-                const users = querySnapshot.docs.map(doc => doc.data());
-                const currentUserData = users.find(u => u.uid === user.uid);
-                setUserData(currentUserData);
+                try {
+                    const docRef = doc(db, "users", user.uid);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        setUserData(docSnap.data());
+                    } else {
+                        console.log("No such document");
+                    }
+                } catch (error) {
+                    console.error("Error getting document: ", error);
+                }
             };
-
+    
             const fetchMessageThreads = async () => {
-                const messageThreadsCollectionRef = collection(db, 'messageThreads');
-                const querySnapshot = await getDocs(messageThreadsCollectionRef);
-                const threadsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                setMessageThreads(threadsData);
+                try {
+                    const messageThreadsCollectionRef = collection(db, 'messageThreads');
+                    // Fetching only the threads where the current user is a participant
+                    const q = query(messageThreadsCollectionRef, where('participants', 'array-contains', user.uid));
+                    const querySnapshot = await getDocs(q);
+    
+                    if (!querySnapshot.empty) {
+                        const threadsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        setMessageThreads(threadsData);
+                        console.log(threadsData)
+                    } else {
+                        console.log("No message threads found");
+                        setMessageThreads([]); // Set to an empty array if no threads are found
+                    }
+                } catch (error) {
+                    console.error("Error fetching message threads: ", error);
+                }
             };
-
+    
             fetchUserData();
             fetchMessageThreads();
         }
-    }, [user]); // This effect depends on the `user` state
-
+    }, [user]);
+    
     // Function to handle user sign-out
     const signUserOut = () => {
         signOut(auth).then(() => {
@@ -61,6 +81,7 @@ const MessageApp = () => {
 
     // The component's rendered JSX
     return (
+        
         <div>
             <Helmet>
                 <title>Message App</title> {/* Sets the page title */}
@@ -91,6 +112,7 @@ const MessageApp = () => {
             </div>
         </div>
     );
+    
 };
 
 // Exporting the component for use in other parts of the app

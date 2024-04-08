@@ -68,7 +68,7 @@ const SendMessage = ({ scroll, messageThreadId }) => {
         onChange={(e) => setMessage(e.target.value)} // Update message state on change
         disabled={isSending} // Disable the input when a message is being sent
       />
-      <button type="submit" disabled={isSending}>Send</button> // Disable the button when a message is being sent
+      <button type="submit" disabled={isSending}>Send</button>
     </form>
   );
 };

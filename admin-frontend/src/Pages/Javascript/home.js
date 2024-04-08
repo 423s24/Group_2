@@ -135,10 +135,6 @@ function HomePage() {
             })
     }
 
-    // Event handler for navigating to message room
-    const handleNavigateToMessageRoom = (threadId) => {
-        navigate('/MessageApp'); // Navigate to the MessageApp page
-    };
 
 
     // Event handlers for filter changes
@@ -292,23 +288,7 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
             }
         };
 
-        // Function to create a new message thread
-        const createMessageThread = async (participants) => {
-            try {
-                const docRef = await addDoc(collection(db, "messageThreads"), {
-                    participants: participants
-                });
-                console.log("Message thread created with ID: ", docRef.id);
-                
-                // Update messageThreads state to include the newly created thread
-                setMessageThreads(prevThreads => [
-                    ...prevThreads,
-                    { id: docRef.id, participants: participants }
-                ]);
-            } catch (error) {
-                console.error("Error creating message thread: ", error);
-            }
-        };
+
         // Function to filter users based on the search query
         const filteredUsers = recipientList.filter(user =>
             user.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -328,23 +308,52 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
             }
         };
 
-        // Event handler for creating a new message thread
         const handleCreateMessageThread = async () => {
             const activeUser = auth.currentUser;
-            const selectedParticipants = [activeUser.uid, ...selectedUsers];
+            const selectedParticipants = [activeUser.uid, ...selectedUsers].sort();
         
             try {
-              const docRef = await addDoc(collection(db, "messageThreads"), {
-                participants: selectedParticipants,
-                createdAt: serverTimestamp(),
-              });
-              console.log("Message thread created with ID: ", docRef.id);
+                // Check if a thread with these participants already exists
+                const threadsQuery = query(
+                    collection(db, "messageThreads"),
+                    where("participants", "array-contains", activeUser.uid)
+                );
         
-              navigate(`/MessageApp/${docRef.id}`);
+                const querySnapshot = await getDocs(threadsQuery);
+                let existingThread = null;
+        
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
+                    const participants = data.participants.sort();
+                    if (JSON.stringify(participants) === JSON.stringify(selectedParticipants)) {
+                        existingThread = { id: doc.id, ...data };
+                    }
+                });
+        
+                if (existingThread) {
+                    console.log("Navigating to existing thread:", existingThread.id);
+                    navigate(`/MessageApp/${existingThread.id}`);
+                } else {
+                    // Create a new thread if it doesn't exist
+                    const docRef = await addDoc(collection(db, "messageThreads"), {
+                        participants: selectedParticipants,
+                        createdAt: serverTimestamp(),
+                    });
+                    console.log("Message thread created with ID: ", docRef.id);
+                    navigate(`/MessageApp/${docRef.id}`);
+                }
             } catch (error) {
-              console.error("Error creating message thread: ", error);
+                console.error("Error creating/checking message thread: ", error);
             }
-          };
+        };
+        
+
+        // Event handler for navigating to message room
+        // This function will now use threadId to navigate to the specific message thread
+        const handleNavigateToMessageRoom = (threadId) => {
+            navigate(`/MessageApp/${threadId}`); // Navigate to the specific thread
+        };
+
 
 
     return (
@@ -387,17 +396,16 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                         <button onClick={handleCreateMessageThread}>Start Message Thread</button>
                     </div>
                     <h2>Message Threads</h2>
-                            <ul>
-                            {messageThreads && messageThreads.map(thread => (
-                                <li key={thread.id}>
-                                    {/* Render message thread information with participants' names */}
-                                    <button onClick={() => handleNavigateToMessageRoom(thread.id)}>
-                                        {Array.isArray(thread.participantsNames) ? thread.participantsNames.join(', ') : ''}
-                                    </button>
-                                </li>
-                            ))}
-                            </ul>
-                            
+                        <ul>
+                        {messageThreads && messageThreads.map(thread => (
+                            <li key={thread.id}>
+                                {/* Render message thread information with participants' names */}
+                                <button onClick={() => handleNavigateToMessageRoom(thread.id)}>
+                                    {Array.isArray(thread.participantsNames) ? thread.participantsNames.join(', ') : ''}
+                                </button>
+                            </li>
+                        ))}
+                        </ul>      
                 </div>
 
                     <div className="ticketing-section">
