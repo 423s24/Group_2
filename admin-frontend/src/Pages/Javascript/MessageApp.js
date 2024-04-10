@@ -61,7 +61,12 @@ const MessageApp = () => {
             fetchUserData();
             fetchMessageThreads();
         }
-    }, [user]);
+
+        if (threadId) {
+            setSelectedThreadId(threadId);
+        }
+
+    }, [user, threadId]);
     
     // Function to handle user sign-out
     const signUserOut = () => {
@@ -80,6 +85,9 @@ const MessageApp = () => {
     };
 
     // The component's rendered JSX
+
+    console.log("Selected Thread ID: ", selectedThreadId)
+
     return (
         
         <div>

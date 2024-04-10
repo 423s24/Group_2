@@ -24,11 +24,12 @@ const ChatBox = ({ messageId }) => {
     if (!messageId) return;
 
     // Creating a query to fetch messages that belong to the specified messageId
-    const  q = query(
-      collection(db, "messageThreads/${messageId}/messages"),
-      orderBy("createdAt", "desc"), // Ordering messages by creation time
-      limit(50) // Limiting the number of messages fetched to 50
+    const q = query(
+      collection(db, `messageThreads/${messageId}/messages`),
+      orderBy("createdAt", "desc"),
+      limit(50)
     );
+    
 
     // Subscribing to the messages query to listen for real-time updates
     const unsubscribe = onSnapshot(q, (querySnapshot) => {

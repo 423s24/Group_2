@@ -373,7 +373,7 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                 <div className="messaging-section">
                     <h2>Start New Message Thread</h2>
                     {/* Render search bar and list of users */}
-                    <div>
+                    <div className="messaging-new-thread">
                         <input
                             type="text"
                             value={searchQuery}
@@ -395,17 +395,19 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                         {/* Button to create a new message thread */}
                         <button onClick={handleCreateMessageThread}>Start Message Thread</button>
                     </div>
-                    <h2>Message Threads</h2>
-                        <ul>
-                        {messageThreads && messageThreads.map(thread => (
-                            <li key={thread.id}>
-                                {/* Render message thread information with participants' names */}
-                                <button onClick={() => handleNavigateToMessageRoom(thread.id)}>
-                                    {Array.isArray(thread.participantsNames) ? thread.participantsNames.join(', ') : ''}
-                                </button>
-                            </li>
-                        ))}
-                        </ul>      
+                    <div className="messaging-thread">
+                        <h2>Message Threads</h2>
+                            <ul>
+                            {messageThreads && messageThreads.map(thread => (
+                                <li key={thread.id}>
+                                    {/* Render message thread information with participants' names */}
+                                    <button onClick={() => handleNavigateToMessageRoom(thread.id)}>
+                                        {Array.isArray(thread.participantsNames) ? thread.participantsNames.join(', ') : ''}
+                                    </button>
+                                </li>
+                            ))}
+                            </ul> 
+                    </div>     
                 </div>
 
                     <div className="ticketing-section">

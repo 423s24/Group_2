@@ -50,6 +50,88 @@
     background-color: #f5f5f5;
 }
 
+/* Messaging New Thread Section Styling */
+.messaging-new-thread {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.messaging-new-thread h2 {
+    margin: 0 0 15px;
+    font-size: 20px;
+    color: #333;
+}
+
+.messaging-new-thread input[type="text"] {
+    width: calc(100% - 22px); /* Adjust width to account for padding and border */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.messaging-new-thread button {
+    background-color: #107178;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.messaging-new-thread button:hover {
+    background-color: #0a5650;
+}
+
+/* Messaging Thread List Section Styling */
+.messaging-thread {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.messaging-thread ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.messaging-thread li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.messaging-thread li:last-child {
+    border-bottom: none;
+}
+
+.messaging-thread li:hover {
+    background-color: #e9e9e9;
+}
+
+.messaging-thread button {
+    background-color: transparent;
+    color: #107178;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.messaging-thread button:hover {
+    text-decoration: underline;
+}
+
+
 .ticketing-section {
     flex: 2;
 }
