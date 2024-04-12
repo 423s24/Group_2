@@ -78,7 +78,8 @@ form {
 }
 
 .input-group-checkbox input[type="checkbox"] {
-  margin-right: 10px;
+  margin-right: 4px;
+  margin-left: 10px;
   cursor: pointer;
 }
 

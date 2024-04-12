@@ -119,7 +119,8 @@ export default function Registration() {
   }
 
   return (
-    <section className='form-section'>
+    <div>
+    <section className='form-section' style={{marginBottom: "10px"}}>
           <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
           <h1>Register</h1>
           <form onSubmit={handleSubmit}>
@@ -267,5 +268,8 @@ export default function Registration() {
               <button className='login-button' disabled={!validFirstName || !validPwd || !validMatch ? true : false}>Register</button>
           </form>
     </section>
+    <button style={{color: "#107178", padding:"5px 10px 5px 10px", marginBottom: "40px", marginTop: "40px", fontSize: "18px", width:"fit-content"}} onClick={() => {navigate("/login")}}>Back</button>
+    </div>
+
   )
 }
