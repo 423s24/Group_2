@@ -42,7 +42,7 @@ function App() {
         <Routes>
           <Route path="login" element={<Login user={user}/>}/>
           <Route path="register" element={<Registration/>} />
-          <Route path="home" element={<ProtectedRoute user={user}><Home user={user}/></ProtectedRoute>} />
+          <Route path="/" element={<ProtectedRoute user={user}><Home user={user}/></ProtectedRoute>} />
           <Route path="maintenance" element={<ProtectedRoute user={user}><MaintenanceForm /></ProtectedRoute>} />
           <Route path="loading" element={<LoaderScreen />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

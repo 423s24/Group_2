@@ -4,9 +4,17 @@ import { auth, db, storage } from "../backend/Firebase"
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import "./maintenanceForm.css";
 import { useNavigate } from 'react-router-dom';
+import LoaderScreen from '../components/loadingScreen';
+
+
 
 export default function MaintenanceForm() {
-    const navigate =useNavigate();
+    const [loading, setLoading] = useState(false)
+    const [completed, setCompleted] = useState(false)
+    const [userResponse, setUserResponse] = useState("")
+
+
+    const navigate = useNavigate();
     const initialFormData = {
         title: '',
         description: '',
@@ -38,6 +46,30 @@ export default function MaintenanceForm() {
         const file = e.target.files[0];
         setAttachment(file);
     };
+
+
+    const SubmissionWindow = () => {
+        return(
+            <div style={{position:"absolute", zIndex: 10, width: "100vw", height: "100vh", background:"#F9F9F9", display:"grid", alignItems: "center", justifyItems:"center"}}>
+                <div style={{display: "grid", alignItems: "center", justifyContent: "center", background:"#fff", borderRadius: "10px", width: "75%", height: "400px"}}>
+                    <LoaderScreen/>
+                </div>
+            </div>
+        )
+    }
+    
+    const CompletedWindow = ({message}) => {
+        return(
+            <div style={{position:"absolute", zIndex: 10, width: "100vw", height: "100vh", background:"#F9F9F9", display:"grid", alignItems: "center", justifyItems:"center"}}>
+                <div style={{display: "grid", alignItems: "center", justifyContent: "center", background:"#fff", borderRadius: "10px", width: "75%", height: "400px"}}>
+                    <div style={{display:"grid", justifyItems: "center"}}>
+                    <h1 style={{color: "#107178", fontSize: "40px"}}>{message}</h1>
+                    <button style={{color: "#107178", padding:"5px 10px 5px 10px", marginTop: "40px", fontSize: "18px", width:"fit-content"}} onClick={() => {navigate("/")}}>Go Home</button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     const formatPhoneNumber = (numericValue) => {
         const cleaned = ('' + numericValue).replace(/\D/g, '');
@@ -102,6 +134,8 @@ export default function MaintenanceForm() {
                 });
             }
 
+            setLoading(true)            
+
             const response = await fetch('https://hrdc-email.onrender.com/send-email', {
                 method: 'POST',
                 headers: {
@@ -113,11 +147,16 @@ export default function MaintenanceForm() {
                 }),
             });
 
+            setLoading(false)
+            setCompleted(true)
+            
             if (response.ok) {
                 console.log("Email sent successfully.");
                 setFormData(initialFormData);
+                setUserResponse("Request Sent!")
             } else {
                 console.error("Email did not send.");
+                setUserResponse("Sorry, we've encountered an error")
             }
 
         } catch (error) {
@@ -126,11 +165,13 @@ export default function MaintenanceForm() {
     };
 
     return (
+        <>
+        {loading ? <SubmissionWindow/> :  completed ? <CompletedWindow message={userResponse}/> :
         <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-        <button style={{color: "#107178", padding:"5px 10px 5px 10px", marginTop: "40px", fontSize: "18px", width:"fit-content"}} onClick={() => {navigate("/home")}}>Back</button>
+        <button style={{color: "#107178", padding:"5px 10px 5px 10px", marginTop: "40px", fontSize: "18px", width:"fit-content"}} onClick={() => {navigate("/")}}>Back</button>
         <section className="form-section">
             <h1>Request Maintenance</h1>
-            <form className="form-section" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <div className='input-group wide-input'>
                     <input
                         type="text"
@@ -270,7 +311,8 @@ export default function MaintenanceForm() {
                 <button className='login-button'>Submit</button>
             </form>
         </section>
-        </div>
+        </div>}
+        </>
     )
 
 }

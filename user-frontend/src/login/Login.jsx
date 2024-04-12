@@ -8,7 +8,6 @@ import {doc, getDoc} from "firebase/firestore";
 export default function Login({user}) {
   const userNameRef = useRef();
   const passwordRef = useRef();
-
  
   const navigate = useNavigate();
   const [notice, setNotice] = useState("");
@@ -23,9 +22,8 @@ export default function Login({user}) {
   const [passwordFocus, setPasswordFocus] = useState(false);
 
   useEffect(()=>{
-    if(user) {navigate("/home")}
+    if(user) {navigate("/")}
   },[])
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +35,7 @@ export default function Login({user}) {
         return user;
     })
     .then((user) => {
-        navigate("/home");    
+        navigate("/");    
     })
     .catch((error) => {
         const errorCode = error.code;
@@ -48,6 +46,8 @@ export default function Login({user}) {
 }
 
   return (
+    <div style={{width: "100%", display: "grid", justifyItems: "center"}}>
+      <h1 style={{marginTop: "40px", textAlign: "center", color: "#107178", fontSize: "40px", maxWidth: "600px"}}>Welcome to the HRDC Maintenance Portal</h1>
     <section className='form-section'>
     <h1>Login</h1>
     <form className='input-form' onSubmit={handleSubmit}>
@@ -91,8 +91,13 @@ export default function Login({user}) {
         <button className='login-button' data-testid="login-button">Login</button>
         </form>
         <p className='login-error' data-testid="login-notice">{notice}</p>
+        
         <p>Forgot your password? <Link to="../forgot-password" style={{ color: '#000' }}>Reset it</Link></p>
        </section>
-
+       <div style={{background: "#fff", padding: "20px", borderRadius: "10px"}}>
+        <p style={{}}>Don't have an Account? <Link to="../register" style={{ color: '#000' }}>Register</Link></p>
+       </div>
+       
+      </div>
   )
 }

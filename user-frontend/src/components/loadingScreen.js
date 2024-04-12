@@ -19,7 +19,8 @@ const circleStyle = {
 }
 
 const spinTransition = {
-    loop: Infinity,
+    repeat: Infinity, // Loop forever
+    repeatType: "loop",
     duration: 1,
     ease: "linear"
 }
