@@ -9,7 +9,7 @@ export default function Home({user}) {
 
     const navigate = useNavigate()
     const [tickets, setTickets] = useState(null)
-    const statusColors = {open: "#23b848", closed: "#bababa"} 
+    const statusColors = {open: "#23b848", closed: "#bababa", "in progress": "#1165f5"} 
 
     useEffect(()=>{
         const fetchTickets = async() => {
