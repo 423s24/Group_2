@@ -93,6 +93,7 @@ export default function MaintenanceForm() {
 
             let userRef;
             let userDocSnap;
+            let attachmentUrl = '';
 
             if (user) {
                 formData.userId = user.uid;
@@ -106,19 +107,15 @@ export default function MaintenanceForm() {
                     formData.phone = userData.phone;
                 }
             }
-            let attachmentUrl = '';
+            
 
             if (attachment) {
                 const storageRef = ref(storage, `attachments/${attachment.name}`);
                 const uploadTask = uploadBytesResumable(storageRef, attachment);
-
-                await uploadTask.then((snapshot) => {
-                    console.log('Uploaded file successfully');
-                    getDownloadURL(snapshot.ref).then((downloadURL) => {
-                        console.log('File available at', downloadURL);
-                        attachmentUrl = downloadURL;
-                    });
-                });
+                const snapshot = await uploadTask;
+                console.log('Uploaded file successfully');
+                attachmentUrl = await getDownloadURL(snapshot.ref);
+                console.log('File available at', attachmentUrl);
             }
 
             formData.attachmentUrl = attachmentUrl;
