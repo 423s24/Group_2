@@ -209,3 +209,7 @@ textarea{
   }
 
 }
+
+button {
+  cursor: pointer;
+}
