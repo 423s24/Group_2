@@ -77,10 +77,13 @@ function HomePage() {
                 const querySnapshot = await getDocs(ticketsCollectionRef);
                 const ticketsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 setTickets(ticketsData);
+                
             } catch (error) {
                 console.error("Error fetching tickets: ", error);
             }
         };
+
+
 
         const fetchMessageThreads = async () => {
             try {
@@ -127,6 +130,7 @@ function HomePage() {
         // Call the fetch functions
         fetchUsers();
         fetchTickets();
+        console.log(tickets)
         fetchUserData();
         fetchMessageThreads();
     }, []);
@@ -441,7 +445,7 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                                 <select value={filterStatus} onChange={handleStatusFilterChange}>
                                     <option value="all">All</option>
                                     <option value="open">Open</option>
-                                    <option value="inProgress">In Progress</option>
+                                    <option value="in progress">In Progress</option>
                                     <option value="resolved">Resolved</option>
                                 </select>
                             </div>
