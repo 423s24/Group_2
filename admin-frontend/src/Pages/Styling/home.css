@@ -57,6 +57,8 @@
     padding: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .messaging-new-thread h2 {
@@ -297,3 +299,10 @@
 .ticket-link {
     text-decoration: none;
 }
+
+.user-select-dropdown, button {
+    display: block;
+    width: 100%; 
+    margin-top: 10px; 
+}
+

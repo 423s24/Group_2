@@ -23,12 +23,18 @@ function HomePage() {
     const [recipientList, setRecipientList]  = useState([]);
     const [selectedUsers, setSelectedUsers] = useState([]);
 
+    // State variables for search mechanics
+    const [userSearchQuery, setUserSearchQuery] = useState(''); // For user search in messaging section
+    const [ticketSearchQuery, setTicketSearchQuery] = useState(''); // For ticket search in ticketing section
+
+    
+
     // State variables for managing tickets and filters
     const [tickets, setTickets] = useState([]);
     const [filterUrgency, setFilterUrgency] = useState('all');
     const [filterStatus, setFilterStatus] = useState('all');
     const [filterRelated, setFilterRelated] = useState('all');
-    const [searchQuery, setSearchQuery] = useState('');
+    //const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('dateCreated');
     const [sortByUrgency, setSortByUrgency] = useState('all');
     const [filterAssignedTo, setFilterAssignedTo] = useState('all');
@@ -152,9 +158,13 @@ function HomePage() {
         console.log(event.target.value);
     };
 
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
-    };
+    //const handleSearchChange = (event) => {
+    //   setSearchQuery(event.target.value);
+    //};
+
+    const handleTicketSearchChange = (event) => {
+        setTicketSearchQuery(event.target.value)
+    }
     
     const handleSortChange = (event) => {
         setSortBy(event.target.value);
@@ -188,9 +198,9 @@ function HomePage() {
         }
         
         // Filter by search query
-        if (searchQuery) {
+        if (ticketSearchQuery) {
             passesFilters = Object.values(ticket).some(value => 
-                typeof value === 'string' && value.toLowerCase().includes(searchQuery.toLowerCase())
+                typeof value === 'string' && value.toLowerCase().includes(ticketSearchQuery.toLowerCase())
             );
         }
     
@@ -291,22 +301,23 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
 
         // Function to filter users based on the search query
         const filteredUsers = recipientList.filter(user =>
-            user.name.toLowerCase().includes(searchQuery.toLowerCase())
+            user.name.toLowerCase().includes(userSearchQuery.toLowerCase())
         );
 
         // Function to handle search query change
-        const handleSearchQueryChange = (event) => {
-            setSearchQuery(event.target.value);
+        const handleUserSearchQueryChange = (event) => {
+            setUserSearchQuery(event.target.value);
+        };
+
+        const handleTciketSearchQueryChange = (event) => {
+            setTicketSearchQuery(event.target.value);
         };
 
         // Function to handle user selection/deselection
-        const handleUserSelection = (userId) => {
-            if (selectedUsers.includes(userId)) {
-                setSelectedUsers(selectedUsers.filter(id => id !== userId)); // Deselect user
-            } else {
-                setSelectedUsers([...selectedUsers, userId]); // Select user
-            }
+        const handleUserSelection = (event) => {
+            setSelectedUsers([event.target.value]);
         };
+        
 
         const handleCreateMessageThread = async () => {
             const activeUser = auth.currentUser;
@@ -376,23 +387,17 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                     <div className="messaging-new-thread">
                         <input
                             type="text"
-                            value={searchQuery}
-                            onChange={handleSearchQueryChange}
+                            value={userSearchQuery}
+                            onChange={(handleUserSearchQueryChange)}
                             placeholder="Search users..."
                         />
-                        <ul>
+                        <select onChange={handleUserSelection} value={selectedUsers} className="user-select-dropdown">
                             {filteredUsers.map(user => (
-                                <li key={user.id}>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedUsers.includes(user.id)}
-                                        onChange={() => handleUserSelection(user.id)}
-                                    />
-                                    <label>{user.name}</label>
-                                </li>
+                                <option key={user.id} value={user.id}>
+                                    {user.name}
+                                </option>
                             ))}
-                        </ul>
-                        {/* Button to create a new message thread */}
+                        </select>
                         <button onClick={handleCreateMessageThread}>Start Message Thread</button>
                     </div>
                     <div className="messaging-thread">
@@ -420,8 +425,8 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                             <h3>Search</h3>
                             <input
                                 type="text"
-                                value={searchQuery}
-                                onChange={handleSearchChange}
+                                value={ticketSearchQuery}
+                                onChange={handleTicketSearchChange}
                                 placeholder="Search by ticket description"
                             />
                         </div>

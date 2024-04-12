@@ -97,10 +97,12 @@ const MessageApp = () => {
             <div className="home-container">
                 <div className="header">
                     <Link to="/" className="home-button">
-                        <img src={logo} alt="HRDC Logo" className="logo" /> {/* Logo and link to home */}
+                        <img src={logo} alt="HRDC Logo" className="logo" />
                     </Link>
-                    {userData && <h1>Welcome, {userData.name}</h1>} {/* Greeting the user */}
-                    <button onClick={signUserOut}>Sign Out</button> {/* Sign-out button */}
+                    <div className="welcome-container">
+                        {userData && <h1>Welcome, {userData.name}</h1>}
+                        <button onClick={signUserOut}>Sign Out</button>
+                    </div>
                 </div>
                 <div className="message-threads">
                     <ul>

@@ -5,6 +5,41 @@
       Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     letter-spacing: 0.5px;
   }
+
+  /* Page Styling */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+  /* Header Styling */
+.header {
+  background-color: #107178;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 18px;
+  color: white;
+}
+
+/* Sign-out Button Styling */
+.header button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.header button:hover {
+  text-decoration: underline;
+}
  
   
 
@@ -52,39 +87,49 @@
   text-align: right;
 }
 
+
+
 /* send message */
 .send-message {
   position: fixed;
-  bottom: 0px;
+  bottom: 0;
+  left: 0;
   width: 100%;
   padding: 20px 30px;
   background-color: #107178;
   display: flex;
+  align-items: center; /* Align children vertically in the center */
 }
+
 .send-message > input {
   height: 40px;
-  padding: 10px 10px;
+  padding: 10px;
   border-radius: 5px 0 0 5px;
   border: none;
   flex-grow: 1;
   background-color: white;
   color: #1c2c4c;
   font-size: 1rem;
+  /* Remove default browser styles if necessary */
+  outline: none;
 }
+
 .send-message > input:placeholder {
   color: #ddd;
 }
-.send-message > :is(input, button):focus {
-  outline: none;
-  border-bottom: 1px solid #7cc5d9;
-}
+
 .send-message > button {
   width: 70px;
   height: 40px;
-  padding: 5px 10px;
+  padding: 0; /* Adjust padding if necessary */
   border-radius: 0 5px 5px 0;
-  color: #242443;
   border: 1px solid #A1A750;
   background-color: #A1A750;
+  color: #242443;
   font-weight: 600;
+  /* Align text inside the button if necessary */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
 }
