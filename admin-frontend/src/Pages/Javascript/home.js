@@ -27,8 +27,6 @@ function HomePage() {
     const [userSearchQuery, setUserSearchQuery] = useState(''); // For user search in messaging section
     const [ticketSearchQuery, setTicketSearchQuery] = useState(''); // For ticket search in ticketing section
 
-    
-
     // State variables for managing tickets and filters
     const [tickets, setTickets] = useState([]);
     const [filterUrgency, setFilterUrgency] = useState('all');
@@ -213,20 +211,24 @@ function HomePage() {
     });
 // Sorting tickets based on creation date
 const sortedTickets = filteredTickets.slice().sort((a, b) => {
+    const dateA = a.dateCreated ? a.dateCreated.toDate() : null;
+    const dateB = b.dateCreated ? b.dateCreated.toDate() : null;
+
     if (sortBy === 'newest') {
-        return new Date(b.dateCreated) - new Date(a.dateCreated);
+        return dateB ? dateB - dateA : -1;
     } else if (sortBy === 'oldest') {
-        return new Date(a.dateCreated) - new Date(b.dateCreated);
+        return dateA ? dateA - dateB : 1;
     }
     // Default case, no sorting
-    return 0 ;
+    return 0;
 });
 // Sorting tickets based on urgency
 const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
     if (sortByUrgency === '1') {
         return a.urgency - b.urgency; // Sort by urgency from lowest to highest
+    } else {
+        return b.urgency - a.urgency; // Sort by urgency from highest to lowest
     }
-   
 });
     
     // Function to handle input changes in the new ticket form
@@ -551,43 +553,43 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                         </div>
                         )}
                     </div>
-                        {/* Display sorted tickets */}
                         <div className="ticket-list">
-                        {sortedTickets.map(ticket => (
-                            <Link className="ticket-link" to={`ticket/${ticket.id}`} key={ticket.id}>
-                                <div className="ticket-container">
-                                    <div className="ticket">
-                                        <h3>{ticket.title}</h3>
-                                        <p>Address: {ticket.address}</p>
-                                        <p>Urgency: {ticket.urgency}</p>
-                                        <p>Service Type: {ticket.serviceType}</p>
-                                        <p>Building Type: {ticket.buildingType}</p>
-                                        {/*ticket.attachmentUrl && <img src={ticket.attachmentUrl} alt="Attachment" />*/}
-                                    </div>
-                                </div>
-                            </Link>
-                        ))}
- </div>
-                        {/* Display sorted tickets by urgency */}
-                        <div className="ticket-list">
-                            {sortedByUrgency.map(ticket => (
-                                <Link className="ticket-link" to={`ticket/${ticket.id}`} key={ticket.id}>
-                                    <div className="ticket-container">
-                                        <div className="ticket">
-                                            <h3>{ticket.title}</h3>
-                                            <p>Address: {ticket.address}</p>
-                                            <p>Urgency: {ticket.urgency}</p>
-                                            <p>Service Type: {ticket.serviceType}</p>
-                                            <p>Building Type: {ticket.buildingType}</p>
+                            {sortByUrgency === 'all' ? (
+                                // Display sorted tickets
+                                sortedTickets.map(ticket => (
+                                    <Link className="ticket-link" to={`ticket/${ticket.id}`} key={ticket.id}>
+                                        <div className="ticket-container">
+                                            <div className="ticket">
+                                                <h3>{ticket.title}</h3>
+                                                <p>Address: {ticket.address}</p>
+                                                <p>Urgency: {ticket.urgency}</p>
+                                                <p>Service Type: {ticket.serviceType}</p>
+                                                <p>Building Type: {ticket.buildingType}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </Link>
-                            ))}
+                                    </Link>
+                                ))
+                            ) : (
+                                // Display sorted tickets by urgency
+                                sortedByUrgency.map(ticket => (
+                                    <Link className="ticket-link" to={`ticket/${ticket.id}`} key={ticket.id}>
+                                        <div className="ticket-container">
+                                            <div className="ticket">
+                                                <h3>{ticket.title}</h3>
+                                                <p>Address: {ticket.address}</p>
+                                                <p>Urgency: {ticket.urgency}</p>
+                                                <p>Service Type: {ticket.serviceType}</p>
+                                                <p>Building Type: {ticket.buildingType}</p>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                ))
+                            )}
                         </div>
                     </div>
                 </div>
                 <div className="footer">
-                    <p>&copy; Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                    <p>&copy; 2024 Human Resources Development Council. All Rights Reserved. </p>
                 </div>
             </div>
         </div>
