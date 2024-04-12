@@ -51,6 +51,7 @@ function HomePage() {
         related: "",
         relation: "",
         urgency: "",
+        attachmentUrl: "",
     });
 
     useEffect(() => {
@@ -557,6 +558,7 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                                         <p>Urgency: {ticket.urgency}</p>
                                         <p>Service Type: {ticket.serviceType}</p>
                                         <p>Building Type: {ticket.buildingType}</p>
+                                        {/*ticket.attachmentUrl && <img src={ticket.attachmentUrl} alt="Attachment" />*/}
                                     </div>
                                 </div>
                             </Link>
