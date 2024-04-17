@@ -153,7 +153,7 @@ export default function MaintenanceForm() {
                 setUserResponse("Request Sent!")
             } else {
                 console.error("Email did not send.");
-                setUserResponse("Sorry, we've encountered an error")
+                setUserResponse("Sorry, we've encountered an error.")
             }
 
         } catch (error) {
@@ -210,19 +210,6 @@ export default function MaintenanceForm() {
                 <div className='input-group wide-input'>
                     <input
                         type="text"
-                        id="buildingType"
-                        name="buildingType"
-                        autoComplete="off"
-                        required
-                        onChange={handleChange}
-                        value={formData.buildingType}
-                    />
-                    <label htmlFor='buildingType'>Building Type</label>
-                </div>    
-
-                <div className='input-group wide-input'>
-                    <input
-                        type="text"
                         id="area"
                         name="area"
                         autoComplete="off"
@@ -231,7 +218,7 @@ export default function MaintenanceForm() {
                         onChange={handleChange}
                         value={formData.area}
                     />
-                    <label htmlFor="area">Area of the House</label>
+                    <label htmlFor="area">Area of the Building</label>
                 </div>
 
                 <div className='input-group-select'>
@@ -277,6 +264,19 @@ export default function MaintenanceForm() {
                             onChange={handleChange}
                         />
                         <label htmlFor="No">No</label>
+                    </div>
+                    <div className='radio-pair'>  
+                        <input
+                            className="radio-input"
+                            type="radio"
+                            id="NA"
+                            name="enterPerms"
+                            autoComplete="off"
+                            value={"NA"}
+                            required
+                            onChange={handleChange}
+                        />
+                        <label htmlFor="NA">NA</label>
                     </div>
                 </div>
 
