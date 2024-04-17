@@ -331,7 +331,7 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
             const selectedParticipants = [activeUser.uid, ...selectedUsers].sort();
         
             try {
-                // Check if a thread with these participants already exists
+                // Query to find if a thread with these exact participants exists
                 const threadsQuery = query(
                     collection(db, "messageThreads"),
                     where("participants", "array-contains", activeUser.uid)
@@ -343,14 +343,15 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                 querySnapshot.forEach(doc => {
                     const data = doc.data();
                     const participants = data.participants.sort();
-                    if (JSON.stringify(participants) === JSON.stringify(selectedParticipants)) {
+                    if (participants.length === selectedParticipants.length && participants.every((val, index) => val === selectedParticipants[index])) {
                         existingThread = { id: doc.id, ...data };
                     }
                 });
         
                 if (existingThread) {
-                    console.log("Navigating to existing thread:", existingThread.id);
-                    navigate(`/MessageApp/${existingThread.id}`);
+                    // Instead of navigating to the existing thread, throw an error
+                    console.error("Error: Message thread with these participants already exists.");
+                    alert("Error: Message thread with these participants already exists.");
                 } else {
                     // Create a new thread if it doesn't exist
                     const docRef = await addDoc(collection(db, "messageThreads"), {
@@ -362,6 +363,7 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                 }
             } catch (error) {
                 console.error("Error creating/checking message thread: ", error);
+                alert("An error occurred while checking or creating a message thread.");
             }
         };
         
