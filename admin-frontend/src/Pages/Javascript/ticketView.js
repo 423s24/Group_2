@@ -26,6 +26,12 @@ const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTic
                     <p><strong>Description:</strong> {ticket.description}</p>
                     <p><strong>Urgency:</strong> {ticket.urgency}</p>
                     <p><strong>Service Type:</strong> {ticket.serviceType}</p>
+                    {ticket.attachmentUrl && (
+                        <div>
+                            <h3>Attachment</h3>
+                            <img src={ticket.attachmentUrl} alt="Attachment" />
+                        </div>
+                    )}
                 </div>
                 
                 <div className="ticket-view-info-inner-section">

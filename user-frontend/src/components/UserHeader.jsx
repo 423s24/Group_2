@@ -43,8 +43,7 @@ export default function Header({user}) {
           {user ? "" : <Link className='navLink' to="/login">Login</Link>}       
           {user ? "" : <Link className='navLink' to="/register">Register</Link>}
           {user ? <p style={{color:"white", fontWeight: "Bold", alignSelf: "center", paddingRight: "1rem"}}>Welcome, {userName}</p> : ""}
-          {/* {user ? <Link className='navLink' to="/maintenance">Maintenance</Link> : ""} */}
-          {user ? <p className='navLink' style={{background:"#97c33c", padding:".5rem", borderRadius: "10px"}} onClick={userSignOut}>Sign Out</p> :""}
+          {user ? <p className='navLink' style={{background:"#97c33c", padding:".5rem", borderRadius: "10px"}} onClick={userSignOut}>Sign Out</p> : ""}
         </div>
     </div>
   )
