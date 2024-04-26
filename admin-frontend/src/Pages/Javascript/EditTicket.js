@@ -62,7 +62,11 @@ const EditTicket = () => {
                             </label>
                             <label>
                                 <p>Status:</p>
-                                <input type="text" name="status" value={editedTicket.status} onChange={handleInputChange} />
+                                <select name="status" value={editedTicket.status} onChange={handleInputChange}>
+                                    <option value="Open">Open</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
                             </label>
                             <label>
                                 <p>Description:</p>
@@ -70,19 +74,25 @@ const EditTicket = () => {
                             </label>
                             <label>
                                 <p>Urgency:</p>
-                                <input type="text" name="urgency" value={editedTicket.urgency} onChange={handleInputChange} />
+                                <select name="urgency" value={editedTicket.urgency} onChange={handleInputChange}>
+                                    <option value='Low'>Low</option>
+                                    <option value='Medium'>Medium</option>
+                                    <option value='High'>High</option>
+                                    <option value='Critical'>Critical</option>
+                                </select>
                             </label>
                             <label>
                                 <p>Service Type:</p>
-                                <input type="text" name="serviceType" value={editedTicket.serviceType} onChange={handleInputChange} />
+                                <select name="serviceType" value={editedTicket.serviceType} onChange={handleInputChange}>
+                                    <option value="Plumbing">Plumbing</option>
+                                    <option value="Electrical">Electrical</option>
+                                    <option value="Building">Building</option>
+                                    <option value="Appliance">Appliance</option>
+                                </select>
                             </label>
                             <label>
                                 <p>Address:</p>
                                 <input type="text" name="address" value={editedTicket.address} onChange={handleInputChange} />
-                            </label>
-                            <label>
-                                <p>Building Type:</p>
-                                <input type="text" name="buildingType" value={editedTicket.buildingType} onChange={handleInputChange} />
                             </label>
                             <label>
                                 <p>Area of Building:</p>
