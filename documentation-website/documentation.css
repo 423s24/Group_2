@@ -20,6 +20,7 @@
 .header h1 {
     font-family: 'Work Sans', sans-serif;
     font-size: 32px;
+    max-width: 600px;
 }
 
 .header img {
@@ -29,7 +30,7 @@
 
 .container {
     display: flex;
-    margin: 0px 150px;
+    margin: 0px
 }
 
 .side-nav-menu {
