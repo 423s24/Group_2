@@ -11,6 +11,7 @@ import { ProtectedRoute } from './backend/ProtectedRoute';
 import LoaderScreen from './components/loadingScreen';
 import Home from './home/home';
 import ForgotPassword from './passwordReset/forgotPassword';
+import UserMessageApp from './home/userMessagaApp';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -46,6 +47,7 @@ function App() {
           <Route path="maintenance" element={<ProtectedRoute user={user}><MaintenanceForm /></ProtectedRoute>} />
           <Route path="loading" element={<LoaderScreen />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/messages/:threadId" element={<UserMessageApp />} />
         </Routes>
       </div>
     </Router>
