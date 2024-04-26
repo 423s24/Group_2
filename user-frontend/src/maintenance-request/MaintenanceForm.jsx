@@ -6,8 +6,6 @@ import "./maintenanceForm.css";
 import { useNavigate } from 'react-router-dom';
 import LoaderScreen from '../components/loadingScreen';
 
-
-
 export default function MaintenanceForm() {
     const [loading, setLoading] = useState(false)
     const [completed, setCompleted] = useState(false)
@@ -290,10 +288,10 @@ export default function MaintenanceForm() {
                         value={formData.urgency}
                     >
                         <option>Select One</option>
-                        <option value='low'>Low</option>
-                        <option value='medium'>Medium</option>
-                        <option value='high'>High</option>
-                        <option value='critical'>Critical</option>
+                        <option value='Low'>Low</option>
+                        <option value='Medium'>Medium</option>
+                        <option value='High'>High</option>
+                        <option value='Critical'>Critical</option>
                     </select>
                 </div>
 
