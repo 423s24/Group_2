@@ -75,10 +75,13 @@ function HomePage() {
                 const querySnapshot = await getDocs(ticketsCollectionRef);
                 const ticketsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 setTickets(ticketsData);
+                
             } catch (error) {
                 console.error("Error fetching tickets: ", error);
             }
         };
+
+
 
         const fetchMessageThreads = async () => {
             try {
@@ -125,6 +128,7 @@ function HomePage() {
         // Call the fetch functions
         fetchUsers();
         fetchTickets();
+        console.log(tickets)
         fetchUserData();
         fetchMessageThreads();
     }, []);
@@ -282,24 +286,24 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
         }
       };
       
-        // Function to get the last message in a chat room
-        const getLastMessage = async (thread) => {
-            try {
-                const messagesRef = collection(db, 'messages');
-                const q = query(
-                    messagesRef,
-                    where('messageThreads', '==', thread.id),
-                    orderBy('createdAt', 'desc'),
-                    limit(1)
-                );
-                const querySnapshot = await getDocs(q);
-                const lastMessage = querySnapshot.docs[0]?.data();
-                return lastMessage?.text || 'No messages';
-            } catch (error) {
-                console.error('Error getting last message:', error);
-                return 'Error fetching message';
-            }
-        };
+        // // Function to get the last message in a chat room
+        // const getLastMessage = async (thread) => {
+        //     try {
+        //         const messagesRef = collection(db, 'messages');
+        //         const q = query(
+        //             messagesRef,
+        //             where('messageThreads', '==', thread.id),
+        //             orderBy('createdAt', 'desc'),
+        //             limit(1)
+        //         );
+        //         const querySnapshot = await getDocs(q);
+        //         const lastMessage = querySnapshot.docs[0]?.data();
+        //         return lastMessage?.text || 'No messages';
+        //     } catch (error) {
+        //         console.error('Error getting last message:', error);
+        //         return 'Error fetching message';
+        //     }
+        // };
 
 
         // Function to filter users based on the search query
@@ -320,6 +324,14 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
         const handleUserSelection = (event) => {
             setSelectedUsers([event.target.value]);
         };
+
+        const getLastMessage = async (threadId) => {
+            const messagesRef = collection(db, 'messages');
+            const q = query(messagesRef, where('threadId', '==', threadId), orderBy('createdAt', 'desc'), limit(1));
+            const querySnapshot = await getDocs(q);
+            return querySnapshot.docs[0]?.data().createdAt; // Assuming createdAt is stored correctly and available
+        };
+        
         
 
         const handleCreateMessageThread = async () => {
@@ -327,7 +339,7 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
             const selectedParticipants = [activeUser.uid, ...selectedUsers].sort();
         
             try {
-                // Check if a thread with these participants already exists
+                // Query to find if a thread with these exact participants exists
                 const threadsQuery = query(
                     collection(db, "messageThreads"),
                     where("participants", "array-contains", activeUser.uid)
@@ -339,14 +351,15 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                 querySnapshot.forEach(doc => {
                     const data = doc.data();
                     const participants = data.participants.sort();
-                    if (JSON.stringify(participants) === JSON.stringify(selectedParticipants)) {
+                    if (participants.length === selectedParticipants.length && participants.every((val, index) => val === selectedParticipants[index])) {
                         existingThread = { id: doc.id, ...data };
                     }
                 });
         
                 if (existingThread) {
-                    console.log("Navigating to existing thread:", existingThread.id);
-                    navigate(`/MessageApp/${existingThread.id}`);
+                    // Instead of navigating to the existing thread, throw an error
+                    console.error("Error: Message thread with these participants already exists.");
+                    alert("Error: Message thread with these participants already exists.");
                 } else {
                     // Create a new thread if it doesn't exist
                     const docRef = await addDoc(collection(db, "messageThreads"), {
@@ -358,6 +371,7 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                 }
             } catch (error) {
                 console.error("Error creating/checking message thread: ", error);
+                alert("An error occurred while checking or creating a message thread.");
             }
         };
         
@@ -443,7 +457,7 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                                 <select value={filterStatus} onChange={handleStatusFilterChange}>
                                     <option value="all">All</option>
                                     <option value="open">Open</option>
-                                    <option value="inProgress">In Progress</option>
+                                    <option value="in progress">In Progress</option>
                                     <option value="resolved">Resolved</option>
                                 </select>
                             </div>

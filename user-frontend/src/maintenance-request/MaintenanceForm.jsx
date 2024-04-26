@@ -152,7 +152,7 @@ export default function MaintenanceForm() {
                 setUserResponse("Request Sent!")
             } else {
                 console.error("Email did not send.");
-                setUserResponse("Sorry, we've encountered an error")
+                setUserResponse("Sorry, we've encountered an error.")
             }
 
         } catch (error) {
@@ -204,7 +204,11 @@ export default function MaintenanceForm() {
                         value={formData.address}
                     />
                     <label htmlFor='address'>Address</label>
+<<<<<<< HEAD
                 </div>  
+=======
+                </div>
+>>>>>>> 07b5686e5210d9349cd2e4f62be72f3241320ebe
 
                 <div className='input-group wide-input'>
                     <input
@@ -268,6 +272,7 @@ export default function MaintenanceForm() {
                         <input
                             className="radio-input"
                             type="radio"
+<<<<<<< HEAD
                             id="NotApplicable"
                             name="enterPerms"
                             autoComplete="off"
@@ -276,6 +281,16 @@ export default function MaintenanceForm() {
                             onChange={handleChange}
                         />
                         <label htmlFor="NotApplicable">Not Applicable</label>
+=======
+                            id="NA"
+                            name="enterPerms"
+                            autoComplete="off"
+                            value={"NA"}
+                            required
+                            onChange={handleChange}
+                        />
+                        <label htmlFor="NA">NA</label>
+>>>>>>> 07b5686e5210d9349cd2e4f62be72f3241320ebe
                     </div>
                 </div>
 
