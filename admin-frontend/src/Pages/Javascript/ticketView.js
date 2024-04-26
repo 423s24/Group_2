@@ -37,7 +37,6 @@ const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTic
                 <div className="ticket-view-info-inner-section">
                     <h2>Building Information</h2>
                     <p><strong>Address:</strong> {ticket.address}</p>
-                    <p><strong>Building Type:</strong> {ticket.buildingType}</p>
                     <p><strong>Area of Building</strong> {ticket.area}</p>
                     <p><strong>Enter without Tennant Present:</strong> {ticket.enterPerms}</p>
                 </div>
@@ -64,7 +63,6 @@ const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTic
                                     <p>Address: {userRelatedTicket.address}</p>
                                     <p>Urgency: {userRelatedTicket.urgency}</p>
                                     <p>Service Type: {userRelatedTicket.serviceType}</p>
-                                    <p>Building Type: {userRelatedTicket.buildingType}</p>
                                 </div>
                             </Link>
                         )
@@ -85,7 +83,6 @@ const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTic
                                     <p>Address: {addressRelatedTicketDoc.address}</p>
                                     <p>Urgency: {addressRelatedTicketDoc.urgency}</p>
                                     <p>Service Type: {addressRelatedTicketDoc.serviceType}</p>
-                                    <p>Building Type: {addressRelatedTicketDoc.buildingType}</p>
                                 </div>
                             </Link>
                         )
