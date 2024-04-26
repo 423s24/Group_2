@@ -25,7 +25,7 @@ export default function MaintenanceForm() {
         email: '',
         userId: '',
         enterPerms: '',
-        status: 'open',
+        status: 'Open',
         serviceType: '',
         attachmentUrl: '',
     }
@@ -227,10 +227,10 @@ export default function MaintenanceForm() {
                         value={formData.serviceType}
                     >
                         <option value="">Select One</option>
-                        <option value="plumbing">Plumbing</option>
-                        <option value="electrical">Electrical</option>
-                        <option value="building">Building</option>
-                        <option value="appliance">Appliance</option>
+                        <option value="Plumbing">Plumbing</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Building">Building</option>
+                        <option value="Appliance">Appliance</option>
                     </select>
                 </div>
 
