@@ -12,7 +12,7 @@ const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTic
     return (
         <div className="ticket-view-content">
             <div className="ticket-view-header">
-                <Link to="/">
+                <Link to="/" className="back-button-link">
                     <button className="back-button">&lt;</button>
                 </Link>
                 <h3 className="ticket-title">{ticket.title}</h3>
@@ -50,9 +50,6 @@ const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTic
 
                 <div className="ticket-view-info-inner-section">
                     <h2>Other Tickets Opened by This Person</h2>
-                    {userRelatedTicketDocs.length == 0 && (
-                        <p>This user has not opened any other tickets.</p>
-                    )}
                     {userRelatedTicketDocs.map((userRelatedTicketDoc) => {
                         const userRelatedTicket = userRelatedTicketDoc.data()
                         return (
@@ -71,9 +68,6 @@ const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTic
 
                 <div className="ticket-view-info-inner-section">
                     <h2>Other Tickets Opened at this Address</h2>
-                    {addressRelatedTicketDocs.length == 0 && (
-                        <p>There are no other open tickets at this address.</p>
-                    )}
                     {addressRelatedTicketDocs && addressRelatedTicketDocs.map((addressRelatedTicketDoc) => {
                         return (
                             <Link className="ticket-link" key={addressRelatedTicketDoc.id} to={`/ticket/${addressRelatedTicketDoc.id}`}>

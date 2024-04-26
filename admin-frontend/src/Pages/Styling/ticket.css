@@ -35,6 +35,10 @@
     font-weight: 900;
 }
 
+.back-button-link {
+    text-decoration: none;
+}
+
 .ticket-view-header .edit-button {
     width: 100px;
     height: 60px;
@@ -96,6 +100,16 @@
 }
 
 .edit-ticket-view-content input {
+    height: 40px;
+    font-size: 16px;
+    padding-left: 5px;
+    background: none;
+    border: 2px solid #107178;
+    border-radius: 8px;
+    width: 50%;
+}
+
+.edit-ticket-view-content select {
     height: 40px;
     font-size: 16px;
     padding-left: 5px;
