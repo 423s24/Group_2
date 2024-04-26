@@ -33,6 +33,7 @@ function LoginPage( {user} ) {
                 navigate("/");
             }else{
               signOut(auth)
+              setNotice("User does not have correct permissions.")
               console.log("user does not have credential")
             }
         })
