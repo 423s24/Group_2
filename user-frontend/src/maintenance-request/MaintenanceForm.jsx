@@ -19,7 +19,6 @@ export default function MaintenanceForm() {
         title: '',
         description: '',
         area: '',
-        buildingType: '',
         dateCreated: serverTimestamp(),
         urgency: '',
         address: '',
@@ -205,20 +204,7 @@ export default function MaintenanceForm() {
                         value={formData.address}
                     />
                     <label htmlFor='address'>Address</label>
-                </div>
-
-                <div className='input-group wide-input'>
-                    <input
-                        type="text"
-                        id="buildingType"
-                        name="buildingType"
-                        autoComplete="off"
-                        required
-                        onChange={handleChange}
-                        value={formData.buildingType}
-                    />
-                    <label htmlFor='buildingType'>Building Type</label>
-                </div>    
+                </div>  
 
                 <div className='input-group wide-input'>
                     <input
@@ -231,7 +217,7 @@ export default function MaintenanceForm() {
                         onChange={handleChange}
                         value={formData.area}
                     />
-                    <label htmlFor="area">Area of the House</label>
+                    <label htmlFor="area">Area of the Building</label>
                 </div>
 
                 <div className='input-group-select'>
@@ -278,22 +264,40 @@ export default function MaintenanceForm() {
                         />
                         <label htmlFor="No">No</label>
                     </div>
+                    <div className='radio-pair'>  
+                        <input
+                            className="radio-input"
+                            type="radio"
+                            id="NotApplicable"
+                            name="enterPerms"
+                            autoComplete="off"
+                            value={"Not Applicable"}
+                            required
+                            onChange={handleChange}
+                        />
+                        <label htmlFor="NotApplicable">Not Applicable</label>
+                    </div>
                 </div>
 
-                <div className='input-group wide-input'>
-                    <input
-                        type="number"
+                <div className="input-group-select">
+                    <p>What is the urgency level?</p>
+                    <select
                         id="urgency"
                         name="urgency"
                         autoComplete="off"
-                        min={1}
-                        max={10}
                         required
                         onChange={handleChange}
                         value={formData.urgency}
-                    />
-                    <label htmlFor="urgency">Urgency (Scale from 1-10)</label>
+                    >
+                        <option>Select One</option>
+                        <option value='low'>Low</option>
+                        <option value='medium'>Medium</option>
+                        <option value='high'>High</option>
+                        <option value='critical'>Critical</option>
+                    </select>
                 </div>
+
+
                 <div className='input-group wide-input'>
                     <input
                         type="file"
