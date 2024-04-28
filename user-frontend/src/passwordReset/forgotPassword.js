@@ -3,10 +3,12 @@ import { Helmet } from 'react-helmet';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../backend/Firebase';
 import "./forgotPassword.css";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [notice, setNotice] = useState('');
+  const navigate = useNavigate();
 
   const resetPasswordWithEmail = async (e) => {
     e.preventDefault();
@@ -23,6 +25,7 @@ const ForgotPassword = () => {
   };
 
   return (
+    <div style={{minHeight: "100vh"}}>
     <div className="form-section">
       <Helmet>
         <title>HRDC Maintenance | Forgot Password</title>
@@ -32,7 +35,6 @@ const ForgotPassword = () => {
           <h1 className="login-header">Forgot Your Password?</h1> 
           <h4 className="login-subheader">Enter your email below to reset your password.</h4> 
           <form className="form"> 
-            {notice && <div className="login-error">{notice}</div>} 
             <div className="input-group"> 
               <input
                 type="email"
@@ -45,12 +47,12 @@ const ForgotPassword = () => {
             <button className="login-button" onClick={resetPasswordWithEmail}>
               Send Reset Email
             </button>
-            <p className="forgot-password-text">
-              You will receive an email with instructions on how to reset your password.
-            </p>
+            {notice && <div className="login-error">{notice}</div>} 
           </form>
         </div>
       </div>
+    </div>
+    <button style={{color: "#107178", padding:"5px 10px 5px 10px", fontSize: "18px", width:"fit-content"}} onClick={() => {navigate("/login")}}>Back</button>
     </div>
   );
 };
