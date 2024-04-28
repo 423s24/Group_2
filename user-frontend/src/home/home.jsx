@@ -13,6 +13,7 @@ export default function Home({ user }) {
     const [userSearchQuery, setUserSearchQuery] = useState(''); // Added state for user search query
     const [selectedUsers, setSelectedUsers] = useState([]); // Added state for selected users
     const [filteredUsers, setFilteredUsers] = useState([]); // Added if there is a need to filter users
+    const [showMessageApp, setShowMessageApp] = useState(false)
 
 
 
@@ -193,7 +194,36 @@ export default function Home({ user }) {
     }
 
 
-
+    const MessageApp = () => {
+        return(
+            <div className="messaging-section">
+                <h1 className="sectionHeader" style={{color:"#97c33c", marginBottom: "40px"}}>Message Threads</h1>
+                    <h2 className="sectionHeader" style={{ marginBottom: "10px"}}>Start New Message Thread</h2>
+                        <div className="messaging-new-thread">
+                            <input type="text" value={userSearchQuery} onChange={handleUserSearchQueryChange} placeholder="Search users..."/>
+                            <select onChange={handleUserSelection} value={selectedUsers} className="user-select-dropdown" style={{marginLeft: "10px"}} >
+                                {filteredUsers.map(user => (
+                                    <option key={user.id} value={user.id}>{user.name}</option>
+                                ))}
+                            </select>
+                            <button onClick={handleCreateMessageThread} style={{marginBottom: "15px", marginLeft: "10px"}}>Start Message Thread</button>
+                        </div>
+                    {messageThreads.map((thread) => (
+                        <button key={thread.id} onClick={() => handleNavigateToMessageRoom(thread.id)} style={{
+                            padding: "10px 20px", 
+                            fontSize: "16px", 
+                            cursor: "pointer", 
+                            marginTop: "10px",
+                            width: "100%",  // Set width to 100% to fill the container
+                            textAlign: "center",
+                             // Center the text inside the button
+                        }}>
+                            {Array.isArray(thread.participantsNames) ? thread.participantsNames.join(', ') : ''}
+                        </button>
+                    ))}
+            </div>
+        )
+    }
 
     return (
         <div style={{ width: "100%" }}>
@@ -203,41 +233,20 @@ export default function Home({ user }) {
                     <div className="plusButton" style={{ width: "30px", height: "30px", borderRadius: "100px", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "Bold", fontSize: "24px" }}>+</div>
                 </div>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div className="messageContainer" style={{ width: "33%", border: "1px solid #bababa", borderRadius: "15px", background: "white", display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <div className="messaging-section">
-                        <h1 className="sectionHeader" style={{color:"#97c33c", marginBottom: "40px"}}>Message Threads</h1>
-                            <h2 className="sectionHeader" style={{ marginBottom: "10px"}}>Start New Message Thread</h2>
-                                <div className="messaging-new-thread">
-                                    <input type="text" value={userSearchQuery} onChange={handleUserSearchQueryChange} placeholder="Search users..." />
-                                    <select onChange={handleUserSelection} value={selectedUsers} className="user-select-dropdown">
-                                        {filteredUsers.map(user => (
-                                            <option key={user.id} value={user.id}>{user.name}</option>
-                                        ))}
-                                    </select>
-                                    <button onClick={handleCreateMessageThread} style={{marginBottom: "15px"}}>Start Message Thread</button>
-                                </div>
-                            {messageThreads.map((thread) => (
-                                <button key={thread.id} onClick={() => handleNavigateToMessageRoom(thread.id)} style={{
-                                    padding: "10px 20px", 
-                                    fontSize: "16px", 
-                                    cursor: "pointer", 
-                                    marginTop: "10px",
-                                    width: "100%",  // Set width to 100% to fill the container
-                                    textAlign: "center"  // Center the text inside the button
-                                }}>
-                                    {Array.isArray(thread.participantsNames) ? thread.participantsNames.join(', ') : ''}
-                                </button>
-                            ))}
-                    </div>
-                </div>
+            
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              
                 <div className="previousContainer" style={{width: "66%", border: "1px solid #bababa", borderRadius: "15px", background: "white", display:"flex", flexDirection: "column", alignItems:"center"}}>
-                    <h1 className="sectionHeader" style={{color:"#97c33c", marginBottom: "40px"}}>Previous Requests</h1>
-                    <div style={{width: "90%"}}>
-                        <div style={{marginTop: "10px"}}>
-                            {tickets?.map((ticket) => <Ticket key={ticket.id} ticketData={ticket.data()} />)}
-                        </div>
-                    </div>
+                <p onClick={() => setShowMessageApp(!showMessageApp)} style={{textDecoration: "underline", alignSelf: "start", marginBottom: "40px"}}>{showMessageApp ? "Show Request" : "Show Messaging"}</p>
+                {showMessageApp ? <MessageApp/> : <>
+                  <h1 className="sectionHeader" style={{color:"#97c33c", marginBottom: "40px"}}>Previous Requests</h1>
+                  <div style={{width: "90%"}}>
+                      <div style={{marginTop: "10px"}}>
+                          {tickets?.map((ticket) => <Ticket key={ticket.id} ticketData={ticket.data()} />)}
+                      </div>
+                  </div>
+                  </> }
+                  
                 </div>
             </div>
         </div>
