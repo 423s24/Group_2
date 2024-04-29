@@ -78,7 +78,7 @@ function TicketLoader() {
           </Helmet>
           <Header />
 
-          {ticket && userRelatedTickets ? 
+          {ticket && userRelatedTickets && ticketsAtSameAddress ? 
             (
               <TicketInfo ticketId={id} ticket={ticket} userRelatedTicketDocs={userRelatedTickets} addressRelatedTicketDocs={ticketsAtSameAddress}/>
             ) : 
@@ -86,7 +86,6 @@ function TicketLoader() {
               <LoadingScreen />
             )
           }
-          
           <Footer />
         </div>
     )
