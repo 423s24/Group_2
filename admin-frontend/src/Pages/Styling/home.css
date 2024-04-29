@@ -147,6 +147,12 @@
     margin-top: auto;
 }
 
+.footer a {
+    color: white;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
 /* Logo Styling */
 .logo {
     width: 150px;
