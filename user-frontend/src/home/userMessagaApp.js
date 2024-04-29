@@ -86,7 +86,7 @@ const UserMessageApp = () => {
             <Helmet>
                 <title>Message App</title> {/* Sets the page title */}
             </Helmet>
-                <div>
+                <div style={{width: "100%"}}>
                     {selectedThreadId && (
                         <>  {/* Conditional rendering of userChatBox and userSendMessage based on selectedThreadId */}
                             <ChatBox messageId={selectedThreadId} />
