@@ -67,7 +67,7 @@ const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTic
                     {ticket.attachmentUrl && (
                         <div>
                             <h3>Attachment</h3>
-                            <img src={ticket.attachmentUrl} alt="Attachment" />
+                            <img style={{maxWidth: "500px"}} src={ticket.attachmentUrl} alt="Attachment" />
                         </div>
                     )}
                 </div>
