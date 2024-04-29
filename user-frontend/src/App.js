@@ -12,6 +12,7 @@ import LoaderScreen from './components/loadingScreen';
 import Home from './home/home';
 import ForgotPassword from './passwordReset/forgotPassword';
 import UserMessageApp from './home/userMessagaApp';
+import Footer from './components/footer';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -50,6 +51,7 @@ function App() {
           <Route path="/messages/:threadId" element={<UserMessageApp />} />
         </Routes>
       </div>
+      <Footer/>
     </Router>
   );
 }

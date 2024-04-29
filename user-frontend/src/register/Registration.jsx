@@ -114,7 +114,6 @@ export default function Registration() {
         return;
     }
 
-    console.log(firstName, lastName, email ,pwd)
     createWithUsernameAndPassword()
   }
 
