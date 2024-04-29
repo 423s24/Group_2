@@ -2,6 +2,9 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { db } from "../../Backend/Firebase";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import "../Styling/ticket.css";
 
 const EditTicket = () => {
     const { id } = useParams();
@@ -50,62 +53,67 @@ const EditTicket = () => {
     };
 
     return (
-        <div className="ticket-view-content">
-            <div className="edit-ticket-view-content">
-                <h1>Edit Ticket</h1>
-                <form onSubmit={handleSubmit}>
-                    {ticket && (
-                        <div>
-                            <label>
-                                <p>Title:</p>
-                                <input type="text" name="title" value={editedTicket.title} onChange={handleInputChange} />
-                            </label>
-                            <label>
-                                <p>Status:</p>
-                                <select name="status" value={editedTicket.status} onChange={handleInputChange}>
-                                    <option value="Open">Open</option>
-                                    <option value="In Progress">In Progress</option>
-                                    <option value="Closed">Closed</option>
-                                </select>
-                            </label>
-                            <label>
-                                <p>Description:</p>
-                                <input type="text" name="description" value={editedTicket.description} onChange={handleInputChange} />
-                            </label>
-                            <label>
-                                <p>Urgency:</p>
-                                <select name="urgency" value={editedTicket.urgency} onChange={handleInputChange}>
-                                    <option value='Low'>Low</option>
-                                    <option value='Medium'>Medium</option>
-                                    <option value='High'>High</option>
-                                    <option value='Critical'>Critical</option>
-                                </select>
-                            </label>
-                            <label>
-                                <p>Service Type:</p>
-                                <select name="serviceType" value={editedTicket.serviceType} onChange={handleInputChange}>
-                                    <option value="Plumbing">Plumbing</option>
-                                    <option value="Electrical">Electrical</option>
-                                    <option value="Building">Building</option>
-                                    <option value="Appliance">Appliance</option>
-                                </select>
-                            </label>
-                            <label>
-                                <p>Address:</p>
-                                <input type="text" name="address" value={editedTicket.address} onChange={handleInputChange} />
-                            </label>
-                            <label>
-                                <p>Area of Building:</p>
-                                <input type="text" name="area" value={editedTicket.area} onChange={handleInputChange} />
-                            </label>
+        <div className="edit-ticket-wrapper">
+            <Header />
+            <div className="ticket-view-content">
+                <div className="edit-ticket-view-content">
+                    <h1>Edit Ticket</h1>
+                    <form onSubmit={handleSubmit}>
+                        {ticket && (
+                            <div>
+                                <label>
+                                    <p>Title:</p>
+                                    <input type="text" name="title" value={editedTicket.title} onChange={handleInputChange} />
+                                </label>
+                                <label>
+                                    <p>Status:</p>
+                                    <select name="status" value={editedTicket.status} onChange={handleInputChange}>
+                                        <option value="Open">Open</option>
+                                        <option value="In Progress">In Progress</option>
+                                        <option value="Closed">Closed</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    <p>Description:</p>
+                                    <input type="text" name="description" value={editedTicket.description} onChange={handleInputChange} />
+                                </label>
+                                <label>
+                                    <p>Urgency:</p>
+                                    <select name="urgency" value={editedTicket.urgency} onChange={handleInputChange}>
+                                        <option value='Low'>Low</option>
+                                        <option value='Medium'>Medium</option>
+                                        <option value='High'>High</option>
+                                        <option value='Critical'>Critical</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    <p>Service Type:</p>
+                                    <select name="serviceType" value={editedTicket.serviceType} onChange={handleInputChange}>
+                                        <option value="Plumbing">Plumbing</option>
+                                        <option value="Electrical">Electrical</option>
+                                        <option value="Building">Building</option>
+                                        <option value="Appliance">Appliance</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    <p>Address:</p>
+                                    <input type="text" name="address" value={editedTicket.address} onChange={handleInputChange} />
+                                </label>
+                                <label>
+                                    <p>Area of Building:</p>
+                                    <input type="text" name="area" value={editedTicket.area} onChange={handleInputChange} />
+                                </label>
+                            </div>
+                        )}
+
+                        <div className="edit-ticket-buttons">
+                            <button type="submit">Save</button>
+                            <button type="button"><Link to={`/ticket/${id}`} className="cancel">Cancel</Link></button>
                         </div>
-                    )}
-                    <div className="edit-buttons">
-                        <button type="submit">Save</button>
-                        <Link to={`/ticket/${id}`}><button type="button" className="cancel">Cancel</button></Link>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
+            <Footer />
         </div>
     );
 }
