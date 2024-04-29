@@ -42,7 +42,6 @@ function HomePage() {
         address: "",
         area: "",
         availability: "",
-        buildingType: "",
         description: "",
         details: "",
         phone: "",
@@ -232,27 +231,44 @@ function HomePage() {
     
         return passesFilters;
     });
-// Sorting tickets based on creation date
-const sortedTickets = filteredTickets.slice().sort((a, b) => {
-    const dateA = a.dateCreated ? a.dateCreated.toDate() : null;
-    const dateB = b.dateCreated ? b.dateCreated.toDate() : null;
 
-    if (sortBy === 'newest') {
-        return dateB ? dateB - dateA : -1;
-    } else if (sortBy === 'oldest') {
-        return dateA ? dateA - dateB : 1;
+    // Sorting tickets based on creation date
+    const sortedTickets = filteredTickets.slice().sort((a, b) => {
+        const dateA = a.dateCreated ? a.dateCreated.toDate() : null;
+        const dateB = b.dateCreated ? b.dateCreated.toDate() : null;
+
+        if (sortBy === 'newest') {
+            return dateB ? dateB - dateA : -1;
+        } else if (sortBy === 'oldest') {
+            return dateA ? dateA - dateB : 1;
+        }
+        // Default case, no sorting
+        return 0;
+    });
+
+    function urgencyValue(urgency) {
+        switch (urgency) {
+            case 'low':
+                return 1;
+            case 'medium':
+                return 2;
+            case 'high':
+                return 3;
+            case 'critical':
+                return 4;
+            default:
+                return 0; // Default case for handling unexpected urgency levels
+        }
     }
-    // Default case, no sorting
-    return 0;
-});
-// Sorting tickets based on urgency
-const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
-    if (sortByUrgency === '1') {
-        return a.urgency - b.urgency; // Sort by urgency from lowest to highest
-    } else {
-        return b.urgency - a.urgency; // Sort by urgency from highest to lowest
-    }
-});
+
+    // Sorting tickets based on urgency
+    const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
+        const urgencyA = urgencyValue(a.urgency);
+        const urgencyB = urgencyValue(b.urgency);
+
+        // Sort by urgency level
+        return urgencyA - urgencyB;
+    });
     
     // Function to handle input changes in the new ticket form
     const handleInputChange = (event) => {
@@ -272,7 +288,6 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                 address: "",
                 area: "",
                 availability: "",
-                buildingType: "",
                 description: "",
                 details: "",
                 phone: "",
@@ -488,9 +503,9 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                                 <h3>Status</h3>
                                 <select value={filterStatus} onChange={handleStatusFilterChange}>
                                     <option value="all">All</option>
-                                    <option value="open">Open</option>
-                                    <option value="in progress">In Progress</option>
-                                    <option value="resolved">Resolved</option>
+                                    <option value="Open">Open</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Closed">Closed</option>
                                 </select>
                             </div>
                             {/* Service filter */}
@@ -498,10 +513,10 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                                 <h3>Related Service</h3>
                                 <select value={filterRelated} onChange={handleRelatedFilterChange}>
                                     <option value="all">All</option>
-                                    <option value="plumbing">Plumbing</option>
-                                    <option value="electrical">Electrical</option>
-                                    <option value="appliance">Appliance</option>
-                                    <option value="building">Building</option>
+                                    <option value="Plumbing">Plumbing</option>
+                                    <option value="Electrical">Electrical</option>
+                                    <option value="Appliance">Appliance</option>
+                                    <option value="Building">Building</option>
                                 </select>
                             </div>
                             {/* Service filter */}
@@ -509,21 +524,15 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                                 <h3>Urgency</h3>
                                 <select value={filterUrgency} onChange={handleUrgencyFilterChange}>
                                     <option value="all">All</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                    <option value="Critical">Critical</option>
                                 </select>
                             </div>
     
                             <div className="filter">
-                                <h4>Sort By Date </h4>
+                                <h3>Sort By Date </h3>
                                 <select value={sortBy} onChange={handleSortChange}>
                                     <option value="dateCreated">Date Created</option>
                                     <option value="newest">Newest to Oldest Ticket</option> 
@@ -531,7 +540,7 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                                     </select>
                             </div>
                             <div className="filter">
-                                <h4> Sort By Urgency</h4>
+                                <h3> Sort By Urgency</h3>
                                 <select value={sortByUrgency} onChange={handleSortChangeByUrgency}>
                                     <option value="all">All</option>
                                     <option value="10">Most Urgent to Least Urgent</option>
@@ -579,10 +588,6 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                                     <textarea name="description" value={newTicketData.description} onChange={handleInputChange} />
                                 </div>
                                 <div>
-                                    <label>Building Type:</label>
-                                    <input type="text" name="buildingType" value={newTicketData.buildingType} onChange={handleInputChange} />
-                                </div>
-                                <div>
                                     <label>Service Type:</label>
                                     <input type="text" name="servicetype" value={newTicketData.serviceType} onChange={handleInputChange} />
                                 </div>
@@ -606,7 +611,6 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                                                 <p>Address: {ticket.address}</p>
                                                 <p>Urgency: {ticket.urgency}</p>
                                                 <p>Service Type: {ticket.serviceType}</p>
-                                                <p>Building Type: {ticket.buildingType}</p>
                                             </div>
                                         </div>
                                     </Link>
@@ -621,7 +625,6 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                                                 <p>Address: {ticket.address}</p>
                                                 <p>Urgency: {ticket.urgency}</p>
                                                 <p>Service Type: {ticket.serviceType}</p>
-                                                <p>Building Type: {ticket.buildingType}</p>
                                             </div>
                                         </div>
                                     </Link>
