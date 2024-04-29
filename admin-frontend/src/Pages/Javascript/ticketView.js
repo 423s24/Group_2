@@ -1,15 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import { db } from "../../Backend/Firebase";
-import { doc, updateDoc } from "firebase/firestore";
-import { useState } from "react";
+import { arrayRemove, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faBell, faBolt, faBuilding, faClock, faExclamationTriangle, faFireBurner, faHourglassHalf, faWrench } from '@fortawesome/free-solid-svg-icons';
-
 
 const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTicketDocs }) => {
 
     const navigate = useNavigate();
     const [status, setStatus] = useState(ticket.status);
+    const [userDocId, setUserDocId] = useState(null);
 
     const showUserRelatedTickets = userRelatedTicketDocs.length > 0;
     // const showAddressRelatedTickets = addressRelatedTicketDocs.length > 0;
@@ -32,6 +32,47 @@ const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTic
             console.log("Status Updated Successfully")
         } catch (error) {
             console.error("Error updating status: ", error);
+        }
+    }
+
+    // Fetch user document ID
+    useEffect(() => {
+        const fetchUserDocId = async () => {
+            try {
+                const userDocQuery = await db.collection("users").where("tickets", "array-contains", ticketId).limit(1).get();
+                if (!userDocQuery.empty) {
+                    setUserDocId(userDocQuery.docs[0].id);
+                }
+            } catch (error) {
+                console.error("Error fetching user document ID: ", error);
+            }
+        };
+        fetchUserDocId();
+    }, [ticketId]);
+
+    const handleDeleteTicket = async () => {
+        // Ask for confirmation before deleting
+        const confirmDelete = window.confirm("Are you sure you want to delete this ticket?");
+        if (confirmDelete) {
+            try {
+                // Delete the ticket document from Firestore
+                await deleteDoc(doc(db, "ticket", ticketId));
+                console.log("Ticket deleted successfully");
+
+                // Remove ticket ID from user's tickets array
+                if (userDocId) {
+                    const userDocRef = doc(db, "users", userDocId);
+                    await updateDoc(userDocRef, {
+                        tickets: arrayRemove(ticketId)
+                    });
+                    console.log("Ticket ID removed from user's tickets array");
+                }
+
+                // Redirect to home page or any other page after deletion
+                navigate("/");
+            } catch (error) {
+                console.error("Error deleting ticket: ", error);
+            }
         }
     }
 
@@ -65,7 +106,7 @@ const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTic
                 
                 <div className="ticket-header-buttons">
                     <button onClick={editTicket} className="edit-button">Edit</button>
-                    <button onClick={editTicket} className="delete-button">Delete</button>
+                    <button onClick={handleDeleteTicket} className="delete-button">Delete</button>
                 </div>
             </div>
 
