@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { collection, doc, getDocs, getDoc, query, where, addDoc, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp, doc, getDocs, query, where, orderBy, limit, getDoc } from "firebase/firestore";
 import { db, auth } from '../backend/Firebase';
 import "./home.css";
 import { useNavigate } from 'react-router-dom';
@@ -57,21 +57,44 @@ export default function Home({ user }) {
                 where('participants', 'array-contains', user.uid)
             );
             const querySnapshot = await getDocs(q);
-            const threads = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
+            let threads = await Promise.all(querySnapshot.docs.map(async (doc) => {
+                const threadData = doc.data();
+                const lastMessageData = await getLastMessage(doc.id);
+                const participantsNames = await getParticipantsNames(threadData);
+                return {
+                    id: doc.id,
+                    participantsNames,
+                    lastMessage: lastMessageData.text,
+                    lastMessageCreatedAt: lastMessageData.createdAt ? new Date(lastMessageData.createdAt.seconds * 1000) : new Date('1970-01-01'),  // Convert Firestore timestamp to JavaScript Date or use an old date if null
+                    ...threadData
+                };
             }));
     
-            // Populate the messageThreads state with threads and participants
-            const threadsWithData = await Promise.all(threads.map(async thread => ({
-                ...thread,
-                participantsNames: await getParticipantsNames(thread)
-            })));
-            setMessageThreads(threadsWithData);
+            // Sort threads by lastMessageCreatedAt in descending order
+            threads.sort((a, b) => b.lastMessageCreatedAt - a.lastMessageCreatedAt);
+    
+            setMessageThreads(threads);
         } catch (error) {
             console.error('Error fetching message threads:', error);
         }
     };
+    
+    
+    // Function to fetch the last message of a thread
+    const getLastMessage = async (threadId) => {
+        const messagesRef = collection(db, `messageThreads/${threadId}/messages`);
+        const lastMessageQuery = query(messagesRef, orderBy("createdAt", "desc"), limit(1));
+        const messageSnapshot = await getDocs(lastMessageQuery);
+        if (!messageSnapshot.empty) {
+            const lastMessage = messageSnapshot.docs[0].data();
+            return {
+                text: lastMessage.text,  // Assuming 'text' is the field name for the message content
+                createdAt: lastMessage.createdAt  // Get the timestamp
+            };
+        }
+        return { text: "No messages", createdAt: null };  // Default values if no messages are found
+    };
+    
 
     const fetchUsers = async () => {
         try {
@@ -99,41 +122,41 @@ export default function Home({ user }) {
     };
 
 
-    const handleCreateMessageThread = async () => {
-        const activeUser = auth.currentUser;
-        const selectedParticipants = [activeUser.uid, ...selectedUsers].sort();
+    // const handleCreateMessageThread = async () => {
+    //     const activeUser = auth.currentUser;
+    //     const selectedParticipants = [activeUser.uid, ...selectedUsers].sort();
 
-        try {
-            const threadsQuery = query(
-                collection(db, "messageThreads"),
-                where("participants", "array-contains", activeUser.uid)
-            );
-            const querySnapshot = await getDocs(threadsQuery);
-            let existingThread = null;
+    //     try {
+    //         const threadsQuery = query(
+    //             collection(db, "messageThreads"),
+    //             where("participants", "array-contains", activeUser.uid)
+    //         );
+    //         const querySnapshot = await getDocs(threadsQuery);
+    //         let existingThread = null;
 
-            querySnapshot.forEach(doc => {
-                const data = doc.data();
-                const participants = data.participants.sort();
-                if (participants.length === selectedParticipants.length && participants.every((val, index) => val === selectedParticipants[index])) {
-                    existingThread = { id: doc.id, ...data };
-                }
-            });
+    //         querySnapshot.forEach(doc => {
+    //             const data = doc.data();
+    //             const participants = data.participants.sort();
+    //             if (participants.length === selectedParticipants.length && participants.every((val, index) => val === selectedParticipants[index])) {
+    //                 existingThread = { id: doc.id, ...data };
+    //             }
+    //         });
 
-            if (existingThread) {
-                console.error("Error: Message thread with these participants already exists.");
-                alert("Error: Message thread with these participants already exists.");
-            } else {
-                const docRef = await addDoc(collection(db, "messageThreads"), {
-                    participants: selectedParticipants,
-                    createdAt: serverTimestamp(),
-                });
-                navigate(`/messages/${docRef.id}`);
-            }
-        } catch (error) {
-            console.error("Error creating/checking message thread: ", error);
-            alert("An error occurred while checking or creating a message thread.");
-        }
-    };
+    //         if (existingThread) {
+    //             console.error("Error: Message thread with these participants already exists.");
+    //             alert("Error: Message thread with these participants already exists.");
+    //         } else {
+    //             const docRef = await addDoc(collection(db, "messageThreads"), {
+    //                 participants: selectedParticipants,
+    //                 createdAt: serverTimestamp(),
+    //             });
+    //             navigate(`/messages/${docRef.id}`);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error creating/checking message thread: ", error);
+    //         alert("An error occurred while checking or creating a message thread.");
+    //     }
+    // };
 
     const handleUserSearchQueryChange = (event) => {
         setUserSearchQuery(event.target.value);
@@ -207,7 +230,7 @@ export default function Home({ user }) {
                 <div className="messageContainer" style={{ width: "33%", border: "1px solid #bababa", borderRadius: "15px", background: "white", display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <div className="messaging-section">
                         <h1 className="sectionHeader" style={{color:"#97c33c", marginBottom: "40px"}}>Message Threads</h1>
-                            <h2 className="sectionHeader" style={{ marginBottom: "10px"}}>Start New Message Thread</h2>
+                            {/* <h2 className="sectionHeader" style={{ marginBottom: "10px"}}>Start New Message Thread</h2>
                                 <div className="messaging-new-thread">
                                     <input type="text" value={userSearchQuery} onChange={handleUserSearchQueryChange} placeholder="Search users..." />
                                     <select onChange={handleUserSelection} value={selectedUsers} className="user-select-dropdown">
@@ -216,7 +239,7 @@ export default function Home({ user }) {
                                         ))}
                                     </select>
                                     <button onClick={handleCreateMessageThread} style={{marginBottom: "15px"}}>Start Message Thread</button>
-                                </div>
+                                </div> */}
                             {messageThreads.map((thread) => (
                                 <button key={thread.id} onClick={() => handleNavigateToMessageRoom(thread.id)} style={{
                                     padding: "10px 20px", 
@@ -227,6 +250,8 @@ export default function Home({ user }) {
                                     textAlign: "center"  // Center the text inside the button
                                 }}>
                                     {Array.isArray(thread.participantsNames) ? thread.participantsNames.join(', ') : ''}
+                                    <br />
+                                    <strong>Last Message:</strong> {thread.lastMessage}
                                 </button>
                             ))}
                     </div>

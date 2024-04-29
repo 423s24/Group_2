@@ -91,21 +91,44 @@ function HomePage() {
                     where('participants', 'array-contains', user.uid)
                 );
                 const querySnapshot = await getDocs(q);
-                const threads = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
+                let threads = await Promise.all(querySnapshot.docs.map(async (doc) => {
+                    const threadData = doc.data();
+                    const lastMessageData = await getLastMessage(doc.id);
+                    const participantsNames = await getParticipantsNames(threadData);
+                    return {
+                        id: doc.id,
+                        participantsNames,
+                        lastMessage: lastMessageData.text,
+                        lastMessageCreatedAt: lastMessageData.createdAt ? new Date(lastMessageData.createdAt.seconds * 1000) : new Date('1970-01-01'),  // Convert Firestore timestamp to JavaScript Date or use an old date if null
+                        ...threadData
+                    };
                 }));
         
-                // Populate the messageThreads state with threads and participants
-                const threadsWithData = await Promise.all(threads.map(async thread => ({
-                    ...thread,
-                    participantsNames: await getParticipantsNames(thread)
-                })));
-                setMessageThreads(threadsWithData);
+                // Sort threads by lastMessageCreatedAt in descending order
+                threads.sort((a, b) => b.lastMessageCreatedAt - a.lastMessageCreatedAt);
+        
+                setMessageThreads(threads);
             } catch (error) {
                 console.error('Error fetching message threads:', error);
             }
         };
+        
+        
+        // Function to fetch the last message of a thread
+        const getLastMessage = async (threadId) => {
+            const messagesRef = collection(db, `messageThreads/${threadId}/messages`);
+            const lastMessageQuery = query(messagesRef, orderBy("createdAt", "desc"), limit(1));
+            const messageSnapshot = await getDocs(lastMessageQuery);
+            if (!messageSnapshot.empty) {
+                const lastMessage = messageSnapshot.docs[0].data();
+                return {
+                    text: lastMessage.text,  // Assuming 'text' is the field name for the message content
+                    createdAt: lastMessage.createdAt  // Get the timestamp
+                };
+            }
+            return { text: "No messages", createdAt: null };  // Default values if no messages are found
+        };
+        
         
         
         const fetchUsers = async () => {
@@ -424,7 +447,9 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                                 <li key={thread.id}>
                                     {/* Render message thread information with participants' names */}
                                     <button onClick={() => handleNavigateToMessageRoom(thread.id)}>
-                                        {Array.isArray(thread.participantsNames) ? thread.participantsNames.join(', ') : ''}
+                                    {Array.isArray(thread.participantsNames) ? thread.participantsNames.join(', ') : ''}
+                                    <br />
+                                    <strong>Last Message:</strong> {thread.lastMessage}
                                     </button>
                                 </li>
                             ))}

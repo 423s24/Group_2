@@ -30,6 +30,7 @@ const ChatBox = ({ messageId }) => {
       limit(50)
     );
     
+  
 
     // Subscribing to the messages query to listen for real-time updates
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
