@@ -1,13 +1,36 @@
 import { Link, useNavigate } from "react-router-dom";
+import { db } from "../../Backend/Firebase";
+import { doc, updateDoc } from "firebase/firestore";
+import { useState } from "react";
 
 const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTicketDocs }) => {
 
     const navigate = useNavigate();
-    console.log(ticket.id);
+    const [status, setStatus] = useState(ticket.status);
 
     const editTicket = () => {
         navigate(`/ticket/edit/${ticketId}`);
     }
+
+    const handleInputChange = async (e) => {
+        const newStatus = e.target.value;
+        setStatus(newStatus); // Update local state immediately
+        
+        try {
+            const ticketRef = doc(db, "ticket", ticketId);
+
+            await updateDoc(ticketRef, {
+                status: newStatus // Update the status field in Firestore
+            });
+
+            console.log("Status Updated Successfully")
+        } catch (error) {
+            console.error("Error updating status: ", error);
+        }
+    }
+
+    const urgencyClass = ticket.urgency + " urgency-text";
+    const urgencyWrapperClass = ticket.urgency + "-urgency-wrapper urgency-wrapper";
 
     return (
         <div className="ticket-view-content">
@@ -15,16 +38,31 @@ const TicketInfo = ({ ticketId, ticket, userRelatedTicketDocs, addressRelatedTic
                 <Link to="/" className="back-button-link">
                     <button className="back-button">&lt;</button>
                 </Link>
-                <h3 className="ticket-title">{ticket.title}</h3>
+                <div className="ticket-title-container">
+                    <h3 className="ticket-title">{ticket.title}</h3>
+                    <h5>{ticket.dateCreated ? new Date(ticket.dateCreated.seconds * 1000).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'Unknown Date'}</h5>
+                </div>
                 <button onClick={editTicket} className="edit-button">Edit</button>
+            </div>
+
+            <div className="ticket-view-subheader">
+                <div className={urgencyWrapperClass}>
+                    <p className={urgencyClass}><strong>{ticket.urgency}</strong></p>
+                </div>
+
+                <div className="select-wrapper">
+                    <select name="status" value={status} onChange={handleInputChange}>
+                        <option value="Open">Open</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                </div>
             </div>
 
             <div className="ticket-view-info">
                 <div className="ticket-view-info-inner-section">
                     <h2>Basic Ticket Information</h2>
-                    <p><strong>Status:</strong> {ticket.status}</p>
                     <p><strong>Description:</strong> {ticket.description}</p>
-                    <p><strong>Urgency:</strong> {ticket.urgency}</p>
                     <p><strong>Service Type:</strong> {ticket.serviceType}</p>
                     {ticket.attachmentUrl && (
                         <div>
