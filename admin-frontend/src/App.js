@@ -11,28 +11,41 @@ import MessageApp from "./Pages/Javascript/MessageApp";
 import TicketLoader from './Pages/Javascript/ticketLoader';
 import EditTicket from './Pages/Javascript/EditTicket';
 import LoadingScreen from './components/LoadingScreen';
+import Loading from 'react-loading';
 
-function App() {
+function useAuth() {
   const [user, setUser] = useState(null);
   const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
+    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+      console.log("User state changed:", authUser); // Log user state
+      try {
+        if (authUser) {
+          setUser(authUser);
+          setIsFetching(false);
+          return;
+        }
+        setUser(null);
         setIsFetching(false);
-        return;
+      } catch (error) {
+        console.error("Error in onAuthStateChanged:", error);
+        setIsFetching(false); // Make sure to set fetching to false even if there's an error
       }
-
-      setUser(null);
-      setIsFetching(false);
     });
 
     return () => unsubscribe();
   }, []);
 
+  return { user, isFetching };
+}
+
+function App() {
+  const { user, isFetching } = useAuth();
+
   if (isFetching) {
-    return <LoadingScreen />;
+    console.log("Is Fetching");
+    return <LoadingScreen />
   }
 
   return (

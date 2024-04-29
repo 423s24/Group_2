@@ -357,53 +357,53 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
         
         
 
-        const handleCreateMessageThread = async () => {
-            const activeUser = auth.currentUser;
-            const selectedParticipants = [activeUser.uid, ...selectedUsers].sort();
-        
-            // Check if selectedUsers is empty (excluding the active user)
-            if (selectedUsers.length === 0) {
-                alert("Please select at least one other user to start a message thread.");
-                return; // Stop execution if no users are selected
+   const handleCreateMessageThread = async () => {
+    const activeUser = auth.currentUser;
+    const selectedParticipants = [activeUser.uid, ...selectedUsers].sort();
+
+    // Check if selectedUsers is empty (excluding the active user)
+    if (selectedUsers.length === 0) {
+        alert("Please select at least one other user to start a message thread.");
+        return; // Stop execution if no users are selected
+    }
+
+    try {
+        // Query to find if a thread with these exact participants exists
+        const threadsQuery = query(
+            collection(db, "messageThreads"),
+            where("participants", "array-contains", activeUser.uid)
+        );
+
+        const querySnapshot = await getDocs(threadsQuery);
+        let existingThread = null;
+
+        querySnapshot.forEach(doc => {
+            const data = doc.data();
+            const participants = data.participants.sort();
+            if (participants.length === selectedParticipants.length && participants.every((val, index) => val === selectedParticipants[index])) {
+                existingThread = { id: doc.id, ...data };
             }
-        
-            try {
-                // Query to find if a thread with these exact participants exists
-                const threadsQuery = query(
-                    collection(db, "messageThreads"),
-                    where("participants", "array-contains", activeUser.uid)
-                );
-        
-                const querySnapshot = await getDocs(threadsQuery);
-                let existingThread = null;
-        
-                querySnapshot.forEach(doc => {
-                    const data = doc.data();
-                    const participants = data.participants.sort();
-                    if (participants.length === selectedParticipants.length && participants.every((val, index) => val === selectedParticipants[index])) {
-                        existingThread = { id: doc.id, ...data };
-                    }
-                });
-        
-                if (existingThread) {
-                    // Instead of navigating to the existing thread, throw an error
-                    console.error("Error: Message thread with these participants already exists.");
-                    alert("Error: Message thread with these participants already exists.");
-                } else {
-                    // Create a new thread if it doesn't exist
-                    const docRef = await addDoc(collection(db, "messageThreads"), {
-                        participants: selectedParticipants,
-                        createdAt: serverTimestamp(),
-                    });
-                    console.log("Message thread created with ID: ", docRef.id);
-                    navigate(`/MessageApp/${docRef.id}`);
-                }
-            } catch (error) {
-                console.error("Error creating/checking message thread: ", error);
-                alert("An error occurred while checking or creating a message thread.");
-            }
-        };
-        
+        });
+
+        if (existingThread) {
+            // Instead of navigating to the existing thread, throw an error
+            console.error("Error: Message thread with these participants already exists.");
+            alert("Error: Message thread with these participants already exists.");
+        } else {
+            // Create a new thread if it doesn't exist
+            const docRef = await addDoc(collection(db, "messageThreads"), {
+                participants: selectedParticipants,
+                createdAt: serverTimestamp(),
+            });
+            console.log("Message thread created with ID: ", docRef.id);
+            navigate(`/MessageApp/${docRef.id}`);
+        }
+    } catch (error) {
+        console.error("Error creating/checking message thread: ", error);
+        alert("An error occurred while checking or creating a message thread.");
+    }
+};
+
         
 
         // Event handler for navigating to message room
