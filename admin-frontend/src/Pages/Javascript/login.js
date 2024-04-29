@@ -67,11 +67,11 @@ function LoginPage( {user} ) {
 
                         <div className={`input-group ${loginStatus ? '' : 'input-group-error'}`}>
                             <input type="text" value={ email } onChange={ (e) => setEmail(e.target.value) } required/>
-                            <label for="">Email</label>
+                            <label htmlFor="">Email</label>
                         </div>
                         <div className={`input-group ${loginStatus ? '' : 'input-group-error'}`}>
                             <input type="password" value={ password } onChange={ (e) => setPassword(e.target.value) } required />
-                            <label for="">Password</label>
+                            <label htmlFor="">Password</label>
                         </div>
                         <button className="login-button" onClick={ (e) => loginWithUsernameAndPassword(e) }>Sign In</button>
                         <p className="forgot-password-text">Forgot your password? <a href="../forgot-password">Click Here</a> to reset it.</p>
