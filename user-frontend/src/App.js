@@ -51,7 +51,7 @@ function App() {
           <Route path="/messages/:threadId" element={<UserMessageApp />} />
         </Routes>
       </div>
-      <Footer/>
+      {/* <Footer/> */}
     </Router>
   );
 }

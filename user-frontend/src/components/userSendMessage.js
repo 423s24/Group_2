@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { auth, db } from "../backend/Firebase";
 import { addDoc, collection, serverTimestamp, doc } from "firebase/firestore";
+import "../styling/userMessagingApp.css"
+
 
 // SendMessage component definition receiving scroll and messageThreadId props
 const SendMessage = ({ scroll, messageThreadId }) => {

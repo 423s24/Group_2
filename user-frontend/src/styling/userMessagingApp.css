@@ -91,50 +91,43 @@
 
 /* send message */
 .send-message {
-  position: fixed;
-  bottom: 0;
-  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Ensures no extra space between items except what you set */
   width: 100%;
   padding: 20px 30px;
   background-color: #107178;
-  display: flex;
-  align-items: center; /* Align children vertically in the center */
+  position: fixed;
+  bottom: 0;
+  left: 0;
 }
 
 .send-message > input {
-  height: 40px;
-  padding: 10px;
-  border-radius: 5px 0 0 5px;
-  border: none;
   flex-grow: 1;
-  background-color: white;
-  color: #1c2c4c;
-  font-size: 1rem;
-  /* Remove default browser styles if necessary */
-  outline: none;
-}
-
-.send-message > input:placeholder {
-  color: #ddd;
+  margin-right: 10px; /* Ensure there's a small gap between the input and the button */
+  padding: 10px; /* Adds padding inside the input */
+  border-radius: 4px; /* Rounded corners for the input */
+  border: 2px solid #ccc; /* Adds a border to the input for better visibility */
 }
 
 .send-message > button {
-  width: 70px;
-  height: 40px;
-  padding: 0; /* Adjust padding if necessary */
-  border-radius: 0 5px 5px 0;
-  border: 1px solid #A1A750;
+  padding: 10px 20px; /* Provides padding inside the button */
   background-color: #A1A750;
-  color: #242443;
-  font-weight: 600;
-  /* Align text inside the button if necessary */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 10px;
+  color: white;
+  border: none;
+  border-radius: 4px; /* Rounded corners for the button */
+  cursor: pointer;
 }
 
+/* Ensuring no other styles interfere */
+.send-message > input, .send-message > button {
+  flex-shrink: 0; /* Prevents flex items from shrinking */
+}
+
+
+
+
 .backarrow {
-  width: 20px;  
-  height: auto; 
+  width: 20px;  /* Adjust width as needed */
+  height: auto; /* This keeps the aspect ratio intact */
 }

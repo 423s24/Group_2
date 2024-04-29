@@ -10,6 +10,8 @@ import {
 import { db } from "../backend/Firebase";
 import Message from "./userMessage";
 import SendMessage from "./userSendMessage";
+import "../styling/userMessagingApp.css"
+
 
 // ChatBox component definition receiving a messageId prop
 const ChatBox = ({ messageId }) => {
