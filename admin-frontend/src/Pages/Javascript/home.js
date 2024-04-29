@@ -12,6 +12,7 @@ import { Helmet } from "react-helmet"; // Importing the Helmet component for set
 import { Link } from "react-router-dom";
 import { orderBy, limit } from "firebase/firestore";
 import SendMessage from "../../components/SendMessage";
+import Header from "../../components/Header";
 
 function HomePage() {
     const navigate = useNavigate(); // Hook for navigation
@@ -435,13 +436,7 @@ function HomePage() {
                 <title>Dashboard</title>
             </Helmet>
             <div className="home-container">
-                <div className="header">
-                    <img src={logo} alt="HRDC Logo" className="logo" />
-                    <div>
-                        { userData && <h1>Welcome, {userData.name}</h1>}
-                        <button onClick={signUserOut}>Sign Out</button>
-                    </div>
-                </div>
+                <Header />
                 <div className="content">
                 <div className="messaging-section">
                     <h2>Start New Message Thread</h2>
