@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Home({ user }) {
     const navigate = useNavigate();
     const [tickets, setTickets] = useState(null);
-    const statusColors = { open: "#23b848", closed: "#bababa", "in progress": "#1165f5" };
+    const statusColors = { "open": "#23b848", "closed": "#bababa", "in progress": "#1165f5" };
     const [messageThreads, setMessageThreads] = useState([]);
     const [recipientList, setRecipientList] = useState([]); // Added state for recipient list
     const [userSearchQuery, setUserSearchQuery] = useState(''); // Added state for user search query
@@ -175,12 +175,12 @@ export default function Home({ user }) {
             
                 <div style={{marginTop: "20px"}}>
                     <div className='ticketHeader' style={{display:"flex"}}> <h2 className="ticketTitle" style={{marginRight: "10px"}}>{ticketData.title}</h2>
-                    <p className="statusIcon"style={{padding:"3px 10px 3px 10px",width:"fit-content",border: `1px solid ${statusColors[ticketData.status]}`, borderRadius: "100px", color: statusColors[ticketData.status] }}>{ticketData.status}</p></div>
+                    <p className="statusIcon"style={{padding:"3px 10px 3px 10px",width:"fit-content",border: `1px solid ${statusColors[ticketData.status.toLowerCase()]}`, borderRadius: "100px", color: statusColors[ticketData.status.toLowerCase()] }}>{ticketData.status}</p></div>
                 </div>
                 </div>
                 
                 <button style={{alignSelf:"center", justifySelf:"end", border: "1px solid #bababa", padding:"10px 15px 10px 15px",  borderRadius: "10px"}} onClick={() => {setShow(!show)}}>
-                    View
+                    {show ? "Hide" : "View"}
                 </button>
                 </div>
                 {show ? 
@@ -226,7 +226,7 @@ export default function Home({ user }) {
     }
 
     return (
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "100%", minHeight: "100vh"}}>
             <div className='newRequestButton' style={{ padding: "40px", paddingLeft: "20px", borderBottom: "1px solid #bababa", display: "flex", justifyContent: "center" }} onClick={() => navigate("/maintenance")}>
                 <div style={{ display: "grid", gridAutoFlow: "column", alignItems: "center" }}>
                     <h1 className="sectionHeader" style={{ paddingRight: "10px" }}>Submit New Maintenance Request</h1>
@@ -236,7 +236,7 @@ export default function Home({ user }) {
             
             <div style={{ display: "flex", justifyContent: "center" }}>
               
-                <div className="previousContainer" style={{width: "66%", border: "1px solid #bababa", borderRadius: "15px", background: "white", display:"flex", flexDirection: "column", alignItems:"center"}}>
+                <div className="previousContainer" style={{width: "90%", border: "1px solid #bababa", borderRadius: "15px", background: "white", display:"flex", flexDirection: "column", alignItems:"center"}}>
                 <p onClick={() => setShowMessageApp(!showMessageApp)} style={{textDecoration: "underline", alignSelf: "start", marginBottom: "40px"}}>{showMessageApp ? "Show Request" : "Show Messaging"}</p>
                 {showMessageApp ? <MessageApp/> : <>
                   <h1 className="sectionHeader" style={{color:"#97c33c", marginBottom: "40px"}}>Previous Requests</h1>

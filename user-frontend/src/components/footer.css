@@ -1,0 +1,41 @@
+.footerContainer {
+    background-color: #107178;
+    color: #fff;
+    display: "flex";
+    padding: 20px 40px 20px 40px;
+    margin-top: 40px;
+    flex-direction: column;
+    position: relative;
+    bottom: 0
+}
+
+.footerContainer h3 {
+    margin-bottom: 20px;
+}
+
+.contactContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.contactContainer p{
+    padding-left: 20px;
+}
+
+
+@media (max-width: 700px){
+    .contactContainer {
+        flex-direction: column;
+    }
+
+    .contactContainer p{
+        padding-left: 0px;
+        padding-bottom: 20px;
+    }
+
+    .contactContainer a{
+        padding-left: 0px;
+        padding-bottom: 20px;
+    }
+    
+}
