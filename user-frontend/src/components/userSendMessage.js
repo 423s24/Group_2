@@ -57,7 +57,7 @@ const SendMessage = ({ scroll, messageThreadId }) => {
 
   // Render the form for sending a message
   return (
-    <form onSubmit={sendMessage} className="send-message">
+<form onSubmit={sendMessage} className="send-message">
       <input
         id="messageInput"
         name="messageInput"

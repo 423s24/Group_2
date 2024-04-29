@@ -10,6 +10,11 @@ import {
 import { db } from "../Backend/Firebase";
 import Message from "./Message";
 import SendMessage from "./SendMessage";
+import { useNavigate, Link, useParams } from 'react-router-dom';
+import back_arrow from "../Assets/back_arrow.webp";
+import "../Pages/Styling/MessagingApp.css";
+
+
 
 // ChatBox component definition receiving a messageId prop
 const ChatBox = ({ messageId }) => {

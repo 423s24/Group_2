@@ -30,6 +30,7 @@ const ChatBox = ({ messageId }) => {
       limit(50)
     );
     
+  
 
     // Subscribing to the messages query to listen for real-time updates
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -62,7 +63,7 @@ const ChatBox = ({ messageId }) => {
   // Render the chat box with messages and a SendMessage component
   return (
     <main className="chat-box">
-      <div className="messages-wrapper">
+      <div className="messages-wrapper" style={{width: "100vw", margin:"10px" }}>
         {/* Rendering each message using the Message component */}
         {messages?.map((message) => (
           <Message key={message.id} message={message} />

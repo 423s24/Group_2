@@ -133,3 +133,8 @@
   align-items: center;
   margin-bottom: 10px;
 }
+
+.backarrow {
+  width: 20px;  
+  height: auto; 
+}
