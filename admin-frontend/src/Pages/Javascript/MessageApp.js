@@ -10,6 +10,7 @@ import ChatBox from '../../components/ChatBox';
 import SendMessage from '../../components/SendMessage';
 import "../Styling/MessagingApp.css";
 import logo from "../../Assets/hrdc-logo-1.png";
+import back_arrow from "../../Assets/back_arrow.webp";
 
 // The main MessageApp component definition
 const MessageApp = () => {
@@ -105,13 +106,9 @@ const MessageApp = () => {
                     </div>
                 </div>
                 <div className="message-threads">
-                    <ul>
-                        {messageThreads.map(thread => (
-                            <li key={thread.id} onClick={() => handleThreadClick(thread.id)}>
-                                {thread.name} {/* Listing message threads */}
-                            </li>
-                        ))}
-                    </ul>
+                <Link to="/" className="home-button">
+                    <img src={back_arrow} alt="Back Arrow" className="backarrow" style={{margin: "5px"}}/>
+                </Link>
                     {selectedThreadId && (
                         <>  {/* Conditional rendering of ChatBox and SendMessage based on selectedThreadId */}
                             <ChatBox messageId={selectedThreadId} />

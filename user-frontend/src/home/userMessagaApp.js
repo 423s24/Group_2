@@ -9,6 +9,8 @@ import { getDocs, collection, doc, getDoc, query, where, addDoc, serverTimestamp
 import ChatBox from '../components/userChatBox';
 import SendMessage from '../components/userSendMessage';
 import "../styling/userMessagingApp.css"
+import back_arrow from "../assets/images/back_arrow.webp";
+
 
 // The main MessageApp component definition
 const UserMessageApp = () => {
@@ -86,13 +88,18 @@ const UserMessageApp = () => {
             <Helmet>
                 <title>Message App</title> {/* Sets the page title */}
             </Helmet>
-                <div style={{width: "100%"}}>
-                    {selectedThreadId && (
-                        <>  {/* Conditional rendering of userChatBox and userSendMessage based on selectedThreadId */}
-                            <ChatBox messageId={selectedThreadId} />
-                            <SendMessage scroll={scrollRef} messageThreadId={selectedThreadId} />
-                        </>
-                    )}
+                <div className='message-wrapper'>
+                    <div style={{width: "100%"}}>
+                    <Link to="/" className="home-button">
+                        <img src={back_arrow} alt="Back Arrow" className="backarrow" style={{margin: "5px"}}/>
+                    </Link>
+                        {selectedThreadId && (
+                            <>  {/* Conditional rendering of userChatBox and userSendMessage based on selectedThreadId */}
+                                <ChatBox messageId={selectedThreadId} />
+                                <SendMessage scroll={scrollRef} messageThreadId={selectedThreadId} />
+                            </>
+                        )}
+                    </div>
                 </div>
             </div>
     );

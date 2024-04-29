@@ -57,19 +57,18 @@ const SendMessage = ({ scroll, messageThreadId }) => {
 
   // Render the form for sending a message
   return (
-    <form onSubmit={sendMessage} className="send-message" style={{ display: "flex", alignItems: "center", width: "100%" }}>
+<form onSubmit={sendMessage} className="send-message">
       <input
-        style={{ flex: 1, marginRight: "10px" }}  // Input takes most space, with margin to button
         id="messageInput"
         name="messageInput"
         type="text"
         className="form-input__input"
         placeholder="Type message..."
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        disabled={isSending}
+        onChange={(e) => setMessage(e.target.value)} // Update message state on change
+        disabled={isSending} // Disable the input when a message is being sent
       />
-      <button type="submit" disabled={isSending} style={{ flexShrink: 0 }}>Send</button>
+      <button type="submit" disabled={isSending}>Send</button>
     </form>
   );
 };
