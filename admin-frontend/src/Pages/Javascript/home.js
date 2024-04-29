@@ -361,6 +361,12 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
             const activeUser = auth.currentUser;
             const selectedParticipants = [activeUser.uid, ...selectedUsers].sort();
         
+            // Check if selectedUsers is empty (excluding the active user)
+            if (selectedUsers.length === 0) {
+                alert("Please select at least one other user to start a message thread.");
+                return; // Stop execution if no users are selected
+            }
+        
             try {
                 // Query to find if a thread with these exact participants exists
                 const threadsQuery = query(
@@ -397,6 +403,7 @@ const sortedByUrgency = filteredTickets.slice().sort((a, b) => {
                 alert("An error occurred while checking or creating a message thread.");
             }
         };
+        
         
 
         // Event handler for navigating to message room

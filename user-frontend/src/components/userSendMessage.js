@@ -57,7 +57,7 @@ const SendMessage = ({ scroll, messageThreadId }) => {
 
   // Render the form for sending a message
   return (
-    <form onSubmit={sendMessage} className="send-message" style={{ display: "flex", alignItems: "center", width: "100vw" }}>
+    <form onSubmit={sendMessage} className="send-message" style={{ display: "flex", alignItems: "center", width: "100%" }}>
       <input
         style={{ flex: 1, marginRight: "10px" }}  // Input takes most space, with margin to button
         id="messageInput"
